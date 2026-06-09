@@ -1226,6 +1226,9 @@
   if (!prdRoot) return;
 
   const isHttpOrigin = window.location.protocol === 'http:' || window.location.protocol === 'https:';
+  const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+  const isDeployedReadonly = isHttpOrigin && !isLocalhost;
+  const READONLY_HINT = '⚠️ 当前是 GitHub Pages 只读地址，无法保存。编辑请用本地预览：让 AI 启动 preview server，再访问 http://localhost:8770/';
 
   const style = document.createElement('style');
   style.id = 'editor-style';
@@ -1334,6 +1337,10 @@
 
   btnSave.addEventListener('click', async () => {
     if (!editing) { setStatus('请先点「编辑」', 'err'); return; }
+    if (isDeployedReadonly) {
+      setStatus(READONLY_HINT, 'err');
+      return;
+    }
     if (!isHttpOrigin) {
       setStatus('⚠️ 保存需通过 http://localhost:8770 访问；当前是 file:// 模式', 'err');
       return;
@@ -1356,6 +1363,10 @@
 
   btnSaveAs.addEventListener('click', async () => {
     if (!editing) { setStatus('请先点「编辑」', 'err'); return; }
+    if (isDeployedReadonly) {
+      setStatus(READONLY_HINT, 'err');
+      return;
+    }
     if (!isHttpOrigin) {
       setStatus('⚠️ 另存为需通过 http://localhost:8770 访问', 'err');
       return;
