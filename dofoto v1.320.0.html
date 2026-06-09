@@ -1,0 +1,1408 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-immersive-translate-page-theme="light"><head>
+<meta charset="UTF-8">
+<title>Dofoto v1.320.0 PRD</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'PingFang SC';
+    font-weight: 400;
+    color: #1a1a1a;
+    background: #fafafa;
+  }
+
+  .prd-root {
+    display: flex;
+    flex-direction: column;
+    gap: 60px;
+    padding: 80px;
+    min-width: 2280px;
+    background: #ffffff;
+  }
+
+  section {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  .section-title {
+    font-size: 60px;
+    font-weight: 500;
+    color: #0D47A1;
+    padding-bottom: 12px;
+    border-bottom: 3px solid #0D47A1;
+  }
+
+  .sub-section-title {
+    font-size: 48px;
+    font-weight: 500;
+    color: #1565C0;
+    margin-top: 32px;
+    padding-left: 16px;
+    border-left: 8px solid #1565C0;
+  }
+
+  .body-text {
+    font-size: 34px;
+    line-height: 1.75;
+    color: #333333;
+  }
+
+  /* ========== 封面 ========== */
+  .cover {
+    display: flex; flex-direction: column; gap: 32px;
+    padding: 60px 80px;
+    background: linear-gradient(135deg, #E3F2FD 0%, #F3E5F5 100%);
+    border-radius: 24px;
+  }
+  .cover-title { font-size: 88px; font-weight: 500; color: #0D47A1; }
+  .cover-meta { display: flex; flex-direction: row; gap: 20px; align-items: center; }
+  .cover-meta-pill { padding: 10px 24px; font-size: 28px; font-weight: 500; border-radius: 999px; }
+  .pill-version { background: #BBDEFB; color: #0D47A1; }
+  .pill-date    { background: #C8E6C9; color: #1B5E20; }
+  .pill-status  { background: #FFE0B2; color: #E65100; }
+
+  .cover-summary { font-size: 36px; line-height: 1.7; color: #424242; }
+
+  .feature-list {
+    display: flex; flex-direction: column; gap: 14px;
+    padding: 32px 40px; background: rgba(255,255,255,0.7); border-radius: 16px;
+  }
+  .feature-list-title { font-size: 36px; font-weight: 500; color: #0D47A1; margin-bottom: 8px; }
+  .feature-list-item { font-size: 30px; line-height: 1.65; color: #333; }
+  .feature-list-item .num { display: inline-block; width: 56px; font-weight: 500; color: #1565C0; }
+  .feature-list-item .tag {
+    display: inline-block; padding: 2px 14px; margin-left: 12px;
+    font-size: 24px; font-weight: 500; border-radius: 999px;
+    background: #C8E6C9; color: #1B5E20;
+  }
+
+  .change-log {
+    display: flex; flex-direction: column; gap: 24px;
+    padding: 40px; background: rgba(255,255,255,0.7); border-radius: 16px;
+  }
+  .change-log h3 { font-size: 40px; font-weight: 500; color: #0D47A1; margin-bottom: 8px; }
+  .change-item { display: flex; flex-direction: column; gap: 8px; }
+  .change-item .date { font-size: 30px; font-weight: 500; color: #1565C0; }
+  .change-item .summary { font-size: 30px; color: #333; }
+
+  /* ========== 卡片 ========== */
+  .card {
+    display: flex; flex-direction: column;
+    background: #ffffff; border: 2px solid #E0E0E0; border-radius: 16px; overflow: hidden;
+  }
+  .card-hd {
+    padding: 24px 32px; font-size: 40px; font-weight: 500; color: #ffffff;
+    background: #388E3C;
+  }
+  .card-hd.biz { background: #1565C0; }
+  .card-hd.y { background: #388E3C; }
+
+  .card-body {
+    display: flex; flex-direction: row; gap: 40px; padding: 36px; align-items: flex-start;
+  }
+
+  /* ========== 结构化业务逻辑块（每行独立 div，Figma 导入不压扁） ========== */
+  .biz-text {
+    flex: 1; min-width: 0;
+    display: flex; flex-direction: column; gap: 22px;
+  }
+  .biz-block {
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .biz-block-title {
+    font-size: 32px; font-weight: 500; color: #1565C0;
+  }
+  .biz-block-line {
+    font-size: 30px; line-height: 1.7; color: #333;
+  }
+
+  /* ========== 屏说明：触发/内容/交互 三段（每段一个 div） ========== */
+  .screen-text-block {
+    display: flex; flex-direction: column; gap: 18px;
+    flex: 1; min-width: 0;
+  }
+  .screen-text-label {
+    font-size: 30px; font-weight: 500; color: #0D47A1;
+  }
+  .screen-text-body {
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .screen-text-body-line {
+    font-size: 30px; line-height: 1.7; color: #333;
+  }
+
+  /* ========== 通用数据表 ========== */
+  .data-table {
+    width: 100%; border-collapse: collapse; table-layout: fixed; margin-top: 16px;
+  }
+  .data-table th {
+    padding: 16px 20px; text-align: left; font-weight: 500; font-size: 28px;
+    color: #424242; background: #FAFAFA; border-bottom: 2px solid #E0E0E0;
+  }
+  .data-table td {
+    padding: 14px 20px; border-bottom: 1px solid #EEEEEE; font-size: 28px;
+    line-height: 1.55; color: #333; vertical-align: top;
+  }
+  .data-table td.name { font-weight: 500; color: #1565C0; }
+  .data-table td.merge-cell {
+    font-weight: 500; background: #F5F5F5; color: #1565C0;
+    text-align: center; vertical-align: middle;
+  }
+
+  /* ========== Phone mockup ========== */
+  .phone {
+    width: 400px; height: 867px; border-radius: 32px;
+    background: #FAFAFA; border: 4px solid #BDBDBD; flex-shrink: 0;
+    display: flex; flex-direction: column; overflow: hidden; position: relative;
+  }
+  .phone-status {
+    height: 28px; background: #FAFAFA;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 24px; font-size: 14px; color: #333; flex-shrink: 0;
+  }
+  .phone-topbar {
+    height: 52px; background: #FFFFFF;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 16px; border-bottom: 1px solid #EEEEEE; flex-shrink: 0;
+  }
+  .phone-topbar .back { font-size: 22px; color: #555; }
+  .phone-topbar .save-btn {
+    background: #D1C4E9; color: #4527A0;
+    padding: 6px 18px; border-radius: 14px; font-weight: 500; font-size: 16px;
+  }
+  .phone-canvas {
+    flex: 1; display: flex; align-items: center; justify-content: center;
+    color: #ECEFF1; font-size: 16px; position: relative;
+    background: linear-gradient(180deg, #B0BEC5 0%, #78909C 100%);
+  }
+  .phone-canvas.person { background: linear-gradient(180deg, #8D6E63 0%, #5D4037 100%); }
+  .phone-canvas.suit { background: linear-gradient(180deg, #455A64 0%, #263238 100%); }
+  .phone-canvas.dark { background: #2C1B3A; color: #E1BEE7; }
+  .phone-bottom-tab {
+    height: 32px; background: #FFFFFF;
+    display: flex; align-items: center; justify-content: space-around;
+    border-top: 1px solid #EEEEEE; font-size: 14px; color: #757575; flex-shrink: 0;
+  }
+  .phone-bottom-tab .active { color: #0D47A1; font-weight: 500; }
+
+  /* 首页 AI 魔法工具卡片区块 */
+  .home-block-title { font-size: 13px; font-weight: 500; color: #ECEFF1; padding: 12px 16px 6px; }
+  .home-magic-cards { display: flex; flex-direction: row; gap: 6px; padding: 0 12px 12px; }
+  .magic-card {
+    flex: 1; height: 90px; background: #1E1232; border-radius: 10px; padding: 8px;
+    display: flex; flex-direction: column; justify-content: flex-end;
+    color: #ECEFF1; font-size: 11px; font-weight: 500;
+  }
+  .magic-card.highlight { box-shadow: 0 0 0 2px #E91E63; color: #E91E63; }
+  .phone-home-toolrow { display: flex; flex-direction: row; gap: 6px; padding: 8px 12px; }
+  .home-tool { width: 50px; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .home-tool-icon {
+    width: 40px; height: 40px; border-radius: 12px;
+    background: linear-gradient(135deg, #E1BEE7 0%, #BBDEFB 100%); position: relative;
+  }
+  .home-tool-label { font-size: 10px; color: #ECEFF1; }
+  .home-tool-badge {
+    position: absolute; top: -4px; right: -4px;
+    background: #E91E63; color: #fff; font-size: 8px;
+    padding: 1px 4px; border-radius: 4px; font-weight: 500;
+  }
+  .home-bigbtn-row { display: flex; flex-direction: row; gap: 8px; padding: 12px; }
+  .home-bigbtn {
+    flex: 1; height: 80px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-size: 14px; font-weight: 500;
+  }
+  .home-bigbtn.image { background: linear-gradient(135deg, #FFB74D 0%, #FF7043 100%); }
+  .home-bigbtn.collage { background: linear-gradient(135deg, #F06292 0%, #E91E63 100%); }
+
+  /* 效果横排 */
+  .effect-row { background: #FFFFFF; padding: 14px 8px; border-top: 1px solid #EEEEEE; flex-shrink: 0; }
+  .effect-row-items { display: flex; flex-direction: row; gap: 8px; overflow: hidden; }
+  .effect-card { width: 58px; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .effect-thumb {
+    width: 50px; height: 50px; border-radius: 8px;
+    background: linear-gradient(135deg, #CFD8DC 0%, #90A4AE 100%);
+    position: relative; display: flex; align-items: center; justify-content: center;
+    color: #fff; font-size: 10px;
+  }
+  .effect-thumb.original { background: linear-gradient(135deg, #FAFAFA 0%, #E0E0E0 100%); color: #555; }
+  .effect-thumb.selected { box-shadow: 0 0 0 2px #1565C0; }
+  .effect-pro-badge {
+    position: absolute; top: -3px; right: -3px;
+    background: #7B1FA2; color: #fff; font-size: 8px;
+    font-weight: 500; padding: 1px 4px; border-radius: 4px;
+  }
+  .effect-name { font-size: 10px; color: #555; text-align: center; line-height: 1.1; }
+
+  /* 引导弹窗 */
+  .phone-modal {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    background: #FFFFFF; border-radius: 16px; padding: 20px 18px; width: 280px;
+    display: flex; flex-direction: column; align-items: center; gap: 10px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+  }
+  .phone-modal-title { font-size: 16px; font-weight: 500; color: #212121; text-align: center; }
+  .phone-modal-sub { font-size: 12px; color: #757575; text-align: center; }
+  .phone-modal-img {
+    width: 110px; height: 110px;
+    background: linear-gradient(135deg, #CFD8DC 0%, #90A4AE 100%);
+    border-radius: 8px; margin: 6px 0;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-size: 12px;
+  }
+  .phone-modal-dont-row { display: flex; flex-direction: row; gap: 6px; width: 100%; justify-content: center; }
+  .phone-modal-dont { width: 60px; display: flex; flex-direction: column; align-items: center; gap: 3px; }
+  .phone-modal-dont-thumb {
+    width: 48px; height: 48px; background: #ECEFF1;
+    border: 1px dashed #C62828; border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    color: #C62828; font-size: 18px;
+  }
+  .phone-modal-dont-label { font-size: 9px; color: #C62828; text-align: center; line-height: 1.1; }
+  .phone-modal-btn {
+    background: #424242; color: #fff; padding: 8px 28px; border-radius: 14px;
+    font-size: 14px; font-weight: 500; margin-top: 6px;
+  }
+
+  /* loading */
+  .phone-loading {
+    position: absolute; bottom: 110px; left: 50%; transform: translateX(-50%);
+    width: 260px; display: flex; flex-direction: column; align-items: center; gap: 8px;
+  }
+  .phone-loading-text { color: #fff; font-size: 13px; text-align: center; }
+  .phone-loading-bar { width: 100%; height: 4px; background: rgba(255,255,255,0.3); border-radius: 2px; overflow: hidden; }
+  .phone-loading-fill { width: 60%; height: 100%; background: #FFFFFF; border-radius: 2px; }
+  .phone-loading-cancel {
+    position: absolute; top: 12px; right: 12px;
+    width: 28px; height: 28px; border-radius: 50%;
+    background: rgba(0,0,0,0.4); color: #fff;
+    display: flex; align-items: center; justify-content: center; font-size: 16px;
+  }
+  .phone-compare-btn {
+    position: absolute; bottom: 14px; right: 14px;
+    width: 44px; height: 44px; border-radius: 50%;
+    background: rgba(0,0,0,0.55); color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; border: 2px solid rgba(255,255,255,0.6);
+  }
+
+  /* 修脸放大 */
+  .phone-canvas.face-default::after {
+    content: ''; position: absolute;
+    top: 30%; left: 35%; width: 80px; height: 80px; border-radius: 50%;
+    background: linear-gradient(135deg, #FFE0B2 0%, #FFCC80 100%);
+  }
+  .phone-canvas.face-zoomed::after {
+    content: ''; position: absolute;
+    top: 25%; left: 30%; width: 200px; height: 200px; border-radius: 50%;
+    background: linear-gradient(135deg, #FFE0B2 0%, #FFCC80 100%);
+  }
+  .face-marker {
+    position: absolute; top: 30%; left: 35%; width: 80px; height: 80px;
+    border: 3px dashed #E91E63; border-radius: 50%; z-index: 2;
+  }
+
+  /* 评分弹窗 */
+  .phone-rating {
+    position: absolute; bottom: 80px; left: 50%; transform: translateX(-50%);
+    background: #FFFFFF; border-radius: 16px;
+    padding: 20px 24px; width: 280px;
+    display: flex; flex-direction: column; align-items: center; gap: 12px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+  }
+  .phone-rating-title { font-size: 14px; font-weight: 500; color: #212121; text-align: center; }
+  .phone-rating-stars { display: flex; flex-direction: row; gap: 6px; font-size: 24px; color: #FFB300; }
+
+  /* Upscale AD 标识入口示例 */
+  .magic-row { background: #FFFFFF; padding: 14px 8px 18px; border-top: 1px solid #EEEEEE; flex-shrink: 0; }
+  .magic-row-title { font-size: 13px; font-weight: 500; color: #424242; padding-left: 12px; margin-bottom: 8px; }
+  .magic-row-items { display: flex; flex-direction: row; justify-content: space-between; padding: 0 8px; }
+  .magic-item { display: flex; flex-direction: column; align-items: center; gap: 4px; width: 56px; }
+  .magic-icon { width: 44px; height: 44px; border-radius: 12px; background: linear-gradient(135deg, #E1BEE7 0%, #BBDEFB 100%); position: relative; }
+  .magic-label { font-size: 11px; color: #424242; text-align: center; line-height: 1.2; }
+  .magic-ad-badge {
+    position: absolute; top: -4px; right: -4px;
+    background: #E65100; color: #fff; font-size: 10px;
+    font-weight: 500; padding: 1px 6px; border-radius: 6px;
+  }
+
+  /* §4 关注指标 */
+  .metric-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+  .metric-table th {
+    padding: 18px 24px; text-align: left; font-weight: 500; font-size: 32px;
+    color: #424242; background: #FAFAFA; border-bottom: 2px solid #E0E0E0;
+  }
+  .metric-table td {
+    padding: 18px 24px; border-bottom: 1px solid #EEEEEE; font-size: 30px;
+    line-height: 1.65; color: #333; vertical-align: top;
+  }
+  .metric-table td.name { font-weight: 500; }
+  .metric-table td.feat { font-weight: 500; color: #1565C0; }
+  .metric-table td .denom-line { display: block; }
+
+  .decision-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+  .decision-table th {
+    padding: 18px 24px; text-align: left; font-weight: 500; font-size: 32px;
+    color: #424242; background: #FAFAFA; border-bottom: 2px solid #E0E0E0;
+  }
+  .decision-table td {
+    padding: 18px 24px; border-bottom: 1px solid #EEEEEE; font-size: 30px;
+    line-height: 1.65; color: #333; vertical-align: top;
+  }
+  .decision-text { font-weight: 500; }
+
+  .rollback-box {
+    background: #FAFAFA; padding: 28px 36px;
+    border-radius: 12px; border-left: 8px solid #C62828; margin-top: 24px;
+  }
+  .rollback-title { font-size: 34px; font-weight: 500; color: #C62828; margin-bottom: 12px; }
+  .rollback-text { display: flex; flex-direction: column; gap: 10px; }
+  .rollback-line { font-size: 28px; line-height: 1.7; color: #333; }
+
+  .footer-note { font-size: 24px; color: #757575; margin-top: 24px; line-height: 1.6; }
+</style>
+</head>
+<body>
+
+<div class="prd-root" contenteditable="false">
+
+  <!-- ============ 封面 ============ -->
+  <section class="cover">
+    <div class="cover-title">Dofoto v1.320.0 合订 PRD</div>
+    <div class="cover-meta">
+      <span class="cover-meta-pill pill-version">v1.320.0</span>
+      <span class="cover-meta-pill pill-date">2026-06-09</span>
+      <span class="cover-meta-pill pill-status">评审中</span>
+    </div>
+    <div class="cover-summary">本版本集中推进 6 项功能：新增 AI 证件照、Expand 接口迁移、Upscale 接口迁移并明确高清输出逻辑、修脸选脸自动放大、评分弹窗触发点扩充至 1/3/6/9、Upscale 入口加 AD 标识。核心目标——补全 AI 付费玩法、迁移服务器付费接口、优化关键路径体验。</div>
+    <div class="feature-list">
+      <div class="feature-list-title">本版本功能清单</div>
+      <div class="feature-list-item"><span class="num">①</span>AI 证件照（新功能，男女各 5 种效果，看广告解锁 + Pro 付费）<span class="tag">全量</span></div>
+      <div class="feature-list-item"><span class="num">②</span>AI Expand 服务器付费接口迁移（复用 AIfoto 同款接口）<span class="tag">全量</span></div>
+      <div class="feature-list-item"><span class="num">③</span>Upscale 服务器付费接口迁移 + 明确高清输出逻辑（保留 HD / QHD / UHD 3 档）<span class="tag">全量</span></div>
+      <div class="feature-list-item"><span class="num">④</span>修脸选脸后画布自动放大<span class="tag">全量</span></div>
+      <div class="feature-list-item"><span class="num">⑤</span>评分弹窗触发点扩充至第 1 / 3 / 6 / 9 次保存<span class="tag">全量</span></div>
+      <div class="feature-list-item"><span class="num">⑥</span>Upscale 入口缩略图加 AD 标识<span class="tag">全量</span></div>
+    </div>
+    <div class="change-log">
+      <h3>变更记录</h3>
+      <div class="change-item">
+        <div class="date">2026-06-09 · v1.0（初版）</div>
+        <div class="summary">v1.320.0 首版 PRD：合订 6 项功能（AI 证件照新功能、Expand / Upscale 服务器付费接口迁移、修脸放大、评分弹窗触发扩充、Upscale AD 标识）。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §1 需求概述 ============ -->
+  <section>
+    <div class="section-title">§1 需求概述</div>
+    <div style="display:flex;flex-direction:column;gap:14px;">
+      <div class="body-text">本版本围绕「付费玩法补全 + 服务器付费接口迁移 + 关键路径体验优化」三条主线：</div>
+      <div class="body-text">① 通过 AI 证件照新增一种高付费意愿的 AI 玩法（效果保存率20%以上），补全首页 AI 魔法工具卡片区块的产品矩阵</div>
+      <div class="body-text">② 将 Expand / Upscale 工具的服务器付费接口迁移至项目组内接口，降低对外部付费算法服务的依赖，并明确 Upscale 高清输出逻辑；</div>
+      <div class="body-text">③ 通过修脸放大、评分弹窗触发优化、Upscale AD 标识三项小颗粒优化，提升单次用户体验与商业化效率。</div>
+    </div>
+    <div class="body-text" style="color:#757575;margin-top:16px;"><strong>非目标：</strong>本版本不修改首页布局框架（仅在 AI 魔法工具卡片区块新增「证件照」卡片）、不重写邀评弹窗 UI（仅调整触发策略）。</div>
+  </section>
+
+  <!-- ============ §2 功能详述 ============ -->
+  <section>
+    <div class="section-title">§2 功能详述</div>
+
+    <!-- =============== 2.1 AI 证件照 =============== -->
+    <div class="sub-section-title">2.1 AI 证件照（新功能）</div>
+
+    <!-- 页面说明（已移到 2.1 开头） -->
+    <div style="margin-top:32px;">
+      <div style="font-size:40px;font-weight:500;color:#388E3C;margin-bottom:20px;">页面说明（中保真原型）</div>
+
+      <div style="display:flex;flex-direction:column;gap:28px;">
+
+        <!-- 第 1 行 -->
+        <div style="display:flex;flex-direction:row;gap:28px;">
+
+          <!-- 屏 1 -->
+          <div class="card" style="flex:1;min-width:0;">
+            <div class="card-hd y">屏 1：首页 AI 魔法工具卡片区块新增「证件照」</div>
+            <div class="card-body">
+              <div class="phone" style="background:#1A0B2E;border-color:#3D2A5C;">
+                <div class="phone-status" style="background:#1A0B2E;color:#fff;"><span>9:41</span><span>● ●</span></div>
+                <div class="phone-topbar" style="background:#1A0B2E;border-color:#3D2A5C;"><span style="color:#fff;font-size:18px;font-weight:500;">Dofoto</span><span style="font-size:18px;color:#fff;">⚙</span></div>
+                <div class="phone-canvas dark" style="display:block;padding:0;">
+                  <div class="home-bigbtn-row">
+                    <div class="home-bigbtn image">图片</div>
+                    <div class="home-bigbtn collage">拼图</div>
+                  </div>
+                  <div class="phone-home-toolrow">
+                    <div class="home-tool"><div class="home-tool-icon"></div><div class="home-tool-label">自由拼图</div></div>
+                    <div class="home-tool"><div class="home-tool-icon"><div class="home-tool-badge" style="background:#FF7043;">New</div></div><div class="home-tool-label">闪光灯</div></div>
+                    <div class="home-tool"><div class="home-tool-icon"><div class="home-tool-badge" style="background:#E91E63;">Hot</div></div><div class="home-tool-label">美颜</div></div>
+                    <div class="home-tool"><div class="home-tool-icon"></div><div class="home-tool-label">修脸</div></div>
+                    <div class="home-tool"><div class="home-tool-icon"></div><div class="home-tool-label">AI…</div></div>
+                  </div>
+                  <div class="home-block-title">AI 魔法工具</div>
+                  <div class="home-magic-cards">
+                    <div class="magic-card">高清画质</div>
+                    <div class="magic-card highlight">证件照</div>
+                    <div class="magic-card">发色</div>
+                  </div>
+                  <div class="home-block-title" style="margin-top:8px;">AI 绘图</div>
+                  <div style="display:flex;flex-direction:row;gap:6px;padding:0 12px;">
+                    <div style="flex:1;height:60px;background:#3D2A5C;border-radius:8px;"></div>
+                    <div style="flex:1;height:60px;background:#3D2A5C;border-radius:8px;"></div>
+                    <div style="flex:1;height:60px;background:#3D2A5C;border-radius:8px;"></div>
+                    <div style="flex:1;height:60px;background:#3D2A5C;border-radius:8px;"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="screen-text-block">
+                <div>
+                  <div class="screen-text-label">触发条件</div>
+                  <div class="screen-text-body">
+                    <div class="screen-text-body-line">用户进入 Dofoto 首页默认可见。</div>
+                  </div>
+                </div>
+                <div>
+                  <div class="screen-text-label">页面内容（仅改动点）</div>
+                  <div class="screen-text-body">
+                    <div class="screen-text-body-line">「AI 魔法工具」卡片区块由当前 2 张卡片（高清画质 / 发色）扩展为 3 张卡片（高清画质 → 证件照 → 发色）。</div>
+                    <div class="screen-text-body-line">卡片样式、间距与现有两张保持一致；首期"证件照"卡片可加 NEW 角标做新功能曝光（云控可关）。</div>
+                  </div>
+                </div>
+                <div>
+                  <div class="screen-text-label">交互说明</div>
+                  <div class="screen-text-body">
+                    <div class="screen-text-body-line">用户点击「证件照」卡片 → 系统走存储权限检查 → 进入相册选图（单选场景）→ 校验通过后进入证件照工具页。</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 屏 2 -->
+          <div class="card" style="flex:1;min-width:0;">
+            <div class="card-hd y">屏 2：工具页首次引导弹窗</div>
+            <div class="card-body">
+              <div class="phone">
+                <div class="phone-status"><span>9:41</span><span>● ●</span></div>
+                <div class="phone-topbar"><span class="back">←</span><span style="font-size:14px;color:#999;">证件照</span><span class="save-btn">Save</span></div>
+                <div class="phone-canvas person">原图</div>
+                <div class="effect-row">
+                  <div class="effect-row-items">
+                    <div class="effect-card"><div class="effect-thumb original selected">Ori</div><div class="effect-name">Original</div></div>
+                    <div class="effect-card"><div class="effect-thumb">M</div><div class="effect-name">Modern</div></div>
+                    <div class="effect-card"><div class="effect-thumb">O<div class="effect-pro-badge">Pro</div></div><div class="effect-name">Office</div></div>
+                    <div class="effect-card"><div class="effect-thumb">A<div class="effect-pro-badge">Pro</div></div><div class="effect-name">Azure</div></div>
+                    <div class="effect-card"><div class="effect-thumb">S<div class="effect-pro-badge">Pro</div></div><div class="effect-name">Shirt</div></div>
+                    <div class="effect-card"><div class="effect-thumb">C<div class="effect-pro-badge">Pro</div></div><div class="effect-name">Cream</div></div>
+                  </div>
+                </div>
+                <div class="phone-modal">
+                  <div class="phone-modal-title">证件照</div>
+                  <div class="phone-modal-sub">智能写真·专属形象</div>
+                  <div class="phone-modal-img">正脸示意</div>
+                  <div class="phone-modal-dont-row">
+                    <div class="phone-modal-dont"><div class="phone-modal-dont-thumb">✕</div><div class="phone-modal-dont-label">脸贴过大</div></div>
+                    <div class="phone-modal-dont"><div class="phone-modal-dont-thumb">✕</div><div class="phone-modal-dont-label">脸贴太小</div></div>
+                    <div class="phone-modal-dont"><div class="phone-modal-dont-thumb">✕</div><div class="phone-modal-dont-label">倒脸</div></div>
+                  </div>
+                  <div class="phone-modal-btn">got it</div>
+                </div>
+              </div>
+              <div class="screen-text-block">
+                <div>
+                  <div class="screen-text-label">触发条件</div>
+                  <div class="screen-text-body">
+                    <div class="screen-text-body-line">用户首次进入证件照工具页（永久记忆，不再弹）。</div>
+                  </div>
+                </div>
+                <div>
+                  <div class="screen-text-label">页面内容</div>
+                  <div class="screen-text-body">
+                    <div class="screen-text-body-line">弹窗标题「证件照」，副标题「智能写真·专业形象」。</div>
+                    <div class="screen-text-body-line">中部正脸示意图。</div>
+                    <div class="screen-text-body-line">下方 3 张错误示例横排（脸贴过大 / 脸贴太小 / 倒脸）。</div>
+                    <div class="screen-text-body-line">底部「got it」按钮。</div>
+                  </div>
+                </div>
+                <div>
+                  <div class="screen-text-label">交互说明</div>
+                  <div class="screen-text-body">
+                    <div class="screen-text-body-line">用户点 got it → 弹窗关闭，本地写入"已展示"标记 → 编辑页画布默认显示原图，效果横排默认选中 Original。</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 第 2 行 -->
+        <div style="display:flex;flex-direction:row;gap:28px;">
+
+          <!-- 屏 3 -->
+          <div class="card" style="flex:1;min-width:0;">
+            <div class="card-hd y">屏 3：生成处理中 · 全屏 loading + Pro 引导</div>
+            <div class="card-body">
+              <div class="phone" style="background:#1A0B2E;border-color:#3D2A5C;">
+                <div class="phone-status" style="background:#1A0B2E;color:#fff;"><span>9:41</span><span>● ●</span></div>
+                <div class="phone-topbar" style="background:#1A0B2E;border-color:#3D2A5C;">
+                  <span style="font-size:18px;color:#fff;">←</span>
+                  <span></span>
+                  <span style="background:rgba(255,255,255,0.15);color:#fff;padding:6px 14px;border-radius:14px;font-size:14px;">Cancel</span>
+                </div>
+                <div class="phone-canvas person" style="position:relative;">
+                  <!-- 中心 logo + AI Processing 文案 -->
+                  <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:10px;">
+                    <div style="width:70px;height:70px;border-radius:18px;background:linear-gradient(135deg,#42A5F5 0%,#FF7043 50%,#FFEE58 100%);display:flex;align-items:center;justify-content:center;color:#fff;font-size:32px;font-weight:500;">P</div>
+                    <div style="color:#fff;font-size:14px;">AI Processing…</div>
+                  </div>
+                  <div class="phone-compare-btn"><br></div>
+                </div>
+                <!-- 底部 Pro 引导区 -->
+                <div style="background:#1A0B2E;padding:16px 20px;display:flex;flex-direction:column;align-items:center;gap:10px;border-top:1px solid #3D2A5C;">
+                  <div style="display:flex;align-items:center;gap:6px;">
+                    <span style="color:#fff;font-size:16px;font-weight:500;font-style:italic;">Dofoto</span>
+                    <span style="color:#FFEE58;font-size:16px;font-weight:500;">Pro</span>
+                  </div>
+                  <div style="color:#BDBDBD;font-size:11px;">All inclusive, No ads</div>
+                  <div style="background:#FFEE58;color:#1A0B2E;padding:10px 0;width:240px;border-radius:8px;text-align:center;">
+                    <div style="font-size:14px;font-weight:500;">Join Now</div>
+                    <div style="font-size:9px;margin-top:2px;">$7.99/year（≈ $7.99/month）</div>
+                  </div>
+                </div>
+                <!-- 底部 free trial banner -->
+                <div style="background:#000;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">
+                  <div style="display:flex;align-items:center;gap:8px;">
+                    <span style="color:#FFEE58;font-size:14px;">✨</span>
+                    <div style="display:flex;flex-direction:column;">
+                      <div style="display:flex;align-items:center;gap:4px;">
+                        <span style="color:#fff;font-size:12px;font-style:italic;">Dofoto</span>
+                        <span style="color:#FFEE58;background:rgba(255,238,88,0.2);font-size:9px;padding:1px 5px;border-radius:3px;">PRO</span>
+                      </div>
+                      <div style="color:#fff;font-size:10px;">3-day free trial, then $15.99/year</div>
+                    </div>
+                  </div>
+                  <span style="color:#fff;font-size:14px;">→</span>
+                </div>
+              </div>
+              <div class="screen-text-block">
+                <div>
+                  <div class="screen-text-label">触发条件</div>
+                  <div class="screen-text-body">
+                    <div class="screen-text-body-line">Pro 用户点击效果卡片，或免费用户在解锁弹窗中点「看广告解锁」并完整观看后。</div>
+                  </div>
+                </div>
+                <div>
+                  <div class="screen-text-label"><br></div><div class="screen-text-body">
+                  </div>
+                </div>
+                <div>
+                  <div class="screen-text-label">交互说明</div>
+                  <div class="screen-text-body">
+                    <div class="screen-text-body-line">用户点右上角 Cancel → 取消任务，画布回到上一态（默认 Original）；不计任何状态。</div>
+                    <div class="screen-text-body-line">用户点底部 Join Now / 试用 banner → 跳 Pro 购买页</div>
+                    <div class="screen-text-body-line">任务成功 → 画布展示生成结果，loading 与 Pro 引导块消失，所选效果卡片高亮</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 屏 4：选中 Office 效果 · 结果态 -->
+          <div class="card" style="flex:1;min-width:0;">
+            <div class="card-hd y">屏 4：选中 Office 效果（结果态）</div>
+            <div class="card-body">
+              <div class="phone">
+                <div class="phone-status"><span>9:41</span><span>● ●</span></div>
+                <div class="phone-topbar"><span class="back">←</span><span style="font-size:14px;color:#999;">证件照</span><span class="save-btn">Save</span></div>
+                <!-- 结果态画布：Office 全屏效果 -->
+                <div class="phone-canvas suit" style="position:relative;">
+                  Office 黑西装
+                  <!-- 右下角"对比"按钮 -->
+                  <div style="position:absolute;bottom:14px;right:14px;display:flex;flex-direction:column;align-items:center;gap:2px;background:rgba(0,0,0,0.55);padding:6px 10px;border-radius:8px;border:2px solid rgba(255,255,255,0.6);">
+                    <span style="color:#fff;font-size:14px;">⇆</span>
+                    <span style="color:#fff;font-size:9px;font-weight:500;">对比</span>
+                  </div>
+                </div>
+                <div class="effect-row">
+                  <div class="effect-row-items">
+                    <div class="effect-card"><div class="effect-thumb original">Ori</div><div class="effect-name">Original</div></div>
+                    <div class="effect-card"><div class="effect-thumb">M</div><div class="effect-name">Modern</div></div>
+                    <div class="effect-card"><div class="effect-thumb selected" style="background:#1565C0;color:#fff;">O<div class="effect-pro-badge">Pro</div></div><div class="effect-name">Office</div></div>
+                    <div class="effect-card"><div class="effect-thumb">A<div class="effect-pro-badge">Pro</div></div><div class="effect-name">Azure</div></div>
+                    <div class="effect-card"><div class="effect-thumb">S<div class="effect-pro-badge">Pro</div></div><div class="effect-name">Shirt</div></div>
+                    <div class="effect-card"><div class="effect-thumb">C<div class="effect-pro-badge">Pro</div></div><div class="effect-name">Cream</div></div>
+                  </div>
+                </div>
+              </div>
+              <div class="screen-text-block">
+                <div>
+                  <div class="screen-text-label">触发条件</div>
+                  <div class="screen-text-body">
+                    <div class="screen-text-body-line">用户在工具页选中 Office 效果完成生成后，停留在结果态画布。</div>
+                  </div>
+                </div>
+                <div>
+                  <div class="screen-text-label">页面内容</div>
+                  <div class="screen-text-body">
+                    <div class="screen-text-body-line">画布全屏展示 Office 效果（深蓝 / 灰渐变 + 西装人像）。</div>
+                    <div class="screen-text-body-line">右下角「对比」按钮：圆角小卡片 + ⇆ 图标 + 文字「对比」。</div>
+                    <div class="screen-text-body-line">底部效果横排：Office 卡片高亮选中（蓝色描边 + Pro 角标）；Modern 无 Pro 角标（免费）；其余 4 个付费效果保留 Pro 角标。</div>
+                  </div>
+                </div>
+                <div>
+                  <div class="screen-text-label">交互说明</div>
+                  <div class="screen-text-body">
+                    <div class="screen-text-body-line">长按右下角对比按钮 → 切换至原图查看（与 Hair Color / Enhance 工具的对比按钮交互一致）；松开 → 回到效果画布。</div>
+                    <div class="screen-text-body-line">点击其他付费效果卡片 → 弹「免费解锁」弹窗或直接生成（Pro 用户）。</div>
+                    <div class="screen-text-body-line">点击 Save → 保存当前所选效果到相册。</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 入口位置 -->
+    <div class="card" style="margin-top:32px;">
+      <div class="card-hd biz">业务逻辑 · 入口位置</div>
+      <div class="card-body">
+        <div class="biz-text">
+          <div class="biz-block">
+            <div class="biz-block-line">新增到首页「AI 魔法工具」卡片区块，位置：高清画质 → <span style="color:#E91E63;font-weight:500;">证件照</span> → 发色。</div>
+            <div class="biz-block-line">当前区块卡片数由 4 张变为 5 张。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 效果定义表 -->
+    <div style="margin-top:24px;">
+      <div style="font-size:36px;font-weight:500;color:#1565C0;margin-bottom:12px;">效果定义（男女通用 5 款，缩略图按性别区分）</div>
+      <table class="data-table">
+        <colgroup>
+          <col style="width:10%"><col style="width:10%"><col style="width:18%"><col style="width:8%"><col style="width:8%"><col style="width:10%"><col style="width:12%"><col style="width:14%"><col style="width:10%">
+        </colgroup>
+        <thead>
+          <tr>
+            <th>模块</th><th>app 内英文</th><th>效果</th><th>性别</th><th>档位</th><th>素材存储</th><th>处理方式</th><th>APP name（服务器存储名）</th><th>付费</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="merge-cell" rowspan="5">Headshot 女</td><td class="name">Modern</td><td>蓝底 西服</td><td>女</td><td>无</td><td>云</td><td>服务器 qwen</td><td>ProHeadshot_uface</td><td style="color:#2E7D32;font-weight:500;">免费</td></tr>
+          <tr><td class="name">Office</td><td>办公室 黑西装</td><td>女</td><td>无</td><td>云</td><td>服务器 qwen</td><td>office_new_uface</td><td>付费</td></tr>
+          <tr><td class="name">Azure</td><td>灰底 蓝西装</td><td>女</td><td>无</td><td>云</td><td>服务器 qwen</td><td>azure_new_uface</td><td>付费</td></tr>
+          <tr><td class="name">Shirt</td><td>办公室 白衬衫</td><td>女</td><td>无</td><td>云</td><td>服务器 qwen</td><td>shirt_new_uface</td><td>付费</td></tr>
+          <tr><td class="name">Cream</td><td>办公室 白西装</td><td>女</td><td>无</td><td>云</td><td>服务器 qwen</td><td>cream_new_uface</td><td>付费</td></tr>
+          <tr><td class="merge-cell" rowspan="5">Headshot 男</td><td class="name">Modern</td><td>蓝底 西服</td><td>男</td><td>无</td><td>云</td><td>服务器 qwen</td><td>ProHeadshot_uface</td><td style="color:#2E7D32;font-weight:500;">免费</td></tr>
+          <tr><td class="name">Office</td><td>办公室 黑西装</td><td>男</td><td>无</td><td>云</td><td>服务器 qwen</td><td>office_male_uface</td><td>付费</td></tr>
+          <tr><td class="name">Azure</td><td>灰底 蓝西装</td><td>男</td><td>无</td><td>云</td><td>服务器 qwen</td><td>azure_male_uface</td><td>付费</td></tr>
+          <tr><td class="name">Shirt</td><td>办公室 白衬衫</td><td>男</td><td>无</td><td>云</td><td>服务器 qwen</td><td>shirt_male_uface</td><td>付费</td></tr>
+          <tr><td class="name">Cream</td><td>办公室 白西装</td><td>男</td><td>无</td><td>云</td><td>服务器 qwen</td><td>cream_male_uface</td><td>付费</td></tr>
+        </tbody>
+      </table>
+      <div style="font-size:26px;color:#757575;margin-top:12px;">说明：5 款效果在 app 内卡片名按 app 内英文展示，缩略图按上传照片识别的性别区分；服务器处理时根据 APP name 调取对应模型分支。</div>
+    </div>
+
+    <!-- 其余业务逻辑 -->
+    <div class="card" style="margin-top:32px;">
+      <div class="card-hd biz">业务逻辑（其余）</div>
+      <div class="card-body">
+        <div class="biz-text">
+
+          <div class="biz-block">
+            <div class="biz-block-title">【选中态规则】</div>
+            <div class="biz-block-line">· 点击入口进入工具页时，默认选中 Original</div>
+          </div>
+
+          <div class="biz-block">
+            <div class="biz-block-title">【Pro 标志展示】</div>
+            <div class="biz-block-line">5 个付费效果卡片右上角始终展示「Pro」标志。</div>
+            <div class="biz-block-line">不论用户是否通过广告解锁过、是否订阅过 Pro，标志均不消失。</div>
+          </div>
+
+          <div class="biz-block">
+            <div class="biz-block-title">【付费规则 · 免费用户】</div>
+            <div class="biz-block-line">Modern（男女）为免费效果，点击直接进入生成流程，无需广告解锁。</div>
+            <div class="biz-block-line">其余 4 种付费效果（Office / Azure / Shirt / Cream）：</div>
+            <div class="biz-block-line">· 每次进入证件照工具页：第一次点击任意付费效果卡片时弹「免费解锁」弹窗（看广告解锁本次会话）</div>
+            <div class="biz-block-line">· 看广告完成 → 本次工具会话内（用户未退出工具页前）切换任意付费效果均无需再次解锁</div>
+            <div class="biz-block-line">· 退出证件照工具页后再次进入：重新看广告解锁</div>
+            <div class="biz-block-line">（与 Hair Color AI 色的"看广告单次试用"模式形态一致）</div>
+          </div>
+
+          <div class="biz-block">
+            <div class="biz-block-title">【付费规则 · Pro 用户】</div>
+            <div class="biz-block-line">·直接进入生成流程：请求服务器 + 展示 loading。</div>
+          </div>
+
+          <div class="biz-block">
+            <div class="biz-block-title">【生成流程】</div>
+            <div class="biz-block-line">原图本地裁脸预处理 → 上传服务器（云端 qwen 模型）→ 模型按所选 APP name 处理 → 服务器返回效果图 → 编辑页画布展示。</div>
+            <div class="biz-block-line">loading 文案池（按生成阶段切换）：</div>
+            <div class="biz-block-line">· Mixing up your AI style…</div>
+            <div class="biz-block-line">· Putting on your new AI outfit…</div>
+            <div class="biz-block-line">· AI is styling you…</div>
+            <div class="biz-block-line">· AI is picking your perfect outfit…</div>
+          </div>
+
+          <div class="biz-block">
+            <div class="biz-block-title">【引导弹窗】</div>
+            <div class="biz-block-line">·首次进入证件照工具页时弹出引导（含正脸示意图 + 3 张错误示例：脸贴过大 / 脸贴太小 / 倒脸 + got it 按钮）。</div>
+            <div class="biz-block-line">·用户点 got it 后永久记忆不再弹出（与 Enhance / Upscale / Expand 同模式）。</div>
+          </div>
+
+          <div class="biz-block">
+            <div class="biz-block-title">【失败兜底】</div>
+            <div class="biz-block-line">· 内容违规 / 网络异常 / 结果异常 → 按错误码 toast</div>
+            <div class="biz-block-line">· 非官方包 / 需升级 → 专用拦截弹窗（沿用现有 AI 工具兜底逻辑）</div>
+            <div class="biz-block-line">· 超时阈值与 Expand / Upscale 对齐 120 秒</div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- =============== 2.2 AI Expand 接口迁移 =============== -->
+    <div class="sub-section-title">2.2 AI Expand 服务器付费接口迁移</div>
+
+    <div class="card" style="margin-top:24px;">
+      <div class="card-hd biz">业务逻辑（仅改动点）</div>
+      <div class="card-body">
+        <div class="biz-text">
+
+          <div class="biz-block">
+            <div class="biz-block-title">【改动范围】</div>
+            <div class="biz-block-line">将 Expand 工具的服务器算法接口迁移为 AIfoto 同款接口——直接复用 AIfoto 在用的已上线接口。</div>
+            <div class="biz-block-line">参数协议、鉴权方式、错误码语义与 AIfoto 对齐；客户端 SDK 调用方式与现有 ai_task 任务调度框架保持兼容。</div>
+          </div>
+
+          <div class="biz-block">
+            <div class="biz-block-title">【用户可见差异】</div>
+            <div class="biz-block-line">UI 完全无感（输入输出协议保持 Expand 工具现有契约）。</div>
+            <div class="biz-block-line">可能的可见差异在于生成画质、处理时长——通过埋点观察。</div>
+          </div>
+
+          <div class="biz-block">
+            <div class="biz-block-title">【兜底策略】</div>
+            <div class="biz-block-line">· 接口超时阈值与现有 120s 对齐</div>
+            <div class="biz-block-line">· 错误码语义与现有 toast 文案映射不变</div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="body-text" style="color:#757575;margin-top:16px;font-size:28px;">页面说明：本项无 UI 改动，跳过页面说明小节。</div>
+
+    <!-- =============== 2.3 Upscale 接口迁移 + 高清输出逻辑 =============== -->
+    <div class="sub-section-title">2.3 Upscale 服务器付费接口迁移 + 高清输出逻辑</div>
+
+    <div class="card" style="margin-top:24px;">
+      <div class="card-hd biz">业务逻辑（仅改动点）</div>
+      <div class="card-body">
+        <div class="biz-text">
+
+          <div class="biz-block">
+            <div class="biz-block-title">【改动范围】</div>
+            <div class="biz-block-line">迁移 Upscale 工具的服务器算法接口，保留现有 3 档高清功能（HD / QHD / UHD），叠加磨皮0.9。</div><div class="biz-block-line">效果demo：http://192.168.200.30:9895/</div>
+          </div>
+
+          <div class="biz-block">
+            <div class="biz-block-title">【保留档位】</div>
+            <div class="biz-block-line">·当前线上保存弹窗中的「原始 / HD / QHD / UHD」交互保持不变。</div>
+          </div>
+
+          <div class="biz-block">
+            <div class="biz-block-title">【高清输出核心规则】</div>
+            <div class="biz-block-line">用户上传图片后，系统按原图比例等比放大——不裁切、不拉伸、不改变图片比例。</div>
+            <div class="biz-block-line">· 选择档位 = 确定目标长边</div>
+            <div class="biz-block-line">· 最终尺寸 = 按原图比例等比计算</div></div>
+
+          <div class="biz-block">
+            <div class="biz-block-title">【长边判定规则】</div>
+            <div class="biz-block-line">· 上传竖图（高度 &gt; 宽度）→ 以高度作为长边</div>
+            <div class="biz-block-line">· 上传横图（宽度 &gt; 高度）→ 以宽度作为长边</div>
+            <div class="biz-block-line">· 上传方图（宽度 = 高度）→ 宽高一同放大至目标长边</div>
+          </div>
+
+          <div class="biz-block">
+            <div class="biz-block-title">【计算方式】</div>
+            <div class="biz-block-line">先确定目标长边 → 再按原图宽高比例计算另一边。</div>
+            <div class="biz-block-line">举例（用户上传 820 × 1024 竖图）：</div>
+            <div class="biz-block-line">· HD 档：1538 × 1920</div>
+            <div class="biz-block-line">· QHD 档：2050 × 2560</div>
+            <div class="biz-block-line">· UHD 档：3280 × 4096</div>
+          </div>
+
+          <div class="biz-block">
+            <div class="biz-block-title">【输出校验】</div>
+            <div class="biz-block-line">如果输出结果的比例与原图不一致（例如 820 × 1024 输出成 2050 × 2650），说明尺寸计算或导出逻辑存在异常。</div>
+            <div class="biz-block-line">可能原因：额外补边、配置错误、未按比例计算。</div>
+            <div class="biz-block-line">服务端需要日志兜底并触发告警。</div>
+          </div>
+
+          <div class="biz-block">
+            <div class="biz-block-title">【档位置灰逻辑】</div>
+            <div class="biz-block-line">如果原图任一边超过该档位的目标长边，该档位置灰不可选。</div>
+            <div class="biz-block-line">例：原图 3000 × 1024（横图，长边 3000）</div>
+            <div class="biz-block-line">　- HD 目标 1920：原图宽 3000 &gt; 1920 → HD 置灰</div>
+            <div class="biz-block-line">　- QHD 目标 2560：原图宽 3000 &gt; 2560 → QHD 置灰</div>
+            <div class="biz-block-line">　- UHD 目标 4096：原图宽 3000 ≤ 4096 → UHD 可用</div>
+            <div class="biz-block-line">极端：原图任一边均超过 UHD 目标 4096 → 三档全置灰，工具入口在选图阶段直接 toast「图片已超出无损放大尺寸限制」拦截。</div>
+          </div>
+
+          <div class="biz-block">
+            <div class="biz-block-title">【兜底策略】</div>
+            <div class="biz-block-line">· 接口超时阈值与现有 120s 对齐</div>
+            <div class="biz-block-line">· 错误码语义与现有 toast 文案映射不变</div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:24px;">
+      <div style="font-size:36px;font-weight:500;color:#1565C0;margin-bottom:12px;">Upscale 档位 ↔ 目标长边映射</div>
+      <table class="data-table">
+        <colgroup>
+          <col style="width:20%"><col style="width:30%"><col style="width:50%">
+        </colgroup>
+        <thead>
+          <tr><th>档位</th><th>目标长边</th><th>置灰条件</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="name">HD（1080P）</td><td>1920 px</td><td>原图任一边 &gt; 1920 px</td></tr>
+          <tr><td class="name">QHD（2K）</td><td>2560 px</td><td>原图任一边 &gt; 2560 px</td></tr>
+          <tr><td class="name">UHD（4K）</td><td>4096 px</td><td>原图任一边 &gt; 4096 px</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="body-text" style="color:#757575;margin-top:16px;font-size:28px;">页面说明：本项无新增 UI；档位置灰为现有工具页档位选择区的状态变更，无新组件。</div>
+
+    <!-- =============== 2.4 修脸放大 =============== -->
+    <div class="sub-section-title">2.4 修脸选脸后画布自动放大</div>
+
+    <!-- 页面说明（已移到 2.4 开头） -->
+    <div style="margin-top:32px;">
+      <div style="font-size:40px;font-weight:500;color:#388E3C;margin-bottom:20px;">页面说明</div>
+      <div style="display:flex;flex-direction:row;gap:28px;">
+        <div class="card" style="flex:1;min-width:0;">
+          <div class="card-hd y">屏 4：进入修脸前 vs 进入修脸后</div>
+          <div class="card-body">
+            <div style="display:flex;flex-direction:row;gap:20px;flex-shrink:0;">
+              <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+                <div class="phone" style="width:300px;height:650px;">
+                  <div class="phone-status"><span>9:41</span></div>
+                  <div class="phone-topbar"><span class="back">←</span><span style="font-size:14px;color:#999;">Edit</span><span class="save-btn">Save</span></div>
+                  <div class="phone-canvas person face-default"><div class="face-marker"></div></div>
+                  <div class="phone-bottom-tab"><span>裁剪</span><span>调节</span><span>滤镜</span><span class="active">修脸</span><span>发色</span></div>
+                </div>
+                <div style="font-size:22px;color:#666;">编辑主页（原始比例）</div>
+              </div>
+              <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+                <div class="phone" style="width:300px;height:650px;">
+                  <div class="phone-status"><span>9:41</span></div>
+                  <div class="phone-topbar"><span class="back">✕</span><span style="font-size:14px;color:#999;">修脸</span><span class="save-btn">✓</span></div>
+                  <div class="phone-canvas person face-zoomed"></div>
+                  <div class="phone-bottom-tab"><span>瘦脸</span><span>大眼</span><span>瘦鼻</span><span>磨皮</span><span>美白</span></div>
+                </div>
+                <div style="font-size:22px;color:#666;">修脸内部画布（1.25 倍，以所选脸为中心）</div>
+              </div>
+            </div>
+            <div class="screen-text-block">
+              <div>
+                <div class="screen-text-label">触发条件</div>
+                <div class="screen-text-body">
+                  <div class="screen-text-body-line">用户在编辑主界面点击底部工具栏「修脸」→（多人脸时）完成选脸 →（或单人脸直接）进入修脸工具内部画布的瞬间。</div>
+                </div>
+              </div>
+              <div>
+                <div class="screen-text-label">页面内容（仅改动点）</div>
+                <div class="screen-text-body">
+                  <div class="screen-text-body-line">画布缩放比例从「主编辑页比例」变为「以所选脸部框中心为缩放中心的 1.25 倍」。</div>
+                  <div class="screen-text-body-line">其余修脸工具 UI 保持现状。</div>
+                </div>
+              </div>
+              <div>
+                <div class="screen-text-label">交互说明</div>
+                <div class="screen-text-body">
+                  <div class="screen-text-body-line">放大过程使用平滑动画过渡（建议时长 200~300ms，由设计确认）。</div>
+                  <div class="screen-text-body-line">用户双指捏合 → 手动缩放，沿用现有缩放上下限。</div>
+                  <div class="screen-text-body-line">用户点 ✓ 应用 或 ✕ 取消 → 退出修脸 → 画布缩放比例自动恢复进入修脸前的原始比例。</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:32px;">
+      <div class="card-hd biz">业务逻辑（仅改动点）</div>
+      <div class="card-body">
+        <div class="biz-text">
+
+          <div class="biz-block">
+            <div class="biz-block-title">【触发时机】</div>
+            <div class="biz-block-line">用户在「face」工具完成选脸（多人脸）或检测到 1 张脸（单人脸）后，进入修脸工具内部画布的瞬间触发。</div>
+          </div>
+
+          <div class="biz-block">
+            <div class="biz-block-title">【多人脸场景】</div>
+            <div class="biz-block-line">整张图片按 1.25 倍等比放大（不裁剪、不仅放大局部）。</div>
+            <div class="biz-block-line">放大后通过画布平移让所选人脸框居中显示——即所选脸出现在画布视觉中心。</div>
+          </div>
+
+          <div class="biz-block">
+            <div class="biz-block-title">【单人脸场景】</div>
+            <div class="biz-block-line">仅检测到 1 张脸时，跳过选脸关卡，直接整张图片 1.25 倍放大 + 唯一人脸居中显示（与多人脸场景一致行为）。</div>
+          </div>
+
+          <div class="biz-block">
+            <div class="biz-block-title">【画布定位中心】</div>
+            <div class="biz-block-line">所选脸部的人脸框中心（沿用现有人脸检测 SDK 返回的 face bounding box 中心点计算）。</div>
+          </div>
+
+          <div class="biz-block">
+            <div class="biz-block-title">【手动缩回】</div>
+            <div class="biz-block-line">用户在修脸工具内画布上可通过双指捏合手势手动缩回 / 拉远。</div>
+            <div class="biz-block-line">缩放范围沿用编辑容器现有上下限。</div>
+          </div>
+
+          <div class="biz-block">
+            <div class="biz-block-title">【状态保留】</div>
+            <div class="biz-block-line">1.25 倍放大状态仅在修脸工具内部画布生效。</div>
+            <div class="biz-block-line">用户点 ✓ 应用 或 ✕ 取消 退出修脸工具回到编辑主界面时，画布缩放比例自动恢复为进入修脸前的原始比例。</div>
+          </div>
+
+          <div class="biz-block">
+            <div class="biz-block-title">【与撤销/重做的关系】</div>
+            <div class="biz-block-line">画布缩放属于视图状态，不写入操作栈、不参与撤销/重做。</div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- =============== 2.5 评分弹窗触发优化 =============== -->
+    <div class="sub-section-title">2.5 评分弹窗触发点扩充至第 1 / 3 / 6 / 9 次保存</div>
+
+    <!-- 页面说明（已移到 2.5 开头） -->
+    <div style="margin-top:32px;">
+      <div style="font-size:40px;font-weight:500;color:#388E3C;margin-bottom:20px;">页面说明</div>
+      <div style="display:flex;flex-direction:row;gap:28px;">
+        <div class="card" style="flex:1;min-width:0;">
+          <div class="card-hd y">屏 5：保存页延迟 1s 弹评分</div>
+          <div class="card-body">
+            <div class="phone">
+              <div class="phone-status"><span>9:41</span></div>
+              <div class="phone-topbar"><span class="back">←</span><span style="font-size:14px;color:#999;">Save</span><span class="save-btn">Done</span></div>
+              <div class="phone-canvas">已保存结果预览</div>
+              <div class="phone-rating">
+                <div class="phone-rating-title">Rate Dofoto</div>
+                <div class="phone-rating-stars">★★★★★</div>
+                <div style="font-size:12px;color:#757575;text-align:center;">Tap a star to rate</div>
+              </div>
+              <div class="phone-bottom-tab"><span>Share</span><span>Re-edit</span><span>Collage</span><span>More</span></div>
+            </div>
+            <div class="screen-text-block">
+              <div>
+                <div class="screen-text-label">触发条件</div>
+                <div class="screen-text-body">
+                  <div class="screen-text-body-line">用户保存次数命中第 1 / 3 / 6 / 9 次，且未评分、未在屏蔽地区、设备 Android 5.1 以上 → 进入保存页后延迟 1s。</div>
+                </div>
+              </div>
+              <div>
+                <div class="screen-text-label">页面内容</div>
+                <div class="screen-text-body">
+                  <div class="screen-text-body-line">重新设计弹窗样式，更换新文案</div>
+                </div>
+              </div>
+              <div>
+                <div class="screen-text-label">交互说明</div>
+                <div class="screen-text-body">
+                  <div class="screen-text-body-line">用户点 1-4 星 → 沿用现有邮件反馈流程。</div>
+                  <div class="screen-text-body-line">点 5 星 → 跳 Google Play 并永久标记已评分。</div>
+                  <div class="screen-text-body-line">点弹窗外或返回键 → 关闭弹窗（本次命中算"已展示"，下次按下一个命中点等待触发）。</div>
+                  <div class="screen-text-body-line">异常补弹：若延迟 1s 内用户已退后台 / 退编辑页 / 回首页，按业务逻辑「补弹规则」三类场景执行。</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:32px;">
+      <div class="card-hd biz">业务逻辑（仅改动点）</div>
+      <div class="card-body">
+        <div class="biz-text">
+
+          <div class="biz-block">
+            <div class="biz-block-title">【触发点】</div>
+            <div class="biz-block-line">扩充为第 1、3、6、9 次保存命中触发。</div>
+            <div class="biz-block-line">沿用现有"常规编辑保存成功"计数口径，AI 工具 / 拼图等其他来源仍不计入。</div>
+          </div>
+
+          <div class="biz-block">
+            <div class="biz-block-title">【触发时机】</div>
+            <div class="biz-block-line">用户进入保存页后延迟 1s 主动弹出评分弹窗。</div>
+            <div class="biz-block-line">取消前置弹窗"喜欢使用 Dofoto 吗"（"Do you like Dofoto?"），直接展示评分弹窗。</div>
+          </div>
+
+          <div class="biz-block">
+            <div class="biz-block-title">【评分弹窗文案】</div>
+            <div class="biz-block-line">标题：Enjoying Dofoto?</div>
+            <div class="biz-block-line">内容：Please take a moment to rate us. Your support keeps us going!</div>
+          </div>
+
+          <div class="biz-block">
+            <div class="biz-block-title">【删除项】</div>
+            <div class="biz-block-line">· 删除「累计弹窗 &lt; 2 次」上限（评分过的用户仍永久屏蔽，未评分用户可在 1/3/6/9 反复触发）</div>
+            <div class="biz-block-line">· 删除前置弹窗 "Do you like Dofoto?"，进入保存页 1s 后直接弹评分星级弹窗</div>
+            <div class="biz-block-line">· 删除原"第 9 次保存且前置弹窗曾被拒"的补偿点（与新的第 9 次直接触发合并，不再依赖任何前置条件）</div>
+          </div>
+
+          <div class="biz-block">
+            <div class="biz-block-title">【保留项】</div>
+            <div class="biz-block-line">· 1-4 星走邮件反馈流程不变</div>
+            <div class="biz-block-line">· 5 星跳 Google Play + 永久标记已评分（标记后不再触发）</div>
+            <div class="biz-block-line">· 印度地区、Android 5.1 以下永久屏蔽不变</div>
+            <div class="biz-block-line">· 1-4 星反馈后下次触发点仍弹评分（反馈 ≠ 评分过；仅 5 星跳商店算评分过）</div>
+          </div>
+
+          <div class="biz-block">
+            <div class="biz-block-title">【补弹规则】</div>
+            <div class="biz-block-line">保存次数命中 1/3/6/9 但弹窗实际未展示（用户离开了保存页）时按以下三类场景补弹，每个命中点最多补弹 1 次：</div>
+          </div>
+
+          <div class="biz-block">
+            <div class="biz-block-title">　场景 A · 退后台（保存页 onPause）</div>
+            <div class="biz-block-line">保存次数已命中但 1s 延迟还没到 → 用户按 Home 键 / 切到其他 App → 用户返回 Dofoto 重新进入保存页 → 立即弹出（不再等 1s）。</div>
+          </div>
+
+          <div class="biz-block">
+            <div class="biz-block-title">　场景 B · 退到编辑页（保存页 finish 回 EditActivity）</div>
+            <div class="biz-block-line">保存次数已命中但 1s 延迟还没到 → 用户点返回键或顶部返回回到编辑页 → 保留补弹机会（标记 pendingRating=true）→ 只在下1次进入保存页时延迟 1s 弹出评分弹窗&nbsp;</div>
+          </div>
+
+          <div class="biz-block">
+            <div class="biz-block-title">　场景 C · 回首页（保存页 finish 回 HomeActivity）</div>
+            <div class="biz-block-line">保存次数已命中但 1s 延迟还没到 → 用户点首页 / 完成按钮回到首页 → 保留补弹机会（标记 pendingRating=true）→ 只在下1次进入保存页时延迟 1s 弹出评分弹窗</div>
+          </div>
+
+          <div class="biz-block">
+            <div class="biz-block-title">【保存次数计算】</div>
+            <div class="biz-block-line">扩展计数口径：常规编辑保存成功 + AI 工具保存成功 + 拼图保存成功，三类来源进入保存页时统一计入"保存次数"计数器。</div>
+            <div class="biz-block-line">即：第 N 次保存（N = 1/3/6/9）触发评分弹窗，不区分该次来自常规编辑、AI 工具还是拼图。</div>
+            <div class="biz-block-line">线上 v1.310.0 仅常规编辑计入的口径在本版本扩大。</div>
+          </div>
+
+          <div class="biz-block">
+            <div class="biz-block-title">【云控配置】</div>
+            <div class="biz-block-line">触发点列表通过远程配置下发（沿用现有 "0,5" 计数远程可配机制，扩展为 "0,2,5,8"，对应第 1/3/6/9 次保存）。</div>
+            <div class="biz-block-line">异常时云控一键回退到老配置。</div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- =============== 2.6 Upscale AD 标识 =============== -->
+    <div class="sub-section-title">2.6 Upscale 缩略图加 AD 标识</div>
+
+    <div class="card" style="margin-top:24px;">
+      <div class="card-hd biz">业务逻辑（仅改动点）</div>
+      <div class="card-body">
+        <div class="biz-text">
+
+          <div class="biz-block">
+            <div class="biz-block-title">【标识位置】</div>
+            <div class="biz-block-line">Upscale 工具内缩略图右上角，叠加「AD」标识角标（颜色 / 字号由设计统一）。</div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ============ §3 关注指标及决策框架 ============ -->
+  <section>
+    <div class="section-title">§3 关注指标及决策框架</div>
+
+    <div>
+      <div style="font-size:40px;font-weight:500;color:#0D47A1;margin-bottom:16px;">关注指标</div>
+      <table class="metric-table">
+        <colgroup>
+          <col style="width:18%"><col style="width:20%"><col style="width:22%"><col style="width:20%"><col style="width:10%"><col style="width:10%">
+        </colgroup>
+        <thead>
+          <tr><th>所属功能</th><th>指标名称</th><th>作用</th><th>分子 / 分母</th><th>统计口径</th><th>备注</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="feat">① AI 证件照</td><td class="name">入口点击率</td><td>主指标：衡量新功能曝光转化</td><td><div class="denom-line">分子：点击「证件照」卡片的用户数</div><div class="denom-line">分母：曝光 AI 魔法工具区块的用户数</div></td><td>按日</td><td>—</td></tr>
+          <tr><td class="feat">① AI 证件照</td><td class="name">生成成功率</td><td>主指标：衡量服务端处理稳定性</td><td><div class="denom-line">分子：生成成功次数</div><div class="denom-line">分母：发起生成请求次数</div></td><td>按日</td><td>—</td></tr>
+          <tr><td class="feat">① AI 证件照</td><td class="name">付费转化率</td><td>主指标：衡量功能商业化贡献</td><td><div class="denom-line">分子：从证件照来源订阅 Pro 的用户数</div><div class="denom-line">分母：使用过证件照的免费用户数</div></td><td>按周</td><td>来源参数 AIHeadshot_*</td></tr>
+          <tr><td class="feat">① AI 证件照</td><td class="name">广告解锁完成率</td><td>次要：衡量免费用户对广告解锁的接受度</td><td><div class="denom-line">分子：广告解锁弹窗中完成观看广告的次数</div><div class="denom-line">分母：广告解锁弹窗展示次数</div></td><td>按日</td><td>—</td></tr>
+          <tr><td class="feat">② Expand 接口</td><td class="name">生成成功率（新 vs 旧基线）</td><td>主指标：验证新接口稳定性不退化</td><td><div class="denom-line">分子：Expand 成功次数</div><div class="denom-line">分母：Expand 请求次数</div></td><td>按日</td><td>对比 v1.310.0 基线</td></tr>
+          <tr><td class="feat">② Expand 接口</td><td class="name">平均处理时长</td><td>护栏：避免 P95 时长劣化</td><td><div class="denom-line">分子：所有成功任务处理时长总和</div><div class="denom-line">分母：成功任务数</div></td><td>按日 P50 / P95</td><td>对比 v1.310.0 基线</td></tr>
+          <tr><td class="feat">② Expand 接口</td><td class="name">用户重试率</td><td>护栏：间接反映效果满意度</td><td><div class="denom-line">分子：单次 session 内对同图 Expand 操作 ≥ 2 次的会话数</div><div class="denom-line">分母：Expand 总会话数</div></td><td>按日</td><td>—</td></tr>
+          <tr><td class="feat">③ Upscale 接口</td><td class="name">生成成功率（新 vs 旧基线）</td><td>主指标：验证新接口稳定性不退化</td><td><div class="denom-line">分子：Upscale 成功次数</div><div class="denom-line">分母：Upscale 请求次数</div></td><td>按日</td><td>对比 v1.310.0 基线</td></tr>
+          <tr><td class="feat">③ Upscale 接口</td><td class="name">输出比例校验通过率</td><td>护栏：确保等比放大逻辑无异常</td><td><div class="denom-line">分子：输出宽高比与原图一致的成功任务数</div><div class="denom-line">分母：成功任务数</div></td><td>按日</td><td>异常 &lt; 0.5%</td></tr>
+          <tr><td class="feat">③ Upscale 接口</td><td class="name">档位置灰率</td><td>次要：观察用户上传图片尺寸分布</td><td><div class="denom-line">分子：HD/QHD/UHD 各档位被置灰的次数</div><div class="denom-line">分母：进入 Upscale 工具页的次数</div></td><td>按日</td><td>按档位分别统计</td></tr>
+          <tr><td class="feat">④ 修脸放大</td><td class="name">修脸工具人均使用时长</td><td>主指标：衡量体验提升</td><td><div class="denom-line">分子：修脸工具内总停留时长</div><div class="denom-line">分母:进入修脸工具的会话数</div></td><td>按日</td><td>对比基线</td></tr>
+          <tr><td class="feat">④ 修脸放大</td><td class="name">修脸应用率</td><td>护栏：避免放大导致用户提前流失</td><td><div class="denom-line">分子：点 ✓ 应用退出修脸的会话数</div><div class="denom-line">分母：进入修脸工具的会话数</div></td><td>按日</td><td>—</td></tr>
+          <tr><td class="feat">⑤ 评分弹窗</td><td class="name">5 星跳 Google Play 率</td><td>主指标：衡量评分提升效果</td><td><div class="denom-line">分子：点击 5 星跳商店的用户数</div><div class="denom-line">分母：v1.320.0 触发过评分弹窗的用户数</div></td><td>按版本周期</td><td>对比 v1.310.0 基线</td></tr>
+          <tr><td class="feat">⑤ 评分弹窗</td><td class="name">1-4 星邮件反馈率</td><td>护栏：避免低分反馈量激增</td><td><div class="denom-line">分子：点击 1-4 星走邮件的用户数</div><div class="denom-line">分母：v1.320.0 触发过评分弹窗的用户数</div></td><td>按版本周期</td><td>对比基线</td></tr>
+          <tr><td class="feat">⑤ 评分弹窗</td><td class="name">次日 / 7 日留存率</td><td>护栏：避免高频弹窗伤害留存</td><td><div class="denom-line">分子：v1.320.0 升级后第 N 日仍活跃的用户数</div><div class="denom-line">分母：v1.320.0 升级用户数</div></td><td>按日</td><td>对比基线</td></tr>
+          <tr><td class="feat">⑤ 评分弹窗</td><td class="name">补弹场景命中率</td><td>次要：验证补弹规则有效性</td><td><div class="denom-line">分子：场景 A/B/C 实际触发补弹次数</div><div class="denom-line">分母：1/3/6/9 命中点总次数</div></td><td>按日</td><td>—</td></tr>
+          <tr><td class="feat">⑥ Upscale AD</td><td class="name">Upscale 入口点击率</td><td>主指标：验证 AD 标识是否影响点击意愿</td><td><div class="denom-line">分子：3 个入口 Upscale 总点击次数</div><div class="denom-line">分母：3 个入口曝光次数</div></td><td>按日</td><td>对比 v1.310.0 基线</td></tr>
+          <tr><td class="feat">⑥ Upscale AD</td><td class="name">Upscale 任务完成率</td><td>护栏：标识不影响完成漏斗</td><td><div class="denom-line">分子：Upscale 保存成功次数</div><div class="denom-line">分母：进入 Upscale 工具页次数</div></td><td>按日</td><td>对比基线</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div style="margin-top: 40px;">
+      <div style="font-size:40px;font-weight:500;color:#0D47A1;margin-bottom:16px;">决策框架（对基线对比，全量功能）</div>
+      <div style="font-size:26px;color:#757575;margin-bottom:20px;">本版本 6 项功能均直接全量上线（不做 A/B 实验），按 v1.310.0 线上基线对比评估。</div>
+
+      <table class="decision-table">
+        <colgroup>
+          <col style="width:18%"><col style="width:42%"><col style="width:40%">
+        </colgroup>
+        <thead>
+          <tr><th>功能</th><th>指标结果</th><th>后续方向</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="feat">① AI 证件照</td><td>入口点击率 + 付费转化率达到预期</td><td class="decision-text">✅ 保持现状，规划后续效果包扩展 / 性别细分卡</td></tr>
+          <tr><td class="feat">① AI 证件照</td><td>广告解锁完成率持续偏低（如 &lt; 50%）但点击率正常</td><td class="decision-text">⚠️ 评估广告解锁弹窗文案 / 视觉调整，或考虑减少广告时长</td></tr>
+          <tr><td class="feat">① AI 证件照</td><td>生成成功率 &lt; 90%</td><td class="decision-text">❌ 与服务端定位失败原因，必要时云控关闭入口</td></tr>
+          <tr><td class="feat">② Expand 接口</td><td>成功率 + 时长与基线持平或更优</td><td class="decision-text">✅ 下一版本清理旧接口客户端代码</td></tr>
+          <tr><td class="feat">② Expand 接口</td><td>成功率下降 / 时长 P95 显著劣化 / 重试率显著上升</td><td class="decision-text">❌ 联系服务端 + AIfoto 复核，必要时回退到旧接口</td></tr>
+          <tr><td class="feat">③ Upscale 接口</td><td>成功率 + 输出比例校验通过率均正常</td><td class="decision-text">✅ 保持现状</td></tr>
+          <tr><td class="feat">③ Upscale 接口</td><td>输出比例校验通过率 &lt; 99.5%（出现非等比放大异常）</td><td class="decision-text">❌ 服务端紧急排查（补边 / 配置 / 计算错误）</td></tr>
+          <tr><td class="feat">④ 修脸放大</td><td>修脸应用率持平、人均时长上升</td><td class="decision-text">✅ 保持现状，考虑同类聚焦扩展到发色 / 卡通工具</td></tr>
+          <tr><td class="feat">④ 修脸放大</td><td>修脸应用率显著下降（用户被放大状态劝退）</td><td class="decision-text">⚠️ 评估降低放大倍数（如改为 1.15 倍）或改为「首次提示后用户手动触发」</td></tr>
+          <tr><td class="feat">⑤ 评分弹窗</td><td>5 星跳商店率显著提升 + 留存持平或更优 + 邮件反馈量持平或仅小幅上升</td><td class="decision-text">✅ 保持现状</td></tr>
+          <tr><td class="feat">⑤ 评分弹窗</td><td>留存显著下降 / 邮件反馈量超阈值激增</td><td class="decision-text">⚠️ 云控将触发点配置回退至 "0,5"（即第 1/6 次），暂停 1/3 触发点</td></tr>
+          <tr><td class="feat">⑥ Upscale AD</td><td>入口点击率 + 任务完成率持平或更优</td><td class="decision-text">✅ 保持现状，为后续 Upscale 广告解锁机制铺垫</td></tr>
+          <tr><td class="feat">⑥ Upscale AD</td><td>入口点击率显著下降（AD 标识劝退）</td><td class="decision-text">⚠️ 评估调整 AD 标识视觉权重 / 移除非核心入口的标识</td></tr>
+        </tbody>
+      </table>
+
+      <div class="rollback-box">
+        <div class="rollback-title">应急 / 回滚机制</div>
+        <div class="rollback-text">
+          <div class="rollback-line">本版本全部 6 项功能均挂云控开关：</div>
+          <div class="rollback-line">· 功能 ① AI 证件照：云控可一键隐藏「证件照」卡片入口；云控可强制免费用户也走付费路径（无广告解锁）以应对广告 SDK 异常</div>
+          <div class="rollback-line">· 功能 ② Expand 接口：服务端可在 AIfoto 侧回退到上一版本算法</div>
+          <div class="rollback-line">· 功能 ③ Upscale 接口：服务端可回退；客户端可云控关闭新档位置灰逻辑（保留旧"无尺寸校验"行为兜底）</div>
+          <div class="rollback-line">· 功能 ④ 修脸放大：云控可关闭自动放大行为（保留用户手动缩放能力）</div>
+          <div class="rollback-line">· 功能 ⑤ 评分弹窗：云控可调触发点配置（远程可配 "0,2,5,8"），异常时一键回退到 "0,5"</div>
+          <div class="rollback-line">· 功能 ⑥ Upscale AD 标识：云控可关闭 AD 角标显示</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-note">※ 埋点要求与具体事件定义不在本 PRD 中，由 tracking-events skill 单独输出到项目埋点 Sheets。</div>
+  </section>
+
+</div>
+
+<!-- ============ 浮动编辑工具栏（含保存 / 另存为） ============ -->
+<script>
+(function () {
+  const PRD_MIN_WIDTH = 2280;
+  const prdRoot = document.querySelector('.prd-root');
+  if (!prdRoot) return;
+
+  const isHttpOrigin = window.location.protocol === 'http:' || window.location.protocol === 'https:';
+
+  const style = document.createElement('style');
+  style.id = 'editor-style';
+  style.textContent = `
+    .editor-toolbar {
+      position: fixed; top: 16px; right: 16px; z-index: 9999;
+      display: flex; flex-direction: column; align-items: stretch; gap: 6px;
+      padding: 8px 12px; background: #FFFFFF; border: 1px solid #E0E0E0;
+      border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      font-family: 'PingFang SC', -apple-system, sans-serif;
+      font-weight: 400; font-size: 13px; max-width: 560px;
+    }
+    .editor-toolbar-row { display: flex; align-items: center; gap: 8px; }
+    .editor-toolbar button {
+      appearance: none; border: 1px solid #BDBDBD; background: #FAFAFA;
+      color: #212121; padding: 6px 14px; border-radius: 6px;
+      font-family: inherit; font-weight: 500; font-size: 13px;
+      cursor: pointer; line-height: 1.2; white-space: nowrap;
+    }
+    .editor-toolbar button:hover { background: #F0F0F0; }
+    .editor-toolbar.locked #btn-save, .editor-toolbar.locked #btn-save-as { display: none; }
+    .editor-toolbar:not(.locked) #btn-edit { display: none; }
+    .editor-toolbar button.dirty { background: #E3F2FD; border-color: #1565C0; color: #1565C0; }
+    .editor-toolbar button.dirty:hover { background: #BBDEFB; }
+    .editor-status { color: #616161; font-weight: 400; }
+    .editor-status:empty { display: none; }
+    .editor-status.ok { color: #2E7D32; }
+    .editor-status.err { color: #C62828; }
+  `;
+  document.head.appendChild(style);
+
+  const toolbar = document.createElement('div');
+  toolbar.className = 'editor-toolbar locked';
+  toolbar.innerHTML = `
+    <div class="editor-toolbar-row">
+      <button id="btn-edit" type="button">编辑</button>
+      <button id="btn-save" type="button">保存</button>
+      <button id="btn-save-as" type="button">另存为</button>
+      <span class="editor-status"></span>
+    </div>
+  `;
+  document.body.appendChild(toolbar);
+
+  const statusEl = toolbar.querySelector('.editor-status');
+  const btnEdit = toolbar.querySelector('#btn-edit');
+  const btnSave = toolbar.querySelector('#btn-save');
+  const btnSaveAs = toolbar.querySelector('#btn-save-as');
+  let statusTimer = null;
+  let editing = false;
+  let dirty = false;
+
+  function setStatus(text, kind) {
+    statusEl.textContent = text || '';
+    statusEl.className = 'editor-status' + (kind ? ' ' + kind : '');
+    if (statusTimer) clearTimeout(statusTimer);
+    if (text) statusTimer = setTimeout(() => { statusEl.textContent = ''; statusEl.className = 'editor-status'; }, 4000);
+  }
+  function setDirty(v) { dirty = v; btnSave.classList.toggle('dirty', v); }
+  function setEditing(on) {
+    editing = on;
+    prdRoot.setAttribute('contenteditable', on ? 'true' : 'false');
+    toolbar.classList.toggle('locked', !on);
+    setDirty(false);
+    if (on) setStatus('进入编辑模式（Cmd+S 或点「保存」写盘）', 'ok');
+  }
+
+  prdRoot.addEventListener('input', () => { if (editing && !dirty) setDirty(true); });
+  window.addEventListener('beforeunload', (e) => { if (dirty) { e.preventDefault(); e.returnValue = ''; } });
+  document.addEventListener('keydown', (e) => {
+    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 's') {
+      e.preventDefault();
+      if (editing) btnSave.click();
+    }
+  });
+
+  function currentFilename() {
+    const p = decodeURIComponent(window.location.pathname || '');
+    const name = p.split('/').filter(Boolean).pop() || '';
+    return name || 'untitled.html';
+  }
+
+  function serializeCleanHtml() {
+    const clone = document.documentElement.cloneNode(true);
+    clone.querySelectorAll('.editor-toolbar, #editor-style').forEach(n => n.remove());
+    const root = clone.querySelector('.prd-root');
+    if (root) {
+      root.setAttribute('contenteditable', 'false');
+      root.style.zoom = '';
+      if (root.getAttribute('style') === '') root.removeAttribute('style');
+    }
+    return '<!DOCTYPE html>\n' + clone.outerHTML;
+  }
+
+  async function postSave(endpoint, filename, html) {
+    const res = await fetch(endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ filename, html })
+    });
+    let payload = null;
+    try { payload = await res.json(); } catch (_) {}
+    return { status: res.status, payload };
+  }
+
+  btnEdit.addEventListener('click', () => setEditing(!editing));
+
+  btnSave.addEventListener('click', async () => {
+    if (!editing) { setStatus('请先点「编辑」', 'err'); return; }
+    if (!isHttpOrigin) {
+      setStatus('⚠️ 保存需通过 http://localhost:8770 访问；当前是 file:// 模式', 'err');
+      return;
+    }
+    const filename = currentFilename();
+    const html = serializeCleanHtml();
+    setStatus('保存中…');
+    try {
+      const r = await postSave('/save', filename, html);
+      if (r.status === 200) {
+        setStatus('✓ 已保存 ' + filename, 'ok');
+        setEditing(false);
+      } else {
+        setStatus('保存失败：' + (r.payload && r.payload.error || r.status), 'err');
+      }
+    } catch (e) {
+      setStatus('网络错误：' + e.message + '（preview server 可能未运行）', 'err');
+    }
+  });
+
+  btnSaveAs.addEventListener('click', async () => {
+    if (!editing) { setStatus('请先点「编辑」', 'err'); return; }
+    if (!isHttpOrigin) {
+      setStatus('⚠️ 另存为需通过 http://localhost:8770 访问', 'err');
+      return;
+    }
+    const current = currentFilename();
+    const defaultName = current.replace(/\.html$/i, '') + '-edit.html';
+    const input = window.prompt('输入新文件名（.html 结尾）', defaultName);
+    if (!input) return;
+    const filename = input.trim();
+    if (!/^[\w\-.]+\.html$/.test(filename)) {
+      setStatus('文件名不合法（只能字母数字 _ - . 且以 .html 结尾）', 'err');
+      return;
+    }
+    const html = serializeCleanHtml();
+    setStatus('保存中…');
+    try {
+      let r = await postSave('/save-as', filename, html);
+      if (r.status === 409) {
+        if (window.confirm('文件 ' + filename + ' 已存在，覆盖？')) {
+          r = await postSave('/save', filename, html);
+        } else {
+          setStatus('已取消', 'err');
+          return;
+        }
+      }
+      if (r.status === 200) {
+        setStatus('✓ 已另存为 ' + filename, 'ok');
+        setEditing(false);
+      } else {
+        setStatus('保存失败：' + (r.payload && r.payload.error || r.status), 'err');
+      }
+    } catch (e) {
+      setStatus('网络错误：' + e.message, 'err');
+    }
+  });
+
+  function fitScale() {
+    const margin = 40;
+    const target = window.innerWidth - margin;
+    if (target < PRD_MIN_WIDTH) prdRoot.style.zoom = (target / PRD_MIN_WIDTH).toFixed(3);
+    else { prdRoot.style.zoom = ''; if (prdRoot.getAttribute('style') === '') prdRoot.removeAttribute('style'); }
+  }
+  window.addEventListener('resize', fitScale);
+  fitScale();
+})();
+</script>
+
+
+
+</body><div id="immersive-translate-browser-popup" style="all: initial"></div></html>
