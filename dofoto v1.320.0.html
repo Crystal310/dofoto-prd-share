@@ -154,7 +154,7 @@
 
   /* ========== Phone mockup ========== */
   .phone {
-    width: 400px; height: 867px; border-radius: 32px;
+    width: 420px; height: 867px; border-radius: 32px;
     background: #FAFAFA; border: 4px solid #BDBDBD; flex-shrink: 0;
     display: flex; flex-direction: column; overflow: hidden; position: relative;
   }
@@ -220,7 +220,7 @@
 
   /* 效果横排 */
   .effect-row { background: #FFFFFF; padding: 14px 8px; border-top: 1px solid #EEEEEE; flex-shrink: 0; }
-  .effect-row-items { display: flex; flex-direction: row; gap: 8px; overflow: hidden; }
+  .effect-row-items { display: flex; flex-direction: row; gap: 4px; overflow: hidden; justify-content: space-between; }
   .effect-card { width: 58px; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; gap: 4px; }
   .effect-thumb {
     width: 50px; height: 50px; border-radius: 8px;
@@ -546,7 +546,7 @@
           <div class="card" style="flex:1;min-width:0;">
             <div class="card-hd y">屏 3：生成处理中 · 全屏 loading + Pro 引导</div>
             <div class="card-body">
-              <div class="phone" style="background:#1A0B2E;border-color:#3D2A5C;">
+              <div class="phone" style="background:#1A0B2E;border-color:#3D2A5C;height:920px;">
                 <div class="phone-status" style="background:#1A0B2E;color:#fff;"><span>9:41</span><span>● ●</span></div>
                 <div class="phone-topbar" style="background:#1A0B2E;border-color:#3D2A5C;">
                   <span style="font-size:18px;color:#fff;">←</span>
@@ -562,30 +562,30 @@
                   <div class="phone-compare-btn"><br></div>
                 </div>
                 <!-- 底部 Pro 引导区 -->
-                <div style="background:#1A0B2E;padding:16px 20px;display:flex;flex-direction:column;align-items:center;gap:10px;border-top:1px solid #3D2A5C;">
-                  <div style="display:flex;align-items:center;gap:6px;">
-                    <span style="color:#fff;font-size:16px;font-weight:500;font-style:italic;">Dofoto</span>
-                    <span style="color:#FFEE58;font-size:16px;font-weight:500;">Pro</span>
+                <div style="background:#1A0B2E;padding:18px 22px 16px;display:flex;flex-direction:column;align-items:center;gap:8px;border-top:1px solid #3D2A5C;flex-shrink:0;">
+                  <div style="display:flex;align-items:center;gap:8px;">
+                    <span style="color:#fff;font-size:18px;font-weight:500;font-style:italic;line-height:1;">Dofoto</span>
+                    <span style="color:#FFEE58;font-size:18px;font-weight:500;line-height:1;">Pro</span>
                   </div>
-                  <div style="color:#BDBDBD;font-size:11px;">All inclusive, No ads</div>
-                  <div style="background:#FFEE58;color:#1A0B2E;padding:10px 0;width:240px;border-radius:8px;text-align:center;">
-                    <div style="font-size:14px;font-weight:500;">Join Now</div>
-                    <div style="font-size:9px;margin-top:2px;">$7.99/year（≈ $7.99/month）</div>
+                  <div style="color:#BDBDBD;font-size:12px;line-height:1.2;">All inclusive · No ads</div>
+                  <div style="background:#FFEE58;color:#1A0B2E;padding:12px 0;width:260px;border-radius:10px;text-align:center;margin-top:4px;">
+                    <div style="font-size:15px;font-weight:500;line-height:1.1;">Join Now</div>
+                    <div style="font-size:10px;margin-top:3px;line-height:1.1;">$7.99/year（≈ $0.67/month）</div>
                   </div>
                 </div>
                 <!-- 底部 free trial banner -->
-                <div style="background:#000;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">
-                  <div style="display:flex;align-items:center;gap:8px;">
-                    <span style="color:#FFEE58;font-size:14px;">✨</span>
-                    <div style="display:flex;flex-direction:column;">
-                      <div style="display:flex;align-items:center;gap:4px;">
-                        <span style="color:#fff;font-size:12px;font-style:italic;">Dofoto</span>
-                        <span style="color:#FFEE58;background:rgba(255,238,88,0.2);font-size:9px;padding:1px 5px;border-radius:3px;">PRO</span>
+                <div style="background:#000;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">
+                  <div style="display:flex;align-items:center;gap:10px;">
+                    <span style="color:#FFEE58;font-size:16px;line-height:1;">✨</span>
+                    <div style="display:flex;flex-direction:column;gap:2px;">
+                      <div style="display:flex;align-items:center;gap:5px;">
+                        <span style="color:#fff;font-size:13px;font-style:italic;line-height:1;">Dofoto</span>
+                        <span style="color:#FFEE58;background:rgba(255,238,88,0.2);font-size:9px;padding:2px 6px;border-radius:3px;line-height:1;">PRO</span>
                       </div>
-                      <div style="color:#fff;font-size:10px;">3-day free trial, then $15.99/year</div>
+                      <div style="color:#fff;font-size:10px;line-height:1.2;">3-day free trial, then $15.99/year</div>
                     </div>
                   </div>
-                  <span style="color:#fff;font-size:14px;">→</span>
+                  <span style="color:#fff;font-size:16px;line-height:1;">›</span>
                 </div>
               </div>
               <div class="screen-text-block">
@@ -1221,7 +1221,6 @@
 <!-- ============ 浮动编辑工具栏（含保存 / 另存为） ============ -->
 <script>
 (function () {
-  const PRD_MIN_WIDTH = 2280;
   const prdRoot = document.querySelector('.prd-root');
   if (!prdRoot) return;
 
@@ -1505,14 +1504,6 @@
     }
   });
 
-  function fitScale() {
-    const margin = 40;
-    const target = window.innerWidth - margin;
-    if (target < PRD_MIN_WIDTH) prdRoot.style.zoom = (target / PRD_MIN_WIDTH).toFixed(3);
-    else { prdRoot.style.zoom = ''; if (prdRoot.getAttribute('style') === '') prdRoot.removeAttribute('style'); }
-  }
-  window.addEventListener('resize', fitScale);
-  fitScale();
 })();
 </script>
 
