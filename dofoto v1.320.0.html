@@ -383,7 +383,7 @@
       <div class="feature-list-item"><span class="num">①</span>AI 证件照（新功能，男女各 5 种效果，看广告解锁 + Pro 付费）<span class="tag">全量</span></div>
       <div class="feature-list-item"><span class="num">②</span>AI Expand 服务器付费接口迁移（复用 AIfoto 同款接口）<span class="tag">全量</span></div>
       <div class="feature-list-item"><span class="num">③</span>Upscale 服务器付费接口迁移 + 明确高清输出逻辑（保留 HD / QHD / UHD 3 档）<span class="tag">全量</span></div>
-      <div class="feature-list-item"><span class="num">④</span>修脸选脸后画布自动放大<span class="tag">全量</span></div>
+      <div class="feature-list-item"><span class="num">④&nbsp;&nbsp;</span>Hair选人脸后画布自动放大<span class="tag">全量</span></div>
       <div class="feature-list-item"><span class="num">⑤</span>评分弹窗触发点扩充至第 1 / 3 / 6 / 9 次保存<span class="tag">全量</span></div>
       <div class="feature-list-item"><span class="num">⑥</span>Upscale 入口缩略图加 AD 标识<span class="tag">全量</span></div>
     </div>
@@ -391,7 +391,7 @@
       <h3>变更记录</h3>
       <div class="change-item">
         <div class="date">2026-06-09 （初版）</div>
-        <div class="summary">v1.320.0 首版 PRD：合订 6 项功能（AI 证件照新功能、Expand / Upscale 服务器付费接口迁移、修脸放大、评分弹窗触发扩充、Upscale AD 标识）。</div><div class="summary"><span style="color: rgb(21, 101, 192);">2026-06-10</span></div>
+        <div class="summary">v1.320.0 首版 PRD：合订 6 项功能（AI 证件照新功能、Expand / Upscale 服务器付费接口迁移、修脸放大、评分弹窗触发扩充、Upscale AD 标识）。</div><div class="summary"><span style="color: rgb(21, 101, 192);">2026-06-10</span></div><div class="summary">“face模块选人脸放大”改为“Hair模块选人脸放大”；证件照“工具页弹窗”更改为“选图页弹窗”；增加文案红色标注</div>
       </div>
     </div>
   </section>
@@ -403,7 +403,7 @@
       <div class="body-text">本版本围绕「付费玩法补全 + 服务器付费接口迁移 + 关键路径体验优化」三条主线：</div>
       <div class="body-text">① 通过 AI 证件照新增一种高付费意愿的 AI 玩法（效果保存率20%以上），补全首页 AI 魔法工具卡片区块的产品矩阵</div>
       <div class="body-text">② 将 Expand / Upscale 工具的服务器付费接口迁移至项目组内接口，降低对外部付费算法服务的依赖，并明确 Upscale 高清输出逻辑；</div>
-      <div class="body-text">③ 通过修脸放大、评分弹窗触发优化、Upscale AD 标识三项小颗粒优化，提升单次用户体验与商业化效率。</div>
+      <div class="body-text">③ 通过Hair放大、评分弹窗触发优化、Upscale AD 标识三项小颗粒优化，提升单次用户体验与商业化效率。</div>
     </div>
     <div class="body-text" style="color:#757575;margin-top:16px;"><strong>非目标：</strong>本版本不修改首页布局框架（仅在 AI 魔法工具卡片区块新增「证件照」卡片）、不重写邀评弹窗 UI（仅调整触发策略）。</div>
   </section>
@@ -516,7 +516,7 @@
                 <div>
                   <div class="screen-text-label">触发条件</div>
                   <div class="screen-text-body">
-                    <div class="screen-text-body-line">用户首次进入证件照工具页（永久记忆，不再弹）。</div>
+                    <div class="screen-text-body-line">用户首次进入证件照选图页（永久记忆，不再弹）。</div>
                   </div>
                 </div>
                 <div>
@@ -895,7 +895,7 @@
       <div style="font-size:40px;font-weight:500;color:#388E3C;margin-bottom:20px;">页面说明</div>
       <div style="display:flex;flex-direction:row;gap:28px;">
         <div class="card" style="flex:1;min-width:0;">
-          <div class="card-hd y">屏 4：进入修脸前 vs 进入修脸后</div>
+          <div class="card-hd y">屏 4：进入Hair前 vs 进入Hair后</div>
           <div class="card-body">
             <div style="display:flex;flex-direction:row;gap:20px;flex-shrink:0;">
               <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
@@ -921,7 +921,7 @@
               <div>
                 <div class="screen-text-label">触发条件</div>
                 <div class="screen-text-body">
-                  <div class="screen-text-body-line">用户在编辑主界面点击底部工具栏「修脸」→（多人脸时）完成选脸 →（或单人脸直接）进入修脸工具内部画布的瞬间。</div>
+                  <div class="screen-text-body-line">用户在编辑主界面点击底部工具栏「Hair」→（多人脸时）完成选脸 →（或单人脸直接）进入修脸工具内部画布的瞬间。</div>
                 </div>
               </div>
               <div>
@@ -952,7 +952,7 @@
 
           <div class="biz-block">
             <div class="biz-block-title">【触发时机】</div>
-            <div class="biz-block-line">用户在「face」工具完成选脸（多人脸）或检测到 1 张脸（单人脸）后，进入修脸工具内部画布的瞬间触发。</div>
+            <div class="biz-block-line">用户在「Hair」工具完成选脸（多人脸）或检测到 1 张脸（单人脸）后，进入修脸工具内部画布的瞬间触发。</div>
           </div>
 
           <div class="biz-block">
@@ -1509,4 +1509,4 @@
 
 
 
-<div id="immersive-translate-browser-popup" style="all: initial"></div><div id="immersive-translate-browser-popup" style="all: initial"></div></body><div id="immersive-translate-browser-popup" style="all: initial"></div></html>
+<div id="immersive-translate-browser-popup" style="all: initial"></div><div id="immersive-translate-browser-popup" style="all: initial"></div><div id="immersive-translate-browser-popup" style="all: initial"></div></body><div id="immersive-translate-browser-popup" style="all: initial"></div></html>
