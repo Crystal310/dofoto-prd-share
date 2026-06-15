@@ -424,7 +424,7 @@
         <!-- 第 1 行 -->
         <div style="display:flex;flex-direction:row;gap:28px;">
 
-          <!-- 屏 1 -->
+          <!-- 屏 1 - 首页入口 -->
           <div class="card" style="flex:1;min-width:0;">
             <div class="card-hd y">屏 1：首页 AI 魔法工具卡片区块新增「证件照」</div>
             <div class="card-body">
@@ -482,9 +482,47 @@
             </div>
           </div>
 
-          <!-- 屏 2 -->
+          <!-- 屏 2 - 工具确认页（Hair / Handshot / AI Remove 共用样式） -->
           <div class="card" style="flex:1;min-width:0;">
-            <div class="card-hd y">屏 2：工具页首次引导弹窗</div>
+            <div class="card-hd y">屏 2：点击 Hair / Handshot / AI Remove 入口的确认页</div>
+            <div class="card-body">
+              <img src="assets/screen2-tool-confirmation.jpg" alt="Hair、Handshot 与 AI Remove 工具确认页样式参考" style="width:500px;height:auto;flex-shrink:0;border-radius:14px;border:2px solid #E0E0E0;">
+              <div class="screen-text-block">
+                <div>
+                  <div class="screen-text-label">触发条件</div>
+                  <div class="screen-text-body">
+                    <div class="screen-text-body-line">用户点击 Hair（发色）、Handshot（证件照）或 AI Remove 任一入口时触发。</div>
+                    <div class="screen-text-body-line">每个工具首次进入展示一次；点 Accept &amp; Try 后永久记忆不再弹（沿用现有确认记忆策略）。</div>
+                  </div>
+                </div>
+                <div>
+                  <div class="screen-text-label">页面内容</div>
+                  <div class="screen-text-body">
+                    <div class="screen-text-body-line">全屏深色背景的工具确认页。</div>
+                    <div class="screen-text-body-line">顶部：返回箭头 + 工具名称（Hair、Handshot 共用一页；AI Remove 独立一页）。</div>
+                    <div class="screen-text-body-line">中部：效果预览卡片——Hair / Handshot 支持左右滑动对比（卡片底部分页器）；AI Remove 展示涂抹消除动画。</div>
+                    <div class="screen-text-body-line">底部黄色主按钮：「Accept &amp; Try」。</div>
+                    <div class="screen-text-body-line">按钮下方隐私说明：「Allow DoFoto to upload your photo to use this feature? Your photo will be deleted from our server after processing is complete.」</div>
+                  </div>
+                </div>
+                <div>
+                  <div class="screen-text-label">交互说明</div>
+                  <div class="screen-text-body">
+                    <div class="screen-text-body-line">用户点 Accept &amp; Try → 写入本工具"已确认"标记 → 进入对应工具流程（证件照走选图，AI Remove 直接到涂抹页）。</div>
+                    <div class="screen-text-body-line">用户点左上角返回 → 退回上一页（首页或编辑页），不写入"已确认"标记，下次进入仍展示。</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 第 2 行 -->
+        <div style="display:flex;flex-direction:row;gap:28px;">
+
+          <!-- 屏 3 - 工具页首次引导弹窗 -->
+          <div class="card" style="flex:1;min-width:0;">
+            <div class="card-hd y">屏 3：工具页首次引导弹窗</div>
             <div class="card-body">
               <div class="phone">
                 <div class="phone-status"><span>9:41</span><span>● ●</span></div>
@@ -537,14 +575,10 @@
               </div>
             </div>
           </div>
-        </div>
 
-        <!-- 第 2 行 -->
-        <div style="display:flex;flex-direction:row;gap:28px;">
-
-          <!-- 屏 3 -->
+          <!-- 屏 4 - 生成处理中 -->
           <div class="card" style="flex:1;min-width:0;">
-            <div class="card-hd y">屏 3：生成处理中 · 全屏 loading + Pro 引导</div>
+            <div class="card-hd y">屏 4：生成处理中 · 全屏 loading + Pro 引导</div>
             <div class="card-body">
               <div class="phone" style="background:#1A0B2E;border-color:#3D2A5C;height:920px;">
                 <div class="phone-status" style="background:#1A0B2E;color:#fff;"><span>9:41</span><span>● ●</span></div>
@@ -610,10 +644,14 @@
               </div>
             </div>
           </div>
+        </div>
 
-          <!-- 屏 4：选中 Office 效果 · 结果态 -->
+        <!-- 第 3 行 -->
+        <div style="display:flex;flex-direction:row;gap:28px;">
+
+          <!-- 屏 5 - 选中 Office 效果（结果态） -->
           <div class="card" style="flex:1;min-width:0;">
-            <div class="card-hd y">屏 4：选中 Office 效果（结果态）</div>
+            <div class="card-hd y">屏 5：选中 Office 效果（结果态）</div>
             <div class="card-body">
               <div class="phone">
                 <div class="phone-status"><span>9:41</span><span>● ●</span></div>
@@ -664,6 +702,8 @@
               </div>
             </div>
           </div>
+
+          <div style="flex:1;"></div>
         </div>
 
       </div>
