@@ -1,0 +1,1066 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-immersive-translate-page-theme="light"><head>
+<meta charset="UTF-8">
+<title>Dofoto Android v1.320.1 需求文档</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'PingFang SC';
+    font-weight: 400;
+    color: #1a1a1a;
+    background: #fafafa;
+  }
+
+  .prd-root {
+    display: flex;
+    flex-direction: column;
+    gap: 60px;
+    padding: 80px;
+    min-width: 2280px;  /* 必须 */
+    background: #ffffff;
+  }
+
+  /* ========== 通用 section 样式 ========== */
+  section {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  .section-title {
+    font-size: 60px;
+    font-weight: 500;
+    color: #0D47A1;
+    padding-bottom: 12px;
+    border-bottom: 3px solid #0D47A1;
+  }
+
+  .body-text {
+    font-size: 34px;
+    line-height: 1.75;
+    color: #333333;
+    white-space: pre-wrap;
+  }
+
+  /* ========== 封面 ========== */
+  .cover {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    padding: 60px 80px;
+    background: linear-gradient(135deg, #E3F2FD 0%, #F3E5F5 100%);
+    border-radius: 24px;
+  }
+  .cover-title {
+    font-size: 88px;
+    font-weight: 500;
+    color: #0D47A1;
+  }
+  .cover-meta {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    align-items: center;
+  }
+  .cover-meta-pill {
+    padding: 10px 24px;
+    font-size: 28px;
+    font-weight: 500;
+    border-radius: 999px;
+  }
+  .pill-version { background: #BBDEFB; color: #0D47A1; }
+  .pill-date    { background: #C8E6C9; color: #1B5E20; }
+  .pill-status  { background: #FFE0B2; color: #E65100; }
+
+  .cover-summary {
+    font-size: 36px;
+    line-height: 1.7;
+    color: #424242;
+  }
+
+  .change-log {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding: 40px;
+    background: rgba(255,255,255,0.7);
+    border-radius: 16px;
+  }
+  .change-log h3 {
+    font-size: 40px;
+    font-weight: 500;
+    color: #0D47A1;
+    margin-bottom: 8px;
+  }
+  .change-item { display: flex; flex-direction: column; gap: 8px; }
+  .change-item .date { font-size: 30px; font-weight: 500; color: #1565C0; }
+  .change-item .summary { font-size: 30px; color: #333; }
+  .change-item ul { padding-left: 40px; }
+  .change-item li { font-size: 28px; line-height: 1.7; color: #555; }
+
+  /* ========== §2 实验设置：labeled boxes（中性灰，不喧宾夺主） ========== */
+  .exp-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .exp-item {
+    padding: 24px 32px;
+    background: #F5F5F5;
+    border-radius: 12px;
+    border-left: 8px solid #546E7A;
+  }
+  .exp-item-label {
+    font-size: 30px;
+    font-weight: 500;
+    color: #37474F;
+    margin-bottom: 10px;
+  }
+  .exp-item-content {
+    font-size: 32px;
+    line-height: 1.75;
+    color: #333;
+    white-space: pre-wrap;
+  }
+
+  /* ========== §3 功能详述：分组 pill + 卡片 ========== */
+  .group-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 16px;
+    font-size: 38px;
+    font-weight: 500;
+    padding: 12px 28px;
+    border-radius: 999px;
+    color: #ffffff;
+  }
+  .group-n  { background: #546E7A; }
+  .group-y  { background: #388E3C; }
+  .group-y2 { background: #7B1FA2; }
+  .group-shared { background: #EF6C00; }
+
+  .card {
+    display: flex;
+    flex-direction: column;
+    background: #ffffff;
+    border: 2px solid #E0E0E0;
+    border-radius: 16px;
+    overflow: hidden;
+  }
+  .card-hd {
+    padding: 24px 32px;
+    font-size: 40px;
+    font-weight: 500;
+    color: #ffffff;
+    background: #388E3C;  /* 默认 Y 色 */
+  }
+  .card-hd.n { background: #546E7A; }
+  .card-hd.y { background: #388E3C; }
+  .card-hd.y2 { background: #7B1FA2; }
+  .card-hd.shared { background: #EF6C00; }
+
+  .card-body {
+    display: flex;
+    flex-direction: row;
+    gap: 40px;
+    padding: 36px;
+    align-items: flex-start;
+  }
+  .card-text {
+    flex: 1;
+    min-width: 0;
+    font-size: 32px;
+    line-height: 1.85;
+    white-space: pre-wrap;
+    color: #333;
+  }
+
+  /* 页面说明：左图右文（图为 base64 嵌入 / placeholder / 场景 a 用 HTML/CSS 直接画的 phone） */
+  img.ss {
+    width: 400px;
+    height: 867px;
+    border-radius: 14px;
+    object-fit: cover;
+    background: #F5F5F5;
+    flex-shrink: 0;
+  }
+  .screenshot-placeholder {
+    width: 400px;
+    height: 867px;
+    border: 3px dashed #BDBDBD;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #9E9E9E;
+    font-size: 30px;
+    text-align: center;
+    padding: 20px;
+    flex-shrink: 0;
+  }
+  /* 每屏文字分段（按 skill 参考清单组织） */
+  .screen-text-block { display: flex; flex-direction: column; gap: 18px; flex: 1; min-width: 0; }
+  .screen-text-label { font-size: 30px; font-weight: 500; color: #0D47A1; }
+  .screen-text-body  { font-size: 30px; line-height: 1.8; color: #333; white-space: pre-wrap; }
+
+  /* 非实验范围补充（按需） */
+  .non-exp-section {
+    background: #FFF3E0;
+    border-radius: 16px;
+    padding: 32px 40px;
+    border-left: 10px solid #EF6C00;
+  }
+  .non-exp-title {
+    font-size: 40px;
+    font-weight: 500;
+    color: #EF6C00;
+    margin-bottom: 16px;
+  }
+  .non-exp-hint {
+    font-size: 26px;
+    color: #BF6C00;
+    margin-bottom: 24px;
+  }
+  .non-exp-item {
+    padding: 20px 24px;
+    background: #ffffff;
+    border-radius: 10px;
+    margin-bottom: 16px;
+  }
+  .non-exp-item-title {
+    font-size: 32px;
+    font-weight: 500;
+    color: #E65100;
+    margin-bottom: 10px;
+  }
+
+  /* ========== §4 关注指标：单表（不分段彩色，「作用」列承担分类） ========== */
+  .metric-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+  }
+  .metric-table th {
+    padding: 18px 24px;
+    text-align: left;
+    font-weight: 500;
+    font-size: 32px;
+    color: #424242;
+    background: #FAFAFA;
+    border-bottom: 2px solid #E0E0E0;
+  }
+  .metric-table td {
+    padding: 18px 24px;
+    border-bottom: 1px solid #EEEEEE;
+    font-size: 30px;
+    line-height: 1.65;
+    color: #333;
+    vertical-align: top;
+  }
+  .metric-table td.name { font-weight: 500; }
+
+  /* ========== 决策框架：单色 + emoji 前缀 ========== */
+  .decision-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+  }
+  .decision-table th {
+    padding: 18px 24px;
+    text-align: left;
+    font-weight: 500;
+    font-size: 32px;
+    color: #424242;
+    background: #FAFAFA;
+    border-bottom: 2px solid #E0E0E0;
+  }
+  .decision-table td {
+    padding: 18px 24px;
+    border-bottom: 1px solid #EEEEEE;
+    font-size: 30px;
+    line-height: 1.65;
+    color: #333;
+    vertical-align: top;
+  }
+  .decision-text { font-weight: 500; }
+
+  /* 应急 / 回滚机制 */
+  .rollback-box {
+    background: #FAFAFA;
+    padding: 28px 36px;
+    border-radius: 12px;
+    border-left: 8px solid #C62828;
+    margin-top: 24px;
+  }
+  .rollback-title {
+    font-size: 34px;
+    font-weight: 500;
+    color: #C62828;
+    margin-bottom: 12px;
+  }
+  .rollback-text {
+    font-size: 30px;
+    line-height: 1.75;
+    color: #333;
+  }
+
+  .footer-note {
+    font-size: 24px;
+    color: #757575;
+    margin-top: 24px;
+    line-height: 1.6;
+  }
+</style>
+</head>
+<body>
+
+<div class="prd-root" contenteditable="false">
+
+  <!-- ============ 封面 ============ -->
+  <section class="cover">
+    <div class="cover-title">Dofoto Android v1.320.1 需求文档</div>
+    <div class="cover-meta">
+      <span class="cover-meta-pill pill-version">v1.320.1</span>
+      <span class="cover-meta-pill pill-date">2026-07-07</span>
+      <span class="cover-meta-pill pill-status">待评审</span>
+    </div>
+    <div class="cover-summary">
+本版本聚焦 AI Expand / AI Art 两个 AIGC 生成工具的内容合规风险处置：新增用户举报入口，对命中合规问题的生成结果即时遮罩并同步更新用户协议。同时一并处理 5 项低成本体验优化：去除差评中高频抱怨的编辑页插屏广告、AI 工具按人脸性别自动定位 Tab、AI cartoon 旧素材替换、去水印按钮 loading 态优化。
+    </div>
+    <div class="change-log">
+      <h3>变更记录</h3>
+      <div class="change-item">
+        <div class="date">2026-07-07 · v1.0（初版）</div>
+        <div class="summary">首版 PRD，覆盖本轮 6 项需求：AIGC 内容合规、用户协议更新、去插屏广告、性别识别定位 Tab、AI cartoon 素材更新、去水印按钮视觉优化</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §1 需求概述 ============ -->
+  <section>
+    <div class="section-title">§1 需求概述</div>
+    <div class="body-text">AI Expand 和 AI Art 两个 AIGC 生成类功能目前缺少内容合规风险处置机制：生成结果一旦涉及暴力、色情、侵权、仿冒等不合规内容，无法被拦截下架，用户仍可继续保存导出，存在法务合规风险。本版本为两个功能新增用户举报入口，对命中合规类反馈的结果即时遮罩并禁止导出，并同步更新用户协议覆盖这一处理机制；服务器自动鉴黄拦截的结果同样纳入统一处理逻辑。</div>
+  </section>
+
+  <!-- ============ §3 功能详述 ============ -->
+  <section>
+    <div class="section-title">§3 功能详述</div>
+
+    <!-- ========== 子需求 1：AIGC 内容合规 ========== -->
+    <div style="font-size:44px;font-weight:500;color:#0D47A1;">1. AIGC 内容合规（AI Expand / AI Art）</div>
+
+    <div class="card" style="margin-top:8px;">
+      <div class="card-hd shared">业务逻辑</div>
+      <div class="card-body">
+        <div class="card-text">举报选项分两类：
+· 质量类：Low quality result / Unrelated to original image
+· 合规类：Inappropriate content / Impersonation or deception / Intellectual property violation
+
+合规判定规则：提交的反馈中只要包含任一「合规类」选项，即对当前结果图触发遮罩；合规类 + 质量类混选同样触发遮罩；仅勾选质量类不触发遮罩。
+
+遮罩范围与生命周期（当前会话内保持）：仅遮罩当前被举报的这一张结果图，不影响同组其他效果；切换到其他预设/结果图正常展示，切回被举报图仍为遮罩态；点击 Recreate / 切换其他效果重新生成后，新图为正常态（不带遮罩）；离开当前功能的效果编辑页后不要求保持遮罩。
+
+遮罩态下，当前结果图的所有保存/导出路径均不可用，且举报入口隐藏（同一张图不可重复举报）。
+
+跨模块统一：任意结果被服务器自动鉴黄判定为不合规时，与用户举报触发的遮罩走同一套遮罩样式、文案与交互，仅 1 处区别——该图切到其他预设/结果图正常展示后，再切回该效果时会自动重新生成（而非像用户举报遮罩那样保持静态、等待用户手动点击 Recreate）。</div>
+      </div>
+    </div>
+
+    <div style="margin-top:32px;">
+      <div style="font-size:40px;font-weight:500;color:#0D47A1;margin-bottom:20px;">页面说明</div>
+      <div style="display:flex;flex-direction:column;gap:28px;">
+
+        <div style="display:flex;flex-direction:row;gap:28px;">
+          <div class="card" style="flex:1;min-width:0;">
+            <div class="card-hd shared">屏 1：生成结果页（反馈入口）</div>
+            <div class="card-body">
+              <img class="ss" src="assets/v1.320.1-screen1-result-report-entry.jpg">
+              <div class="screen-text-block">
+                <div><div class="screen-text-label">触发条件</div><div class="screen-text-body">用户进入 AI Expand / AI Art 任一功能的生成结果页</div></div>
+                <div><div class="screen-text-label">页面内容（改动点）</div><div class="screen-text-body">结果图右上角新增 💬 反馈入口图标</div></div>
+                <div><div class="screen-text-label">交互说明</div><div class="screen-text-body">用户点击反馈入口 → 弹出举报弹窗（屏 2）</div></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card" style="flex:1;min-width:0;">
+            <div class="card-hd shared">屏 2：举报弹窗</div>
+            <div class="card-body">
+              <img class="ss" src="assets/v1.320.1-screen2-report-modal.jpg">
+              <div class="screen-text-block">
+                <div><div class="screen-text-label">页面内容</div><div class="screen-text-body">标题「Report this AI image?」；5 个选项（多选）；底部 Submit 按钮；右上角关闭「✕」</div></div>
+                <div><div class="screen-text-label">交互说明</div><div class="screen-text-body">用户勾选/取消选项 → 切换该项选中态（多选，选中态高亮）；未选中任何项时 Submit 置灰不可点
+用户点击「✕」/ 弹窗外区域 → 关闭弹窗，不提交，结果图保持不变
+用户点击 Submit → 提交反馈 → toast「Thanks for your feedback!」→ 关闭弹窗 → 按合规判定规则决定是否进入遮罩态（屏 3）</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:row;gap:28px;">
+          <div class="card" style="flex:1;min-width:0;">
+            <div class="card-hd shared">屏 3a：AI Expand · 遮罩态</div>
+            <div class="card-body">
+              <img class="ss" src="assets/v1.320.1-screen3a-ai-expand-masked.jpg">
+              <div class="screen-text-block">
+                <div><div class="screen-text-label">触发条件</div><div class="screen-text-body">本次提交的反馈命中合规判定规则，或服务器自动鉴黄拦截</div></div>
+                <div><div class="screen-text-label">页面内容（改动点）</div><div class="screen-text-body">结果图被遮罩覆盖，居中展示文案「The result may not meet our guidelines. Please try something different.」；右上角下载按钮置灰；展示 Recreate 按钮</div></div>
+                <div><div class="screen-text-label">交互说明</div><div class="screen-text-body">用户点击置灰的下载按钮 → toast「Save failed. Please try something different.」
+用户点击 Recreate → 正常重新生成，新图为正常态（不带遮罩）</div></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card" style="flex:1;min-width:0;">
+            <div class="card-hd shared">屏 3b：AI Art · 遮罩态</div>
+            <div class="card-body">
+              <img class="ss" src="assets/v1.320.1-screen3b-ai-art-masked.jpg">
+              <div class="screen-text-block">
+                <div><div class="screen-text-label">触发条件</div><div class="screen-text-body">同屏 3a，AI Art 场景</div></div>
+                <div><div class="screen-text-label">页面内容（改动点）</div><div class="screen-text-body">同屏 3a 遮罩样式；底部效果预设轮播条正常展示，可切换</div></div>
+                <div><div class="screen-text-label">交互说明</div><div class="screen-text-body">用户切换底部其他预设效果 → 切到的效果正常展示；切回被举报/拦截的效果仍为遮罩态
+用户点击 Recreate → 正常重新生成，新图为正常态</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ========== 子需求 2：用户协议更新 ========== -->
+    <div style="font-size:44px;font-weight:500;color:#0D47A1;margin-top:56px;">2. 用户协议更新</div>
+    <div class="card" style="margin-top:8px;">
+      <div class="card-hd shared">业务逻辑</div>
+      <div class="card-body">
+        <div class="card-text">同步替换为最新版用户协议，覆盖本次新增的 AIGC 内容合规举报/拦截声明。协议正文以法务最终定稿为准，本 PRD 不重复呈现协议文本。</div>
+      </div>
+    </div>
+
+    <!-- ========== 子需求 3：去除编辑页插屏广告 ========== -->
+    <div style="font-size:44px;font-weight:500;color:#0D47A1;margin-top:56px;">3. 去除编辑页插屏广告</div>
+    <div class="card" style="margin-top:8px;">
+      <div class="card-hd shared">业务逻辑</div>
+      <div class="card-body">
+        <div class="card-text">需求背景：近期差评中 38%（12 条）集中反馈编辑页插屏广告过多、每次操作都跳广告，影响评分。
+
+改动点：移除编辑页（选图进入编辑流程时）的插屏广告位。其余广告位（如结果页横幅、开屏广告）不在本次调整范围内。</div>
+      </div>
+    </div>
+
+    <div style="margin-top:24px;">
+      <div class="card">
+        <div class="card-hd shared">现状参考：编辑页插屏广告</div>
+        <div class="card-body">
+          <img class="ss" style="width:700px;height:auto;object-fit:contain;" src="assets/v1.320.1-item3-interstitial-ad-reference.jpg">
+          <div class="screen-text-block">
+            <div><div class="screen-text-label">现状说明</div><div class="screen-text-body">用户从相册选图进入编辑流程时，会先弹出全屏插屏广告（如图为第三方广告），需等待或点击关闭后才能继续编辑——本次改动即移除该广告位</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== 子需求 4：性别识别定位 Tab ========== -->
+    <div style="font-size:44px;font-weight:500;color:#0D47A1;margin-top:56px;">4. AI 工具按性别自动定位 Tab</div>
+    <div class="card" style="margin-top:8px;">
+      <div class="card-hd shared">业务逻辑</div>
+      <div class="card-body">
+        <div class="card-text">涉及模块：Headshot、Hair。
+
+处理逻辑：用户上传图片后，识别图中人脸性别，根据识别结果自动定位到对应性别的 Tab（而非默认落在首个 Tab）。
+
+识别不到人脸 / 性别置信度不足时，默认落在首个 Tab（沿用现有默认行为）。</div>
+      </div>
+    </div>
+
+    <!-- ========== 子需求 5：AI cartoon 素材更新 ========== -->
+    <div style="font-size:44px;font-weight:500;color:#0D47A1;margin-top:56px;">5. AI cartoon 删除本地旧素材</div>
+    <div class="card" style="margin-top:8px;">
+      <div class="card-hd shared">业务逻辑</div>
+      <div class="card-body">
+        <div class="card-text">移除本地残留的旧效果缩略图，替换为 AI cartoon 效果列表中固定顺序的前 5 张缩略图；第 6 张及之后的效果卡片统一使用占位图，不展示具体效果缩略图。</div>
+      </div>
+    </div>
+
+    <!-- ========== 子需求 6：去水印按钮视觉优化 ========== -->
+    <div style="font-size:44px;font-weight:500;color:#0D47A1;margin-top:56px;">6. 去水印按钮视觉优化</div>
+    <div style="margin-top:8px;">
+      <div class="card">
+        <div class="card-hd shared">去水印弹窗 · 改动前后对比</div>
+        <div class="card-body">
+          <img class="ss" style="width:700px;height:auto;object-fit:contain;" src="assets/v1.320.1-item6-watermark-button-before-after.jpg">
+          <div class="screen-text-block">
+            <div><div class="screen-text-label">触发条件</div><div class="screen-text-body">用户在去水印弹窗点击「Free Remove」按钮（如图左·改动前）</div></div>
+            <div><div class="screen-text-label">页面内容（改动点）</div><div class="screen-text-body">按钮文案由纯文字「Free Remove」改为 loading 态（转圈动画，如图右·改动后），处理完成前按钮不可重复点击</div></div>
+            <div><div class="screen-text-label">交互说明</div><div class="screen-text-body">用户点击 → 按钮进入 loading 态（转圈动画）→ 处理完成后按原有流程继续（去水印/关闭弹窗逻辑不变）</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ============ §4 关注指标及决策框架 ============ -->
+  <section>
+    <div class="section-title">§4 关注指标及决策框架</div>
+
+    <div>
+      <div style="font-size:40px;font-weight:500;color:#0D47A1;margin-bottom:16px;">关注指标</div>
+      <table class="metric-table">
+        <colgroup>
+          <col style="width:20%"><col style="width:26%"><col style="width:22%"><col style="width:20%"><col style="width:12%">
+        </colgroup>
+        <thead>
+          <tr><th>指标名称</th><th>作用</th><th>分子</th><th>分母</th><th>备注</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="name">举报入口点击率</td>
+            <td>次要：衡量反馈入口曝光后的使用</td>
+            <td>点击反馈入口的次数</td>
+            <td>进入两功能结果页的次数</td>
+            <td>AI Expand + AI Art 合计</td>
+          </tr>
+          <tr>
+            <td class="name">反馈提交率</td>
+            <td>次要：衡量举报弹窗的完成度</td>
+            <td>点击 Submit 提交反馈的次数</td>
+            <td>打开举报弹窗的次数</td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td class="name">合规举报占比</td>
+            <td>主指标：衡量被判定不合规的结果比例</td>
+            <td>命中合规判定的提交次数</td>
+            <td>提交反馈总次数</td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td class="name">遮罩触发率</td>
+            <td>主指标：衡量不合规内容拦截规模</td>
+            <td>触发遮罩的结果图数</td>
+            <td>生成结果图总数</td>
+            <td>含用户举报 + 服务器自动鉴黄</td>
+          </tr>
+          <tr>
+            <td class="name">结果页保存率</td>
+            <td>护栏：避免反馈入口 / 遮罩影响正常保存转化</td>
+            <td>结果页 Save 成功人数</td>
+            <td>进入结果页人数</td>
+            <td>上线前 7 日 vs 后 7 日</td>
+          </tr>
+          <tr>
+            <td class="name">编辑页跳出率</td>
+            <td>主指标：衡量去插屏广告对体验的改善</td>
+            <td>编辑页内完成一次操作的人数</td>
+            <td>进入编辑页人数</td>
+            <td>上线前 7 日 vs 后 7 日</td>
+          </tr>
+          <tr>
+            <td class="name">低分差评占比</td>
+            <td>次要：验证去广告对评分的滞后影响</td>
+            <td>1-2 星差评数</td>
+            <td>总评价数</td>
+            <td>按周观察，滞后指标</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div style="margin-top: 40px;">
+      <div style="font-size:40px;font-weight:500;color:#0D47A1;margin-bottom:16px;">决策框架</div>
+      <table class="decision-table">
+        <colgroup>
+          <col style="width:40%"><col style="width:60%">
+        </colgroup>
+        <thead>
+          <tr><th>指标结果</th><th>后续方向</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>合规举报占比 / 遮罩触发率处于合理区间，结果页保存率无明显下降</td>
+            <td class="decision-text">✅ 需求达成：合规能力上线且未伤害正常体验，维持现状，持续观察长期趋势</td>
+          </tr>
+          <tr>
+            <td>结果页保存率显著下降</td>
+            <td class="decision-text">⚠️ 入口 / 遮罩干扰了正常体验，排查入口位置 / 误触 / 遮罩误伤，迭代优化</td>
+          </tr>
+          <tr>
+            <td>合规举报占比接近 0</td>
+            <td class="decision-text">⚠️ 入口曝光不足或用户无感知，评估入口可见性，考虑是否前置或调整引导</td>
+          </tr>
+          <tr>
+            <td>编辑页跳出率 / 低分差评占比无明显改善</td>
+            <td class="decision-text">⚠️ 广告并非影响体验的主因，结合评论关键词重新定位主要负反馈来源</td>
+          </tr>
+          <tr>
+            <td>编辑页跳出率下降、低分差评占比下降</td>
+            <td class="decision-text">✅ 去插屏广告对留存和评分有正向贡献，评估是否进一步精简其余广告位</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="footer-note">※ 埋点事件名 / 参数 / 值域完整维护于埋点文档：https://docs.google.com/spreadsheets/d/1xQ8R8gu6WxcBz24sU1eCjeTXV6rVR5u8YVNdL_3SSeg/edit ，以下为本次涉及部分的摘录。</div>
+  </section>
+
+  <!-- ============ 附录：埋点方案 ============ -->
+  <section>
+    <div class="section-title">附录：埋点方案</div>
+    <table class="metric-table">
+      <colgroup>
+        <col style="width:16%"><col style="width:16%"><col style="width:20%"><col style="width:48%">
+      </colgroup>
+      <thead>
+        <tr><th>模块</th><th>一级 event</th><th>二级 content</th><th>说明</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="name" rowspan="7" style="color:#333;">AIGC 违规举报</td>
+          <td rowspan="2" style="color:#333;">AIReport</td>
+          <td style="color:#333;">EntryClick</td>
+          <td style="color:#333;">点击 AI 生成图的举报入口</td>
+        </tr>
+        <tr>
+          <td style="color:#333;">Submit_[选项序号]</td>
+          <td style="color:#333;">在 AI 生成图举报弹窗中，点击 Submit 时上报此时用户选中的选项，选项序号=如下数字[选项序号]：
+1 = Low quality result
+2 = Unrelated to original image
+3 = Inappropriate content
+4 = Impersonation or deception
+5 = Intellectual property violation
+若多选，直接拼接，例如：Submit_13</td>
+        </tr>
+        <tr>
+          <td rowspan="5" style="color:#333;">ViolationMask</td>
+          <td style="color:#333;">Show_Report</td>
+          <td style="color:#333;">由于用户手动举报，展示内容违规遮罩</td>
+        </tr>
+        <tr>
+          <td style="color:#333;">Show_Auto</td>
+          <td style="color:#333;">由于服务器返回鉴黄不通过，展示内容违规遮罩</td>
+        </tr>
+        <tr>
+          <td style="color:#333;">Recreate</td>
+          <td style="color:#333;">在遮罩效果页面上，点击 Recreate</td>
+        </tr>
+        <tr>
+          <td style="color:#333;">Switch</td>
+          <td style="color:#333;">在遮罩效果页上，点击切换其他效果</td>
+        </tr>
+        <tr>
+          <td style="color:#333;">Cancel</td>
+          <td style="color:#333;">在遮罩效果页上，点击叉号（关闭效果编辑页返回编辑页主页）</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+</div>
+
+<script>
+(function () {
+  const PRD_MIN_WIDTH = 2280;
+  const prdRoot = document.querySelector('.prd-root');
+  if (!prdRoot) return;
+
+  // ---------- 保存路径分流 ----------
+  const isFileOrigin = window.location.protocol === 'file:';
+  const hasFSApi = 'showDirectoryPicker' in window && 'showSaveFilePicker' in window;
+
+  // ---------- 1. 注入工具栏样式 ----------
+  const style = document.createElement('style');
+  style.id = 'editor-style';
+  style.textContent = `
+    .editor-toolbar {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 6px;
+      padding: 8px 12px;
+      background: #FFFFFF;
+      border: 1px solid #E0E0E0;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      font-family: 'PingFang SC', -apple-system, sans-serif;
+      font-weight: 400;
+      font-size: 13px;
+      max-width: 560px;
+    }
+    .editor-toolbar-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .editor-toolbar button {
+      appearance: none;
+      border: 1px solid #BDBDBD;
+      background: #FAFAFA;
+      color: #212121;
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-family: inherit;
+      font-weight: 500;
+      font-size: 13px;
+      cursor: pointer;
+      line-height: 1.2;
+      white-space: nowrap;
+    }
+    .editor-toolbar button:hover { background: #F0F0F0; }
+    .editor-toolbar button:active { background: #E0E0E0; }
+    .editor-toolbar.locked #btn-save,
+    .editor-toolbar.locked #btn-save-as { display: none; }
+    .editor-toolbar:not(.locked) #btn-edit { display: none; }
+    /* 未保存指示：保存按钮变蓝底、蓝边、蓝字 */
+    .editor-toolbar button.dirty {
+      background: #E3F2FD;
+      border-color: #1565C0;
+      color: #1565C0;
+    }
+    .editor-toolbar button.dirty:hover { background: #BBDEFB; }
+    .editor-status { color: #616161; font-weight: 400; }
+    .editor-status:empty { display: none; }
+    .editor-status.ok { color: #2E7D32; }
+    .editor-status.err { color: #C62828; }
+    #editor-first-save-hint {
+      display: none;
+      font-size: 12px;
+      color: #1565C0;
+      line-height: 1.5;
+    }
+    #editor-first-save-hint code {
+      background: #E3F2FD;
+      padding: 1px 5px;
+      border-radius: 3px;
+      font-family: Consolas, monospace;
+      font-size: 11.5px;
+      word-break: break-all;
+    }
+  `;
+  document.head.appendChild(style);
+
+  // ---------- 2. 注入工具栏 DOM ----------
+  const toolbar = document.createElement('div');
+  toolbar.className = 'editor-toolbar locked';
+  toolbar.setAttribute('contenteditable', 'false');
+  toolbar.innerHTML = `
+    <div class="editor-toolbar-row">
+      <button id="btn-edit" type="button">编辑</button>
+      <button id="btn-save" type="button">保存</button>
+      <button id="btn-save-as" type="button">另存为</button>
+      <span class="editor-status"></span>
+    </div>
+    <div id="editor-first-save-hint">
+      📁 首次保存请选定 <code id="editor-target-dir"></code> 文件夹（浏览器会记住，之后同目录任意版本静默保存）
+    </div>
+  `;
+  document.body.appendChild(toolbar);
+
+  const statusEl = toolbar.querySelector('.editor-status');
+  const btnEdit = toolbar.querySelector('#btn-edit');
+  const btnSave = toolbar.querySelector('#btn-save');
+  const btnSaveAs = toolbar.querySelector('#btn-save-as');
+  const hintEl = toolbar.querySelector('#editor-first-save-hint');
+  const targetDirEl = toolbar.querySelector('#editor-target-dir');
+  let statusTimer = null;
+  let editing = false;
+  let dirty = false;  // 当前会话内有未保存改动
+
+  function setStatus(text, kind) {
+    statusEl.textContent = text || '';
+    statusEl.className = 'editor-status' + (kind ? ' ' + kind : '');
+    if (statusTimer) clearTimeout(statusTimer);
+    if (text) {
+      statusTimer = setTimeout(() => {
+        statusEl.textContent = '';
+        statusEl.className = 'editor-status';
+      }, 3000);
+    }
+  }
+
+  function setDirty(v) {
+    dirty = v;
+    btnSave.classList.toggle('dirty', v);
+  }
+
+  function setEditing(on) {
+    editing = on;
+    prdRoot.setAttribute('contenteditable', on ? 'true' : 'false');
+    toolbar.classList.toggle('locked', !on);
+    setDirty(false);  // 进/出编辑模式都重置 dirty
+    if (on) setStatus('进入编辑模式', 'ok');
+  }
+
+  // .prd-root 内任何改动 → 标记 dirty
+  prdRoot.addEventListener('input', () => {
+    if (editing && !dirty) setDirty(true);
+  });
+
+  // 未保存改动时关闭/刷新页面，浏览器弹「确定离开？」
+  window.addEventListener('beforeunload', (e) => {
+    if (dirty) {
+      e.preventDefault();
+      e.returnValue = '';  // Chrome 必填
+    }
+  });
+
+  // Cmd+S / Ctrl+S 快捷键保存（编辑态有效）
+  document.addEventListener('keydown', (e) => {
+    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 's') {
+      e.preventDefault();
+      if (editing) btnSave.click();
+    }
+  });
+
+  // 浏览器视口比 PRD 设计宽度（2280px）窄时自动缩放，让 100% 缩放也能看全
+  function fitScale() {
+    const margin = 40;
+    const target = window.innerWidth - margin;
+    if (target < PRD_MIN_WIDTH) {
+      prdRoot.style.zoom = (target / PRD_MIN_WIDTH).toFixed(3);
+    } else {
+      prdRoot.style.zoom = '';
+      if (prdRoot.getAttribute('style') === '') prdRoot.removeAttribute('style');
+    }
+  }
+  window.addEventListener('resize', fitScale);
+  fitScale();
+
+  function currentFilename() {
+    const p = decodeURIComponent(window.location.pathname || '');
+    const name = p.split('/').filter(Boolean).pop() || '';
+    return name || 'untitled.html';
+  }
+
+  function parentDirPath() {
+    const p = decodeURIComponent(window.location.pathname || '');
+    const idx = p.lastIndexOf('/');
+    return idx > 0 ? p.slice(0, idx) : '/';
+  }
+  function parentDirName() {
+    const p = parentDirPath();
+    const idx = p.lastIndexOf('/');
+    return idx >= 0 ? p.slice(idx + 1) : p;
+  }
+
+  // 提前把目标目录路径填到 hint banner
+  if (targetDirEl) targetDirEl.textContent = parentDirPath();
+
+  function serializeCleanHtml() {
+    const clone = document.documentElement.cloneNode(true);
+    // 移除运行时注入的工具栏 DOM 和样式（脚本标签本身保留，下次打开重新注入）
+    clone.querySelectorAll('.editor-toolbar, #editor-style').forEach(n => n.remove());
+    // 还原 .prd-root：锁定 + 清掉运行时 zoom
+    const root = clone.querySelector('.prd-root');
+    if (root) {
+      root.setAttribute('contenteditable', 'false');
+      root.style.zoom = '';
+      if (root.getAttribute('style') === '') root.removeAttribute('style');
+    }
+    return '<!DOCTYPE html>\n' + clone.outerHTML;
+  }
+
+  // ---------- IndexedDB: 持久化 directory handle ----------
+  const DB_NAME = 'prd-editor-handles';
+  const STORE = 'dirHandles';
+
+  function openDb() {
+    return new Promise((res, rej) => {
+      const req = indexedDB.open(DB_NAME, 1);
+      req.onupgradeneeded = () => req.result.createObjectStore(STORE);
+      req.onsuccess = () => res(req.result);
+      req.onerror = () => rej(req.error);
+    });
+  }
+  async function getDirHandle(key) {
+    try {
+      const db = await openDb();
+      return await new Promise((res, rej) => {
+        const req = db.transaction(STORE, 'readonly').objectStore(STORE).get(key);
+        req.onsuccess = () => res(req.result || null);
+        req.onerror = () => rej(req.error);
+      });
+    } catch (_) { return null; }
+  }
+  async function putDirHandle(key, handle) {
+    const db = await openDb();
+    return new Promise((res, rej) => {
+      const tx = db.transaction(STORE, 'readwrite');
+      tx.objectStore(STORE).put(handle, key);
+      tx.oncomplete = () => res();
+      tx.onerror = () => rej(tx.error);
+    });
+  }
+
+  // ---------- 保存路径 1：fetch /save （http origin） ----------
+  async function postSave(endpoint, filename, html) {
+    const res = await fetch(endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ filename, html })
+    });
+    let payload = null;
+    try { payload = await res.json(); } catch (_) {}
+    return { status: res.status, payload };
+  }
+
+  // ---------- 保存路径 2：File System Access API （file:// origin） ----------
+  async function saveViaFsApi(html, filename) {
+    const key = parentDirPath();
+    let dirHandle = await getDirHandle(key);
+
+    // 已缓存：校验/请求权限
+    if (dirHandle) {
+      const perm = await dirHandle.queryPermission({ mode: 'readwrite' });
+      if (perm !== 'granted') {
+        const ask = await dirHandle.requestPermission({ mode: 'readwrite' });
+        if (ask !== 'granted') dirHandle = null;  // 拒绝 → 视为无 handle
+      }
+    }
+
+    // 无缓存 / 权限失效 → 弹 directory picker
+    if (!dirHandle) {
+      if (hintEl) hintEl.style.display = 'block';
+      try {
+        dirHandle = await window.showDirectoryPicker({
+          mode: 'readwrite',
+          startIn: 'documents',
+        });
+      } catch (e) {
+        if (e.name === 'AbortError') throw new Error('用户取消选择');
+        throw e;
+      }
+      const expected = parentDirName();
+      if (dirHandle.name !== expected) {
+        const ok = window.confirm(
+          '你选的文件夹是 "' + dirHandle.name + '"，与当前文件所在的 "' + expected + '" 不同。\n' +
+          '如果确认要把改动写入 "' + dirHandle.name + '"，点确定；否则取消重新选择。'
+        );
+        if (!ok) throw new Error('用户取消');
+      }
+      await putDirHandle(key, dirHandle);
+      if (hintEl) hintEl.style.display = 'none';
+    }
+
+    // 写入：先尝试不创建（文件应已存在），找不到时退化为 create:true
+    let fileHandle;
+    try {
+      fileHandle = await dirHandle.getFileHandle(filename, { create: false });
+    } catch (e) {
+      if (e.name === 'NotFoundError') {
+        fileHandle = await dirHandle.getFileHandle(filename, { create: true });
+      } else throw e;
+    }
+    const writable = await fileHandle.createWritable();
+    await writable.write(html);
+    await writable.close();
+    return filename;
+  }
+
+  btnEdit.addEventListener('click', () => setEditing(!editing));
+
+  btnSave.addEventListener('click', async () => {
+    if (!editing) { setStatus('请先点「编辑」', 'err'); return; }
+    const filename = currentFilename();
+    const html = serializeCleanHtml();
+    setStatus('保存中…');
+
+    if (isFileOrigin) {
+      if (!hasFSApi) {
+        setStatus('⚠️ 当前浏览器不支持 file:// 直接保存，请用 Chrome / Edge，或让 AI 重启 preview server', 'err');
+        return;
+      }
+      try {
+        const saved = await saveViaFsApi(html, filename);
+        setStatus('已保存 ' + saved, 'ok');
+        setEditing(false);
+      } catch (e) {
+        setStatus('保存失败：' + e.message, 'err');
+      }
+      return;
+    }
+
+    // http(s):// origin → fetch /save
+    try {
+      const r = await postSave('/save', filename, html);
+      if (r.status === 200) {
+        setStatus('已保存 ' + filename, 'ok');
+        setEditing(false);
+      } else {
+        setStatus('保存失败：' + (r.payload && r.payload.error || r.status), 'err');
+      }
+    } catch (e) {
+      setStatus('网络错误：' + e.message + '（preview server 可能未运行）', 'err');
+    }
+  });
+
+  btnSaveAs.addEventListener('click', async () => {
+    if (!editing) { setStatus('请先点「编辑」', 'err'); return; }
+    const current = currentFilename();
+    const defaultName = current.replace(/\.html$/i, '') + '-edit.html';
+    const html = serializeCleanHtml();
+
+    if (isFileOrigin) {
+      if (!hasFSApi) {
+        setStatus('⚠️ 当前浏览器不支持 file:// 另存为', 'err');
+        return;
+      }
+      try {
+        const cachedDir = await getDirHandle(parentDirPath());
+        const fileHandle = await window.showSaveFilePicker({
+          suggestedName: defaultName,
+          startIn: cachedDir || 'documents',
+          types: [{ description: 'HTML', accept: { 'text/html': ['.html'] } }],
+        });
+        const writable = await fileHandle.createWritable();
+        await writable.write(html);
+        await writable.close();
+        setStatus('已另存为 ' + fileHandle.name, 'ok');
+        setEditing(false);
+      } catch (e) {
+        if (e.name === 'AbortError') { setStatus('已取消', 'err'); return; }
+        setStatus('另存为失败：' + e.message, 'err');
+      }
+      return;
+    }
+
+    // http(s):// origin → fetch /save-as
+    const input = window.prompt('输入新文件名（.html 结尾）', defaultName);
+    if (!input) return;
+    const filename = input.trim();
+    if (!/^[\w\-.]+\.html$/.test(filename)) {
+      setStatus('文件名不合法（只能字母数字 _ - . 且以 .html 结尾）', 'err');
+      return;
+    }
+    setStatus('保存中…');
+    try {
+      let r = await postSave('/save-as', filename, html);
+      if (r.status === 409) {
+        if (window.confirm('文件 ' + filename + ' 已存在，覆盖？')) {
+          r = await postSave('/save', filename, html);
+        } else {
+          setStatus('已取消', 'err');
+          return;
+        }
+      }
+      if (r.status === 200) {
+        setStatus('已另存为 ' + filename, 'ok');
+        setEditing(false);
+      } else {
+        setStatus('保存失败：' + (r.payload && r.payload.error || r.status), 'err');
+      }
+    } catch (e) {
+      setStatus('网络错误：' + e.message, 'err');
+    }
+  });
+})();
+</script>
+
+
+
+</body><div id="immersive-translate-browser-popup" style="all: initial"></div></html>
