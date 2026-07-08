@@ -326,10 +326,17 @@
       <span class="cover-meta-pill pill-status">待评审</span>
     </div>
     <div class="cover-summary">
-本版本聚焦 AI Expand / AI Art 两个 AIGC 生成工具的内容合规风险处置：新增用户举报入口，对命中合规问题的生成结果即时遮罩并同步更新用户协议。同时一并处理 5 项低成本体验优化：去除差评中高频抱怨的编辑页插屏广告、AI 工具按人脸性别自动定位 Tab、AI cartoon 旧素材替换、去水印按钮 loading 态优化。
+本版本聚焦 AI Expand / AI Art 两个 AIGC 生成工具的内容合规风险处置：新增用户举报入口，对命中合规问题的生成结果即时遮罩并同步更新用户协议。同时一并处理 5 项低成本体验优化：控制差评中高频抱怨的编辑页插屏广告展示频次、AI 工具按人脸性别自动定位 Tab、AI cartoon 旧素材替换、去水印按钮 loading 态优化。
     </div>
     <div class="change-log">
       <h3>变更记录</h3>
+      <div class="change-item">
+        <div class="date">2026-07-08 · v1.1</div>
+        <div class="summary">子需求 3 由"去除编辑页插屏广告"改为"编辑页插屏广告频次控制"</div>
+        <ul>
+          <li>【变更】不再直接移除插屏广告位，改为按"当天第几次进入编辑页"分级展示：第 1 次不弹、第 2 次必弹、第 3 次起距上次广告展示满 3 分钟才弹一次</li>
+        </ul>
+      </div>
       <div class="change-item">
         <div class="date">2026-07-07 · v1.0（初版）</div>
         <div class="summary">首版 PRD，覆盖本轮 6 项需求：AIGC 内容合规、用户协议更新、去插屏广告、性别识别定位 Tab、AI cartoon 素材更新、去水印按钮视觉优化</div>
@@ -438,14 +445,23 @@
       </div>
     </div>
 
-    <!-- ========== 子需求 3：去除编辑页插屏广告 ========== -->
-    <div style="font-size:44px;font-weight:500;color:#0D47A1;margin-top:56px;">3. 去除编辑页插屏广告</div>
+    <!-- ========== 子需求 3：编辑页插屏广告频次控制 ========== -->
+    <div style="font-size:44px;font-weight:500;color:#0D47A1;margin-top:56px;">3. 编辑页插屏广告频次控制</div>
     <div class="card" style="margin-top:8px;">
       <div class="card-hd shared">业务逻辑</div>
       <div class="card-body">
         <div class="card-text">需求背景：近期差评中 38%（12 条）集中反馈编辑页插屏广告过多、每次操作都跳广告，影响评分。
 
-改动点：移除编辑页（选图进入编辑流程时）的插屏广告位。其余广告位（如结果页横幅、开屏广告）不在本次调整范围内。</div>
+涉及用户：新老用户统一逻辑。
+
+改动点：编辑页（选图进入编辑流程时）插屏广告不再每次进入必弹，改为按"当天第几次进入编辑页"分级展示：
+· 当天第 1 次进入编辑页 → 不弹
+· 当天第 2 次进入编辑页 → 必弹
+· 当天第 3 次及以后进入编辑页 → 距离上一次广告展示时刻满 3 分钟才弹一次，不满 3 分钟不弹
+
+计数按自然日 0 点重置，次日从"第 1 次不弹"重新开始。
+
+其余广告位（如结果页横幅、开屏广告）不在本次调整范围内。</div>
       </div>
     </div>
 
@@ -455,7 +471,7 @@
         <div class="card-body">
           <img class="ss" style="width:700px;height:auto;object-fit:contain;" src="assets/v1.320.1-item3-interstitial-ad-reference.jpg">
           <div class="screen-text-block">
-            <div><div class="screen-text-label">现状说明</div><div class="screen-text-body">用户从相册选图进入编辑流程时，会先弹出全屏插屏广告（如图为第三方广告），需等待或点击关闭后才能继续编辑——本次改动即移除该广告位</div></div>
+            <div><div class="screen-text-label">现状说明</div><div class="screen-text-body">用户从相册选图进入编辑流程时，会弹出全屏插屏广告（如图为第三方广告），需等待或点击关闭后才能继续编辑——本次改动即按频次规则控制该广告位的展示时机</div></div>
           </div>
         </div>
       </div>
@@ -552,7 +568,7 @@
           </tr>
           <tr>
             <td class="name">编辑页跳出率</td>
-            <td>主指标：衡量去插屏广告对体验的改善</td>
+            <td>主指标：衡量插屏广告频控对体验的改善</td>
             <td>编辑页内完成一次操作的人数</td>
             <td>进入编辑页人数</td>
             <td>上线前 7 日 vs 后 7 日</td>
@@ -596,7 +612,7 @@
           </tr>
           <tr>
             <td>编辑页跳出率下降、低分差评占比下降</td>
-            <td class="decision-text">✅ 去插屏广告对留存和评分有正向贡献，评估是否进一步精简其余广告位</td>
+            <td class="decision-text">✅ 插屏广告频控对留存和评分有正向贡献，评估是否进一步放宽/收紧频控节奏</td>
           </tr>
         </tbody>
       </table>
@@ -1063,4 +1079,4 @@
 
 
 
-</body><div id="immersive-translate-browser-popup" style="all: initial"></div></html>
+<div id="immersive-translate-browser-popup" style="all: initial"></div></body><div id="immersive-translate-browser-popup" style="all: initial"></div></html>
