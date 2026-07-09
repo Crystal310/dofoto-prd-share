@@ -675,104 +675,116 @@
 
 </div>
 
+<!-- ============ 浮动编辑工具栏（含保存 / 另存为） ============ -->
 <script>
 (function () {
-  const PRD_MIN_WIDTH = 2280;
   const prdRoot = document.querySelector('.prd-root');
   if (!prdRoot) return;
 
-  // ---------- 保存路径分流 ----------
-  const isFileOrigin = window.location.protocol === 'file:';
-  const hasFSApi = 'showDirectoryPicker' in window && 'showSaveFilePicker' in window;
+  const isHttpOrigin = window.location.protocol === 'http:' || window.location.protocol === 'https:';
+  const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
 
-  // ---------- 1. 注入工具栏样式 ----------
+  // === GitHub Pages 直接保存（via GitHub API） ===
+  function detectGitHubRepo() {
+    const m = window.location.hostname.match(/^([^.]+)\.github\.io$/);
+    if (!m) return null;
+    const owner = m[1];
+    const parts = window.location.pathname.split('/').filter(Boolean);
+    if (parts.length < 2) return null;
+    return {
+      owner, repo: parts[0],
+      fullName: owner + '/' + parts[0],
+      filePath: parts.slice(1).map(decodeURIComponent).join('/'),
+    };
+  }
+  const gh = detectGitHubRepo();
+  const isGitHubPages = !!gh;
+  const isDeployedReadonly = isHttpOrigin && !isLocalhost && !isGitHubPages;
+  const READONLY_HINT = '⚠️ 当前是只读分享地址，无法保存。编辑请用本地预览 (http://localhost:8770/) 或在 GitHub Pages 上启用 token 直接保存';
+
+  const LS_KEY_PAT = 'prd_github_pat';
+  function getPAT() { return localStorage.getItem(LS_KEY_PAT) || ''; }
+  function setPAT(v) { v ? localStorage.setItem(LS_KEY_PAT, v) : localStorage.removeItem(LS_KEY_PAT); }
+
+  async function promptForPATFlow() {
+    const existing = getPAT();
+    const tokenUrl = 'https://github.com/settings/tokens?type=beta';
+    const msg = existing
+      ? '当前已有 Token。要重新设置请粘贴新 Token，否则点取消保留旧的：'
+      : '首次保存需要 GitHub Token（仅一次性设置，存在本地 localStorage）。\n\n生成步骤（约 1-2 分钟）：\n\n1. 另开浏览器标签：\n   ' + tokenUrl + '\n\n2. 点 Generate new token → 取个名（如 "dofoto PRD edit"）\n\n3. Repository access → Only select repositories → 选 ' + (gh ? gh.repo : 'dofoto-prd-share') + '\n\n4. Repository permissions → Contents → Read and write\n\n5. 设过期时间（建议 1 年）→ Generate token\n\n6. 复制 token（只显示一次！）→ 粘贴到下面：';
+    const input = window.prompt(msg, existing);
+    if (input === null) return getPAT();
+    const pat = input.trim();
+    if (!pat) return getPAT();
+    setPAT(pat);
+    return pat;
+  }
+
+  async function ghFetch(method, path, body) {
+    const pat = getPAT();
+    if (!pat) { const e = new Error('NO_PAT'); e.code = 'NO_PAT'; throw e; }
+    const opts = { method, headers: { 'Authorization': 'Bearer ' + pat, 'Accept': 'application/vnd.github+json' } };
+    if (body) { opts.headers['Content-Type'] = 'application/json'; opts.body = JSON.stringify(body); }
+    const res = await fetch('https://api.github.com/' + path, opts);
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) { const e = new Error(data.message || ('HTTP ' + res.status)); e.status = res.status; throw e; }
+    return data;
+  }
+
+  async function ghCommitFile(repoFullName, filePath, htmlContent, commitMessage) {
+    const apiPath = filePath.split('/').map(encodeURIComponent).join('/');
+    const fileInfo = await ghFetch('GET', 'repos/' + repoFullName + '/contents/' + apiPath);
+    const utf8 = new TextEncoder().encode(htmlContent);
+    let bin = '';
+    const chunkSize = 0x8000;
+    for (let i = 0; i < utf8.length; i += chunkSize) {
+      bin += String.fromCharCode.apply(null, utf8.subarray(i, i + chunkSize));
+    }
+    const base64 = btoa(bin);
+    await ghFetch('PUT', 'repos/' + repoFullName + '/contents/' + apiPath, {
+      message: commitMessage, content: base64, sha: fileInfo.sha,
+    });
+  }
+
   const style = document.createElement('style');
   style.id = 'editor-style';
   style.textContent = `
     .editor-toolbar {
-      position: fixed;
-      top: 16px;
-      right: 16px;
-      z-index: 9999;
-      display: flex;
-      flex-direction: column;
-      align-items: stretch;
-      gap: 6px;
-      padding: 8px 12px;
-      background: #FFFFFF;
-      border: 1px solid #E0E0E0;
-      border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      position: fixed; top: 16px; right: 16px; z-index: 9999;
+      display: flex; flex-direction: column; align-items: stretch; gap: 6px;
+      padding: 8px 12px; background: #FFFFFF; border: 1px solid #E0E0E0;
+      border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);
       font-family: 'PingFang SC', -apple-system, sans-serif;
-      font-weight: 400;
-      font-size: 13px;
-      max-width: 560px;
+      font-weight: 400; font-size: 13px; max-width: 560px;
     }
-    .editor-toolbar-row {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
+    .editor-toolbar-row { display: flex; align-items: center; gap: 8px; }
     .editor-toolbar button {
-      appearance: none;
-      border: 1px solid #BDBDBD;
-      background: #FAFAFA;
-      color: #212121;
-      padding: 6px 14px;
-      border-radius: 6px;
-      font-family: inherit;
-      font-weight: 500;
-      font-size: 13px;
-      cursor: pointer;
-      line-height: 1.2;
-      white-space: nowrap;
+      appearance: none; border: 1px solid #BDBDBD; background: #FAFAFA;
+      color: #212121; padding: 6px 14px; border-radius: 6px;
+      font-family: inherit; font-weight: 500; font-size: 13px;
+      cursor: pointer; line-height: 1.2; white-space: nowrap;
     }
     .editor-toolbar button:hover { background: #F0F0F0; }
-    .editor-toolbar button:active { background: #E0E0E0; }
-    .editor-toolbar.locked #btn-save,
-    .editor-toolbar.locked #btn-save-as { display: none; }
+    .editor-toolbar.locked #btn-save, .editor-toolbar.locked #btn-save-as { display: none; }
     .editor-toolbar:not(.locked) #btn-edit { display: none; }
-    /* 未保存指示：保存按钮变蓝底、蓝边、蓝字 */
-    .editor-toolbar button.dirty {
-      background: #E3F2FD;
-      border-color: #1565C0;
-      color: #1565C0;
-    }
+    .editor-toolbar button.dirty { background: #E3F2FD; border-color: #1565C0; color: #1565C0; }
     .editor-toolbar button.dirty:hover { background: #BBDEFB; }
     .editor-status { color: #616161; font-weight: 400; }
     .editor-status:empty { display: none; }
     .editor-status.ok { color: #2E7D32; }
     .editor-status.err { color: #C62828; }
-    #editor-first-save-hint {
-      display: none;
-      font-size: 12px;
-      color: #1565C0;
-      line-height: 1.5;
-    }
-    #editor-first-save-hint code {
-      background: #E3F2FD;
-      padding: 1px 5px;
-      border-radius: 3px;
-      font-family: Consolas, monospace;
-      font-size: 11.5px;
-      word-break: break-all;
-    }
   `;
   document.head.appendChild(style);
 
-  // ---------- 2. 注入工具栏 DOM ----------
   const toolbar = document.createElement('div');
   toolbar.className = 'editor-toolbar locked';
-  toolbar.setAttribute('contenteditable', 'false');
   toolbar.innerHTML = `
     <div class="editor-toolbar-row">
       <button id="btn-edit" type="button">编辑</button>
       <button id="btn-save" type="button">保存</button>
       <button id="btn-save-as" type="button">另存为</button>
+      <button id="btn-token" type="button" title="设置 / 更新 GitHub Token">⚙ Token</button>
       <span class="editor-status"></span>
-    </div>
-    <div id="editor-first-save-hint">
-      📁 首次保存请选定 <code id="editor-target-dir"></code> 文件夹（浏览器会记住，之后同目录任意版本静默保存）
     </div>
   `;
   document.body.appendChild(toolbar);
@@ -781,51 +793,27 @@
   const btnEdit = toolbar.querySelector('#btn-edit');
   const btnSave = toolbar.querySelector('#btn-save');
   const btnSaveAs = toolbar.querySelector('#btn-save-as');
-  const hintEl = toolbar.querySelector('#editor-first-save-hint');
-  const targetDirEl = toolbar.querySelector('#editor-target-dir');
   let statusTimer = null;
   let editing = false;
-  let dirty = false;  // 当前会话内有未保存改动
+  let dirty = false;
 
   function setStatus(text, kind) {
     statusEl.textContent = text || '';
     statusEl.className = 'editor-status' + (kind ? ' ' + kind : '');
     if (statusTimer) clearTimeout(statusTimer);
-    if (text) {
-      statusTimer = setTimeout(() => {
-        statusEl.textContent = '';
-        statusEl.className = 'editor-status';
-      }, 3000);
-    }
+    if (text) statusTimer = setTimeout(() => { statusEl.textContent = ''; statusEl.className = 'editor-status'; }, 4000);
   }
-
-  function setDirty(v) {
-    dirty = v;
-    btnSave.classList.toggle('dirty', v);
-  }
-
+  function setDirty(v) { dirty = v; btnSave.classList.toggle('dirty', v); }
   function setEditing(on) {
     editing = on;
     prdRoot.setAttribute('contenteditable', on ? 'true' : 'false');
     toolbar.classList.toggle('locked', !on);
-    setDirty(false);  // 进/出编辑模式都重置 dirty
-    if (on) setStatus('进入编辑模式', 'ok');
+    setDirty(false);
+    if (on) setStatus('进入编辑模式（Cmd+S 或点「保存」写盘）', 'ok');
   }
 
-  // .prd-root 内任何改动 → 标记 dirty
-  prdRoot.addEventListener('input', () => {
-    if (editing && !dirty) setDirty(true);
-  });
-
-  // 未保存改动时关闭/刷新页面，浏览器弹「确定离开？」
-  window.addEventListener('beforeunload', (e) => {
-    if (dirty) {
-      e.preventDefault();
-      e.returnValue = '';  // Chrome 必填
-    }
-  });
-
-  // Cmd+S / Ctrl+S 快捷键保存（编辑态有效）
+  prdRoot.addEventListener('input', () => { if (editing && !dirty) setDirty(true); });
+  window.addEventListener('beforeunload', (e) => { if (dirty) { e.preventDefault(); e.returnValue = ''; } });
   document.addEventListener('keydown', (e) => {
     if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 's') {
       e.preventDefault();
@@ -833,45 +821,15 @@
     }
   });
 
-  // 浏览器视口比 PRD 设计宽度（2280px）窄时自动缩放，让 100% 缩放也能看全
-  function fitScale() {
-    const margin = 40;
-    const target = window.innerWidth - margin;
-    if (target < PRD_MIN_WIDTH) {
-      prdRoot.style.zoom = (target / PRD_MIN_WIDTH).toFixed(3);
-    } else {
-      prdRoot.style.zoom = '';
-      if (prdRoot.getAttribute('style') === '') prdRoot.removeAttribute('style');
-    }
-  }
-  window.addEventListener('resize', fitScale);
-  fitScale();
-
   function currentFilename() {
     const p = decodeURIComponent(window.location.pathname || '');
     const name = p.split('/').filter(Boolean).pop() || '';
     return name || 'untitled.html';
   }
 
-  function parentDirPath() {
-    const p = decodeURIComponent(window.location.pathname || '');
-    const idx = p.lastIndexOf('/');
-    return idx > 0 ? p.slice(0, idx) : '/';
-  }
-  function parentDirName() {
-    const p = parentDirPath();
-    const idx = p.lastIndexOf('/');
-    return idx >= 0 ? p.slice(idx + 1) : p;
-  }
-
-  // 提前把目标目录路径填到 hint banner
-  if (targetDirEl) targetDirEl.textContent = parentDirPath();
-
   function serializeCleanHtml() {
     const clone = document.documentElement.cloneNode(true);
-    // 移除运行时注入的工具栏 DOM 和样式（脚本标签本身保留，下次打开重新注入）
     clone.querySelectorAll('.editor-toolbar, #editor-style').forEach(n => n.remove());
-    // 还原 .prd-root：锁定 + 清掉运行时 zoom
     const root = clone.querySelector('.prd-root');
     if (root) {
       root.setAttribute('contenteditable', 'false');
@@ -881,39 +839,6 @@
     return '<!DOCTYPE html>\n' + clone.outerHTML;
   }
 
-  // ---------- IndexedDB: 持久化 directory handle ----------
-  const DB_NAME = 'prd-editor-handles';
-  const STORE = 'dirHandles';
-
-  function openDb() {
-    return new Promise((res, rej) => {
-      const req = indexedDB.open(DB_NAME, 1);
-      req.onupgradeneeded = () => req.result.createObjectStore(STORE);
-      req.onsuccess = () => res(req.result);
-      req.onerror = () => rej(req.error);
-    });
-  }
-  async function getDirHandle(key) {
-    try {
-      const db = await openDb();
-      return await new Promise((res, rej) => {
-        const req = db.transaction(STORE, 'readonly').objectStore(STORE).get(key);
-        req.onsuccess = () => res(req.result || null);
-        req.onerror = () => rej(req.error);
-      });
-    } catch (_) { return null; }
-  }
-  async function putDirHandle(key, handle) {
-    const db = await openDb();
-    return new Promise((res, rej) => {
-      const tx = db.transaction(STORE, 'readwrite');
-      tx.objectStore(STORE).put(handle, key);
-      tx.oncomplete = () => res();
-      tx.onerror = () => rej(tx.error);
-    });
-  }
-
-  // ---------- 保存路径 1：fetch /save （http origin） ----------
   async function postSave(endpoint, filename, html) {
     const res = await fetch(endpoint, {
       method: 'POST',
@@ -925,87 +850,66 @@
     return { status: res.status, payload };
   }
 
-  // ---------- 保存路径 2：File System Access API （file:// origin） ----------
-  async function saveViaFsApi(html, filename) {
-    const key = parentDirPath();
-    let dirHandle = await getDirHandle(key);
-
-    // 已缓存：校验/请求权限
-    if (dirHandle) {
-      const perm = await dirHandle.queryPermission({ mode: 'readwrite' });
-      if (perm !== 'granted') {
-        const ask = await dirHandle.requestPermission({ mode: 'readwrite' });
-        if (ask !== 'granted') dirHandle = null;  // 拒绝 → 视为无 handle
-      }
-    }
-
-    // 无缓存 / 权限失效 → 弹 directory picker
-    if (!dirHandle) {
-      if (hintEl) hintEl.style.display = 'block';
-      try {
-        dirHandle = await window.showDirectoryPicker({
-          mode: 'readwrite',
-          startIn: 'documents',
-        });
-      } catch (e) {
-        if (e.name === 'AbortError') throw new Error('用户取消选择');
-        throw e;
-      }
-      const expected = parentDirName();
-      if (dirHandle.name !== expected) {
-        const ok = window.confirm(
-          '你选的文件夹是 "' + dirHandle.name + '"，与当前文件所在的 "' + expected + '" 不同。\n' +
-          '如果确认要把改动写入 "' + dirHandle.name + '"，点确定；否则取消重新选择。'
-        );
-        if (!ok) throw new Error('用户取消');
-      }
-      await putDirHandle(key, dirHandle);
-      if (hintEl) hintEl.style.display = 'none';
-    }
-
-    // 写入：先尝试不创建（文件应已存在），找不到时退化为 create:true
-    let fileHandle;
-    try {
-      fileHandle = await dirHandle.getFileHandle(filename, { create: false });
-    } catch (e) {
-      if (e.name === 'NotFoundError') {
-        fileHandle = await dirHandle.getFileHandle(filename, { create: true });
-      } else throw e;
-    }
-    const writable = await fileHandle.createWritable();
-    await writable.write(html);
-    await writable.close();
-    return filename;
+  const btnToken = toolbar.querySelector('#btn-token');
+  if (btnToken) {
+    if (!isGitHubPages) btnToken.style.display = 'none';
+    btnToken.addEventListener('click', async () => {
+      const pat = await promptForPATFlow();
+      setStatus(pat ? '✓ Token 已保存到 localStorage' : 'Token 未变更', pat ? 'ok' : 'err');
+    });
   }
 
   btnEdit.addEventListener('click', () => setEditing(!editing));
 
   btnSave.addEventListener('click', async () => {
     if (!editing) { setStatus('请先点「编辑」', 'err'); return; }
-    const filename = currentFilename();
-    const html = serializeCleanHtml();
-    setStatus('保存中…');
 
-    if (isFileOrigin) {
-      if (!hasFSApi) {
-        setStatus('⚠️ 当前浏览器不支持 file:// 直接保存，请用 Chrome / Edge，或让 AI 重启 preview server', 'err');
-        return;
+    // === GitHub Pages 直接写回（GitHub API）===
+    if (isGitHubPages) {
+      let pat = getPAT();
+      if (!pat) {
+        pat = await promptForPATFlow();
+        if (!pat) { setStatus('需要 Token 才能保存', 'err'); return; }
       }
+      const html = serializeCleanHtml();
+      const ts = new Date().toISOString().slice(0, 16).replace('T', ' ');
+      const defaultMsg = 'web 编辑 ' + gh.filePath + ' @ ' + ts;
+      const msg = window.prompt('一句话说明本次改动（直接回车用默认值）：', defaultMsg) || defaultMsg;
+      setStatus('提交中（推送到 GitHub）…');
       try {
-        const saved = await saveViaFsApi(html, filename);
-        setStatus('已保存 ' + saved, 'ok');
+        await ghCommitFile(gh.fullName, gh.filePath, html, msg);
+        setStatus('✓ 已提交！GitHub Pages 约 1 分钟后部署生效，刷新页面查看', 'ok');
         setEditing(false);
       } catch (e) {
-        setStatus('保存失败：' + e.message, 'err');
+        if (e.code === 'NO_PAT' || e.status === 401) {
+          setPAT('');
+          setStatus('Token 无效或失效，请重新输入', 'err');
+        } else if (e.status === 404) {
+          setStatus('文件路径找不到（' + gh.filePath + '）请确认仓库 / 文件名', 'err');
+        } else if (e.status === 409 || e.status === 422) {
+          setStatus('冲突：文件已被改动，请刷新页面后重新编辑', 'err');
+        } else {
+          setStatus('保存失败：' + e.message, 'err');
+        }
       }
       return;
     }
 
-    // http(s):// origin → fetch /save
+    if (isDeployedReadonly) {
+      setStatus(READONLY_HINT, 'err');
+      return;
+    }
+    if (!isHttpOrigin) {
+      setStatus('⚠️ 保存需通过 http://localhost:8770 访问；当前是 file:// 模式', 'err');
+      return;
+    }
+    const filename = currentFilename();
+    const html = serializeCleanHtml();
+    setStatus('保存中…');
     try {
       const r = await postSave('/save', filename, html);
       if (r.status === 200) {
-        setStatus('已保存 ' + filename, 'ok');
+        setStatus('✓ 已保存 ' + filename, 'ok');
         setEditing(false);
       } else {
         setStatus('保存失败：' + (r.payload && r.payload.error || r.status), 'err');
@@ -1017,35 +921,16 @@
 
   btnSaveAs.addEventListener('click', async () => {
     if (!editing) { setStatus('请先点「编辑」', 'err'); return; }
-    const current = currentFilename();
-    const defaultName = current.replace(/\.html$/i, '') + '-edit.html';
-    const html = serializeCleanHtml();
-
-    if (isFileOrigin) {
-      if (!hasFSApi) {
-        setStatus('⚠️ 当前浏览器不支持 file:// 另存为', 'err');
-        return;
-      }
-      try {
-        const cachedDir = await getDirHandle(parentDirPath());
-        const fileHandle = await window.showSaveFilePicker({
-          suggestedName: defaultName,
-          startIn: cachedDir || 'documents',
-          types: [{ description: 'HTML', accept: { 'text/html': ['.html'] } }],
-        });
-        const writable = await fileHandle.createWritable();
-        await writable.write(html);
-        await writable.close();
-        setStatus('已另存为 ' + fileHandle.name, 'ok');
-        setEditing(false);
-      } catch (e) {
-        if (e.name === 'AbortError') { setStatus('已取消', 'err'); return; }
-        setStatus('另存为失败：' + e.message, 'err');
-      }
+    if (isDeployedReadonly) {
+      setStatus(READONLY_HINT, 'err');
       return;
     }
-
-    // http(s):// origin → fetch /save-as
+    if (!isHttpOrigin) {
+      setStatus('⚠️ 另存为需通过 http://localhost:8770 访问', 'err');
+      return;
+    }
+    const current = currentFilename();
+    const defaultName = current.replace(/\.html$/i, '') + '-edit.html';
     const input = window.prompt('输入新文件名（.html 结尾）', defaultName);
     if (!input) return;
     const filename = input.trim();
@@ -1053,6 +938,7 @@
       setStatus('文件名不合法（只能字母数字 _ - . 且以 .html 结尾）', 'err');
       return;
     }
+    const html = serializeCleanHtml();
     setStatus('保存中…');
     try {
       let r = await postSave('/save-as', filename, html);
@@ -1065,7 +951,7 @@
         }
       }
       if (r.status === 200) {
-        setStatus('已另存为 ' + filename, 'ok');
+        setStatus('✓ 已另存为 ' + filename, 'ok');
         setEditing(false);
       } else {
         setStatus('保存失败：' + (r.payload && r.payload.error || r.status), 'err');
@@ -1074,6 +960,7 @@
       setStatus('网络错误：' + e.message, 'err');
     }
   });
+
 })();
 </script>
 
