@@ -333,11 +333,6 @@
       <div class="change-item">
         <div class="date">2026-07-09 · v1.2</div>
         <div class="summary">子需求 1（AIGC 内容合规）覆盖范围扩大：由 AI Expand / AI Art 两个功能扩展为 AI Expand / AI Cartoon / Headshot 三个功能</div>
-        <ul>
-          <li>【变更】新增 Headshot 纳入举报入口 + 遮罩机制覆盖范围</li>
-          <li>【变更】统一术语为"AI Cartoon"（原文档部分位置误写为"AI Art"，二者为同一功能）</li>
-          <li>【变更】屏 2、屏 4 截图替换为更清晰的设计稿</li>
-        </ul>
       </div>
       <div class="change-item">
         <div class="date">2026-07-08 · v1.1</div>
@@ -356,12 +351,19 @@
   <!-- ============ §1 需求概述 ============ -->
   <section>
     <div class="section-title">§1 需求概述</div>
-    <div class="body-text">AI Expand、AI Cartoon 和 Headshot 三个 AIGC 生成类功能目前缺少内容合规风险处置机制：生成结果一旦涉及暴力、色情、侵权、仿冒等不合规内容，无法被拦截下架，用户仍可继续保存导出，存在法务合规风险。本版本为三个功能新增用户举报入口，对命中合规类反馈的结果即时遮罩并禁止导出，并同步更新用户协议覆盖这一处理机制；服务器自动鉴黄拦截的结果同样纳入统一处理逻辑。</div>
+    <div class="body-text">本版本（v1.320.1）合订 6 项需求，核心是为 AI Expand / AI Cartoon / Headshot 三个 AIGC 生成类功能补齐内容合规风险处置机制（用户举报 + 即时遮罩 + 协议更新），同时一并处理 5 项低成本体验优化：
+
+1. AIGC 内容合规：新增用户举报入口，对命中合规问题的生成结果即时遮罩并禁止导出，服务器自动鉴黄拦截同样纳入统一处理
+2. 用户协议更新：同步替换为最新版本，覆盖新增的合规声明
+3. 编辑页插屏广告频次控制：由"每次必弹"改为按当天第几次进入编辑页分级展示，缓解插屏广告过多的差评反馈
+4. AI 工具按性别自动定位 Tab：Headshot、Hair 上传图片后按识别到的人脸性别自动定位对应 Tab
+5. AI cartoon 素材更新：移除本地残留旧缩略图，替换为效果列表固定顺序的前 5 张
+6. 去水印按钮视觉优化：按钮文案由纯文字改为 loading 态</div>
   </section>
 
   <!-- ============ §3 功能详述 ============ -->
   <section>
-    <div class="section-title">§3 功能详述</div>
+    <div class="section-title">§2 功能详述</div>
 
     <!-- ========== 子需求 1：AIGC 内容合规 ========== -->
     <div style="font-size:44px;font-weight:500;color:#0D47A1;">1. AIGC 内容合规（AI Expand / AI Cartoon / Headshot）</div>
@@ -976,4 +978,4 @@
 
 
 
-<div id="immersive-translate-browser-popup" style="all: initial"></div></body><div id="immersive-translate-browser-popup" style="all: initial"></div></html>
+<div id="immersive-translate-browser-popup" style="all: initial"></div><div id="immersive-translate-browser-popup" style="all: initial"></div></body><div id="immersive-translate-browser-popup" style="all: initial"></div></html>
