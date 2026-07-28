@@ -702,6 +702,7 @@
   // ---------- 保存路径分流 ----------
   const isFileOrigin = window.location.protocol === 'file:';
   const hasFSApi = 'showDirectoryPicker' in window && 'showSaveFilePicker' in window;
+  const isGitHubPages = window.location.hostname.endsWith('.github.io');
 
   // ---------- 1. 注入工具栏样式 ----------
   const style = document.createElement('style');
@@ -931,6 +932,65 @@
     });
   }
 
+  // ---------- 保存路径 0：GitHub Pages → GitHub API ----------
+  function getGitHubToken() {
+    let token = localStorage.getItem('github-prd-token');
+    if (!token) {
+      token = prompt('请输入 GitHub Personal Access Token（需要 repo 权限）\n输入后会保存在浏览器 localStorage 中');
+      if (token) localStorage.setItem('github-prd-token', token.trim());
+    }
+    return token ? token.trim() : null;
+  }
+
+  async function saveViaGitHub(html, filename) {
+    const token = getGitHubToken();
+    if (!token) throw new Error('未输入 Token');
+
+    const owner = window.location.hostname.replace('.github.io', '');
+    const pathParts = window.location.pathname.split('/').filter(Boolean);
+    const repo = pathParts[0];
+    const filePath = decodeURIComponent(pathParts.slice(1).join('/')) || filename;
+
+    const apiBase = 'https://api.github.com';
+    const headers = {
+      'Authorization': 'token ' + token,
+      'Accept': 'application/vnd.github.v3+json',
+      'Content-Type': 'application/json'
+    };
+
+    const getRes = await fetch(apiBase + '/repos/' + owner + '/' + repo + '/contents/' + encodeURIComponent(filePath) + '?ref=main', { headers });
+    if (getRes.status === 401 || getRes.status === 403) {
+      localStorage.removeItem('github-prd-token');
+      throw new Error('Token 无效或无权限，已清除，请重新输入');
+    }
+    let sha = '';
+    if (getRes.ok) {
+      const meta = await getRes.json();
+      sha = meta.sha;
+    }
+
+    const content = btoa(unescape(encodeURIComponent(html)));
+    const body = {
+      message: 'update ' + filename + ' via browser editor',
+      content: content,
+      branch: 'main'
+    };
+    if (sha) body.sha = sha;
+
+    const putRes = await fetch(apiBase + '/repos/' + owner + '/' + repo + '/contents/' + encodeURIComponent(filePath), {
+      method: 'PUT',
+      headers: headers,
+      body: JSON.stringify(body)
+    });
+
+    if (!putRes.ok) {
+      const err = await putRes.json().catch(() => ({}));
+      if (putRes.status === 401 || putRes.status === 403) localStorage.removeItem('github-prd-token');
+      throw new Error((err.message || putRes.status) + '');
+    }
+    return filename;
+  }
+
   // ---------- 保存路径 1：fetch /save （http origin） ----------
   async function postSave(endpoint, filename, html) {
     const res = await fetch(endpoint, {
@@ -1003,6 +1063,17 @@
     const filename = currentFilename();
     const html = serializeCleanHtml();
     setStatus('保存中…');
+
+    if (isGitHubPages) {
+      try {
+        const saved = await saveViaGitHub(html, filename);
+        setStatus('已提交到 GitHub：' + saved + '（约 1 分钟后刷新生效）', 'ok');
+        setEditing(false);
+      } catch (e) {
+        setStatus('GitHub 保存失败：' + e.message, 'err');
+      }
+      return;
+    }
 
     if (isFileOrigin) {
       if (!hasFSApi) {
