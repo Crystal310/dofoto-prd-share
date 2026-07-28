@@ -957,10 +957,7 @@
       'Content-Type': 'application/json'
     };
 
-    const apiPath = apiBase + '/repos/' + owner + '/' + repo + '/contents/' + encodeURIComponent(filePath);
-    const fetchOpts = { headers, cache: 'no-store' };
-
-    const getRes = await fetch(apiPath + '?ref=main&t=' + Date.now(), fetchOpts);
+    const getRes = await fetch(apiBase + '/repos/' + owner + '/' + repo + '/contents/' + encodeURIComponent(filePath) + '?ref=main', { headers });
     if (getRes.status === 401 || getRes.status === 403) {
       localStorage.removeItem('github-prd-token');
       throw new Error('Token 无效或无权限，已清除，请重新输入');
@@ -979,26 +976,11 @@
     };
     if (sha) body.sha = sha;
 
-    const putRes = await fetch(apiPath, {
+    const putRes = await fetch(apiBase + '/repos/' + owner + '/' + repo + '/contents/' + encodeURIComponent(filePath), {
       method: 'PUT',
       headers: headers,
-      body: JSON.stringify(body),
-      cache: 'no-store'
+      body: JSON.stringify(body)
     });
-
-    if (putRes.status === 409) {
-      const r2 = await fetch(apiPath + '?ref=main&t=' + Date.now(), fetchOpts);
-      if (r2.ok) {
-        const m2 = await r2.json();
-        body.sha = m2.sha;
-        const retry = await fetch(apiPath, { method: 'PUT', headers, body: JSON.stringify(body), cache: 'no-store' });
-        if (!retry.ok) {
-          const e2 = await retry.json().catch(() => ({}));
-          throw new Error((e2.message || retry.status) + '');
-        }
-        return filename;
-      }
-    }
 
     if (!putRes.ok) {
       const err = await putRes.json().catch(() => ({}));
