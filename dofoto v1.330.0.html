@@ -374,7 +374,7 @@
   <!-- ============ §1 需求概述 ============ -->
   <section>
     <div class="section-title">§1 需求概述</div>
-    <table class="metric-table">
+    <table class="metric-table" style="width:auto;max-width:1200px;">
       <thead>
         <tr><th>需求</th><th>UI 需求</th><th>文案需求</th></tr>
       </thead>
@@ -646,6 +646,43 @@
             <td>人脸选择完成率偏低</td>
             <td class="decision-text">⚠️ 选择流程存在体验障碍</td>
             <td>简化流程或优化人脸检测准确度</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div style="margin-top:48px;">
+      <div style="font-size:40px;font-weight:500;color:#0D47A1;margin-bottom:16px;">埋点</div>
+      <table class="metric-table">
+        <thead>
+          <tr><th>一级事件</th><th>二级事件</th><th>备注说明</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="name" rowspan="2">UpdatePopup</td>
+            <td>Show_[素材名字]</td>
+            <td>上新弹窗曝光</td>
+          </tr>
+          <tr>
+            <td>Try_[素材名字]</td>
+            <td>上新弹窗中任意效果点击 Try 按钮</td>
+          </tr>
+          <tr>
+            <td class="name" rowspan="4">AICartoonFlow_ManyFace</td>
+            <td>SelectPage</td>
+            <td>选图页，一次编辑流程最多展示一次</td>
+          </tr>
+          <tr>
+            <td>FaceSelect</td>
+            <td>选人脸页，只对多人脸图展示</td>
+          </tr>
+          <tr>
+            <td>EditPage</td>
+            <td>编辑页，一次编辑流程最多展示一次</td>
+          </tr>
+          <tr>
+            <td>ResultPage</td>
+            <td>结果页，一次编辑流程最多展示一次</td>
           </tr>
         </tbody>
       </table>
