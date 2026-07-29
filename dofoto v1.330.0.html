@@ -359,7 +359,7 @@
       <span class="cover-meta-pill pill-status">撰写中</span>
     </div>
     <div class="cover-summary">
-      本版本包含 4 项更新：新增首页上新弹窗机制以推广新效果素材；AI Art 模块新增 Lifelike 分类并支持多人照片人脸选择；解决 Google Play 后台合规问题（Billing Library 升级至 8.0.0+ / target API 升级至 36）；修复选图页分类 tab 闪动问题。
+      本版本包含 4 项更新：新增首页上新弹窗机制以推广新效果素材；AI Art 模块新增 Photoshoot 分类并支持多人照片人脸选择；解决 Google Play 后台合规问题（Billing Library 升级至 8.0.0+ / target API 升级至 36）；修复选图页分类 tab 闪动问题。
     </div>
     <div class="change-log">
       <h3>变更记录</h3>
@@ -384,7 +384,7 @@
           <td>3 个效果主副标题</td>
         </tr>
         <tr>
-          <td class="name">AI 真人效果（Lifelike）</td>
+          <td class="name">AI 真人效果（Photoshoot）</td>
           <td>14 个缩略图和动画</td>
           <td>14 个效果名称多语言</td>
         </tr>
@@ -440,7 +440,7 @@
         <div class="card-body">
           <div class="card-text" style="font-size:32px;line-height:1.85;">
 <span style="font-weight:500;color:#0D47A1;">弹出条件</span>
-· 更新弹窗素材内容后，用户首次进入首页时弹出
+· 看完开屏广告后，用户首次进入首页时弹出
 · 新安装用户首次进入首页不弹出
 · 每日最多展示 1 次；同一天内未点击弹窗直接退出 App 后再进首页，仍展示弹窗（视为同一次）
 · 素材资源需全部下载完成后才展示：下载完成时若正在首页则直接弹出；若不在首页则下次启动进入首页时弹出
@@ -463,8 +463,8 @@
     </div>
 
     <!-- ===== 3.2 AI 真人效果 ===== -->
-    <div class="feature-title" style="margin-top:48px;">3.2 AI 真人效果（Lifelike）</div>
-    <div class="body-text" style="font-size:32px;line-height:1.85;color:#555;margin-top:8px;">从首页各模块点击数据来看，AI Art 模块排名第 6（41,276 次，占比 2.4%），仍有增长空间。当前 AI Art 仅有 Cartoon 风格，缺少真人风格效果品类，补充 Lifelike 分类以丰富效果类型、提升模块使用率。</div>
+    <div class="feature-title" style="margin-top:48px;">3.2 AI 真人效果（Photoshoot）</div>
+    <div class="body-text" style="font-size:32px;line-height:1.85;color:#555;margin-top:8px;">从首页各模块点击数据来看，AI Art 模块排名第 6（41,276 次，占比 2.4%），仍有增长空间。当前 AI Art 仅有 Cartoon 风格，缺少真人风格效果品类，补充 Photoshoot 分类以丰富效果类型、提升模块使用率。</div>
 
     <div style="display:flex;flex-direction:row;gap:28px;margin-top:16px;align-items:stretch;">
       <!-- 左：页面说明 -->
@@ -484,14 +484,15 @@
           </div>
           <!-- 右侧文字：只写效果编辑页 -->
           <div class="screen-text-block" style="flex:0 1 auto;">
-            <div style="font-size:34px;font-weight:500;color:#1565C0;margin-bottom:4px;">效果编辑页（Lifelike tab）</div>
+            <div style="font-size:34px;font-weight:500;color:#1565C0;margin-bottom:4px;">效果编辑页（Photoshoot tab）</div>
             <div><div class="screen-text-label">触发条件</div><div class="screen-text-body">单人照片直接进入；多人照片选中人脸后进入</div></div>
             <div><div class="screen-text-label">页面内容</div><div class="screen-text-body">· 效果预览图
 · 会员标识、下载按钮
-· Lifelike / Cartoon tab
+· Photoshoot / Cartoon tab
 · 效果缩略图列表（首位 None）</div></div>
             <div><div class="screen-text-label">交互说明</div><div class="screen-text-body">· 点击缩略图 → 预览效果
-· 切换 tab → 切换分类
+· 切换 tab → 切换分类，切换后默认定位到该分类的第一个效果
+· Photoshoot 滑动到最后 → 自动衔接展示 Cartoon 分类的第一个效果
 · 点击下载 → 保存结果</div></div>
             <div style="border-top:2px solid #E0E0E0;margin:12px 0;"></div>
             <div class="screen-text-body" style="color:#757575;">人脸选择页复用 Hair 模块现有人脸选择页</div>
@@ -505,8 +506,8 @@
         <div class="card-body">
           <div class="card-text" style="font-size:32px;line-height:1.85;">
 <span style="font-weight:500;color:#0D47A1;">新增分类</span>
-· 在现有 AI Art 模块下新增「Lifelike」分类 tab，与现有「Cartoon」分类并列
-· Lifelike 分类下展示真人风格 AI 效果列表
+· 在现有 AI Art 模块下新增「Photoshoot」分类 tab，与现有「Cartoon」分类并列
+· Photoshoot 分类下展示真人风格 AI 效果列表
 
 <span style="font-weight:500;color:#0D47A1;">多人照片人脸选择</span>
 · 当用户在选图页选中包含多个人脸的照片时，进入编辑页前先弹出人脸选择页（复用 Hair 模块）
@@ -556,6 +557,43 @@
     <div class="section-title">§4 关注指标及决策框架</div>
 
     <div>
+      <div style="font-size:40px;font-weight:500;color:#0D47A1;margin-bottom:16px;">埋点</div>
+      <table class="metric-table">
+        <thead>
+          <tr><th>一级事件</th><th>二级事件</th><th>备注说明</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="name" rowspan="2">UpdatePopup</td>
+            <td>Show_[素材名字]</td>
+            <td>上新弹窗曝光</td>
+          </tr>
+          <tr>
+            <td>Try_[素材名字]</td>
+            <td>上新弹窗中任意效果点击 Try 按钮</td>
+          </tr>
+          <tr>
+            <td class="name" rowspan="4">AICartoonFlow_ManyFace</td>
+            <td>SelectPage</td>
+            <td>选图页，一次编辑流程最多展示一次</td>
+          </tr>
+          <tr>
+            <td>FaceSelect</td>
+            <td>选人脸页，只对多人脸图展示</td>
+          </tr>
+          <tr>
+            <td>EditPage</td>
+            <td>编辑页，一次编辑流程最多展示一次</td>
+          </tr>
+          <tr>
+            <td>ResultPage</td>
+            <td>结果页，一次编辑流程最多展示一次</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div style="margin-top:48px;">
       <div style="font-size:40px;font-weight:500;color:#0D47A1;margin-bottom:16px;">关注指标</div>
       <table class="metric-table">
         <colgroup>
@@ -580,16 +618,16 @@
             <td>—</td>
           </tr>
           <tr>
-            <td class="name">Lifelike 效果使用量</td>
+            <td class="name">Photoshoot 效果使用量</td>
             <td>主指标：衡量新分类的用户接受度</td>
-            <td>使用 Lifelike 效果的次数</td>
+            <td>使用 Photoshoot 效果的次数</td>
             <td>—</td>
             <td>绝对值</td>
           </tr>
           <tr>
-            <td class="name">Lifelike 效果使用用户数</td>
+            <td class="name">Photoshoot 效果使用用户数</td>
             <td>次要：衡量新分类的用户覆盖面</td>
-            <td>使用过 Lifelike 效果的用户数</td>
+            <td>使用过 Photoshoot 效果的用户数</td>
             <td>进入 AI Art 模块的用户数</td>
             <td>—</td>
           </tr>
@@ -632,12 +670,12 @@
             <td>优化弹窗视觉 / 文案 / 素材质量；调整弹出频率或时机</td>
           </tr>
           <tr>
-            <td>Lifelike 效果使用量和用户数持续增长</td>
+            <td>Photoshoot 效果使用量和用户数持续增长</td>
             <td class="decision-text">✅ 新分类被接受</td>
-            <td>持续扩充 Lifelike 效果素材</td>
+            <td>持续扩充 Photoshoot 效果素材</td>
           </tr>
           <tr>
-            <td>Lifelike 效果使用量低迷</td>
+            <td>Photoshoot 效果使用量低迷</td>
             <td class="decision-text">⚠️ 用户兴趣不足</td>
             <td>分析用户对效果质量的反馈，优化效果或调整推广策略</td>
           </tr>
@@ -645,43 +683,6 @@
             <td>人脸选择完成率偏低</td>
             <td class="decision-text">⚠️ 选择流程存在体验障碍</td>
             <td>简化流程或优化人脸检测准确度</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div style="margin-top:48px;">
-      <div style="font-size:40px;font-weight:500;color:#0D47A1;margin-bottom:16px;">埋点</div>
-      <table class="metric-table">
-        <thead>
-          <tr><th>一级事件</th><th>二级事件</th><th>备注说明</th></tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="name" rowspan="2">UpdatePopup</td>
-            <td>Show_[素材名字]</td>
-            <td>上新弹窗曝光</td>
-          </tr>
-          <tr>
-            <td>Try_[素材名字]</td>
-            <td>上新弹窗中任意效果点击 Try 按钮</td>
-          </tr>
-          <tr>
-            <td class="name" rowspan="4">AICartoonFlow_ManyFace</td>
-            <td>SelectPage</td>
-            <td>选图页，一次编辑流程最多展示一次</td>
-          </tr>
-          <tr>
-            <td>FaceSelect</td>
-            <td>选人脸页，只对多人脸图展示</td>
-          </tr>
-          <tr>
-            <td>EditPage</td>
-            <td>编辑页，一次编辑流程最多展示一次</td>
-          </tr>
-          <tr>
-            <td>ResultPage</td>
-            <td>结果页，一次编辑流程最多展示一次</td>
           </tr>
         </tbody>
       </table>
