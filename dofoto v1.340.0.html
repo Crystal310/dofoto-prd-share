@@ -239,6 +239,16 @@
     <div class="change-log">
       <h3>变更记录</h3>
       <div class="change-item">
+        <div class="date">2026-08-25 · v1.2</div>
+        <div class="summary">3.1 改为模型接口视角描述；补充埋点表；清理表格残留问题</div>
+        <ul>
+          <li>【变更】3.1 标题改为「新增 qwen9B 和 Krea2 模型服务器处理接口」，补充 Filter/AI Art 各自新增的接口归属</li>
+          <li>【新增】§4 新增「埋点」表（Flash 漏斗、新用户漏斗、首页卡片点击、效果点击保存），置于关注指标前</li>
+          <li>【变更】删除「参数保留规则」中的「不互相覆盖」表述</li>
+          <li>【变更】删除关注指标表中的空白行</li>
+        </ul>
+      </div>
+      <div class="change-item">
         <div class="date">2026-08-25 · v1.1</div>
         <div class="summary">3.2 补充 Filter/Adjust 联动逻辑；屏 1-6 页面说明由红字改为黑字（屏 5 加载文案红字保留）</div>
         <ul>
@@ -285,16 +295,18 @@
   <section>
     <div class="section-title">§3 功能详述</div>
 
-    <!-- ===== 3.1 新增 AI 处理引擎 ===== -->
-    <div class="feature-title">3.1 新增 AI 处理引擎（支持 Flash 与写真效果）</div>
+    <!-- ===== 3.1 新增模型处理接口 ===== -->
+    <div class="feature-title">3.1 新增 qwen9B 和 Krea2 模型服务器处理接口</div>
 
     <div class="card" style="margin-top:8px;">
       <div class="card-hd">业务逻辑</div>
       <div class="card-body">
         <div class="card-text"><span style="font-weight:500;color:#0D47A1;">处理流程</span>
 · 原图上传服务器 → 模型处理 → 服务器返回效果图
-<span style="font-weight:500;color:#0D47A1;">效果与引擎对应关系</span>
-· 具体每个效果调用 qwen9B 或 Krea2，见<a href="https://docs.google.com/spreadsheets/d/1Aa1CZr_w8ZXVAiwWdRNwJnO1Vcbqn0z4y7xSnaXf02s/edit?gid=1311095446#gid=1311095446" style="color:#1565C0;text-decoration:underline;">《效果文档》</a></div>
+<span style="font-weight:500;color:#0D47A1;">效果与接口对应关系</span>
+· Filter 新增 qwen9B、Krea2 接口
+· AI Art 新增 Krea2 接口
+· 具体每个效果调用哪个接口，见<a href="https://docs.google.com/spreadsheets/d/1Aa1CZr_w8ZXVAiwWdRNwJnO1Vcbqn0z4y7xSnaXf02s/edit?gid=1311095446#gid=1311095446" style="color:#1565C0;text-decoration:underline;">《效果文档》</a></div>
       </div>
     </div>
 
@@ -393,7 +405,7 @@
 · Filter 浮层底部新增「ADJUST」一级分类，与「FILTER」并列，用户应用完滤镜效果后无需退出当前浮层，可直接切换到 Adjust 调整亮度 / 对比度等其他参数
 
 <span style="font-weight:500;color:#0D47A1;">参数保留规则</span>
-· 用户在 Flash（或其他 Filter 分类）与 Adjust 之间切换时，各分类下已调整的参数分别保留，不互相覆盖
+· 用户在 Flash（或其他 Filter 分类）与 Adjust 之间切换时，各分类下已调整的参数分别保留
 · 返回任一分类后支持继续调节，调节结果实时叠加在当前预览上
 
 <span style="font-weight:500;color:#0D47A1;">Flash 效果生图取图规则</span>
@@ -449,6 +461,77 @@
     <div class="section-title">§4 关注指标及决策框架</div>
 
     <div>
+      <div style="font-size:40px;font-weight:500;color:#0D47A1;margin-bottom:16px;">埋点</div>
+      <table class="metric-table">
+        <thead>
+          <tr><th>一级事件</th><th>二级事件</th><th>备注说明</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="name" rowspan="4">FilterFlashFlow<br><span style="font-size:24px;color:#757575;font-weight:400;">（Flash 漏斗）</span></td>
+            <td>FlashOpen</td>
+            <td>首页打开 Flash 闪光灯入口</td>
+          </tr>
+          <tr>
+            <td>SelectPage</td>
+            <td>闪光灯模式选图页，一次编辑流程最多展示一次</td>
+          </tr>
+          <tr>
+            <td>EditPage</td>
+            <td>闪光灯模式编辑页，一次编辑流程最多展示一次</td>
+          </tr>
+          <tr>
+            <td>ResultPage</td>
+            <td>闪光灯模式结果页，一次编辑流程最多展示一次</td>
+          </tr>
+          <tr>
+            <td class="name" rowspan="7">FilterFlashFlow_NewUser<br><span style="font-size:24px;color:#757575;font-weight:400;">（新用户漏斗）</span></td>
+            <td>AIExpandOpen</td>
+            <td>新用户 - 首页点击 Flash 卡片</td>
+          </tr>
+          <tr>
+            <td>AcceptClick</td>
+            <td>点击接受并尝试按钮，上传图片</td>
+          </tr>
+          <tr>
+            <td>PermissionPage</td>
+            <td>云端上传图片权限申请弹窗</td>
+          </tr>
+          <tr>
+            <td>SelectPage</td>
+            <td>新用户 - flash 选图页，一次编辑流程最多展示一次</td>
+          </tr>
+          <tr>
+            <td>EditPage</td>
+            <td>新用户 - flash 编辑页，一次编辑流程最多展示一次</td>
+          </tr>
+          <tr>
+            <td>SaveClick</td>
+            <td>新用户 - flash 模式，点击保存按钮</td>
+          </tr>
+          <tr>
+            <td>ResultPage</td>
+            <td>新用户 - flash 结果页，一次编辑流程最多展示一次</td>
+          </tr>
+          <tr>
+            <td class="name">HomeClick<br><span style="font-size:24px;color:#757575;font-weight:400;">（首页卡片点击，追加新行）</span></td>
+            <td>Flash_[卡片名称]</td>
+            <td>点击 Flash 卡片入口次数</td>
+          </tr>
+          <tr>
+            <td class="name" rowspan="2">Flash 效果<br><span style="font-size:24px;color:#757575;font-weight:400;">（效果点击/保存情况）</span></td>
+            <td>FlashClick</td>
+            <td>Flash 效果点击</td>
+          </tr>
+          <tr>
+            <td>FlashSave</td>
+            <td>Flash 效果保存</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div style="margin-top:48px;">
       <div style="font-size:40px;font-weight:500;color:#0D47A1;margin-bottom:16px;">关注指标</div>
       <table class="metric-table">
         <colgroup>
@@ -480,7 +563,7 @@
             <td>—</td>
           </tr>
           <tr>
-            <td class="name"></td><td></td><td></td><td></td><td><br></td></tr><tr><td class="name">Pro 转化率</td>
+            <td class="name">Pro 转化率</td>
             <td>护栏：监控解锁规则调整对整体订阅转化的影响</td>
             <td>解锁弹窗后完成订阅的用户数</td>
             <td>弹窗展示的用户数</td>
