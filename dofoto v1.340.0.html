@@ -408,7 +408,7 @@
         </div>
         <div class="screen-text-body" style="margin-top:20px;">· 点击「添加到拼图」→ 图片编辑区域上移，下方半屏展示相册选图区，默认选中「最近」分类相册，点击下拉可切换相册
 · 相册区域中已选中用于拼图的图片右下角标数字（已添加数量），左上角展示「-」按钮
-· 点击相册中的图片 → 加入拼图（拼图总数最多 20 张），编辑区域同步展示拼好的拼图效果
+· 点击相册中的图片 → 加入拼图（拼图总数最多 20 张），编辑区域同步展示拼好的拼图效果，布局按系统自动排布逻辑处理，不支持用户手动调整各图位置
 · 编辑区域内的拼图图片不可点击拖拽、不可放大预览
 · 点击已选图片左上角「-」→ 从拼图中移除该图（拼图总数最少保留 1 张，剩 1 张后不可继续删除）
 · 点击相册左上角相机图标拍照，点击 Save 后返回选图页，并自动选中该照片
@@ -425,10 +425,7 @@
 · 「添加到拼图」追加新图片时，不改变已有图上图图层的位置和大小
 
 <span style="font-weight:500;color:#0D47A1;">相册选中状态</span>
-· 已选中用于拼图的图片标记跨相册保留，切换到其他相册分类查看时不清除、不影响已选数量
-
-<span style="font-weight:500;color:#0D47A1;">拼图排布</span>
-· 「添加到拼图」新增图片后的拼图布局按系统自动排布逻辑处理，不支持用户手动调整各图位置</div>
+· 已选中用于拼图的图片标记跨相册保留，切换到其他相册分类查看时不清除、不影响已选数量</div>
       </div>
     </div>
 
@@ -487,15 +484,15 @@
       <div style="font-size:40px;font-weight:500;color:#0D47A1;margin-bottom:16px;">埋点</div>
       <table class="metric-table">
         <thead>
-          <tr><th>一级事件</th><th>二级事件</th><th>备注说明</th></tr>
+          <tr><th>一级事件</th><th>二级事件</th><th>备注说明</th><th>对应需求</th></tr>
         </thead>
         <tbody>
-          <tr><td class="name">FilterClick</td><td>XX_XX、adjust</td><td>滤镜 tab 和具体效果名字的点击、adjust 分类点击</td></tr>
-          <tr><td class="name">FilterSave</td><td>XX_XX、adjust</td><td>滤镜 tab 和具体效果名字，应用后保存；点击过 adjust 分类后保存数</td></tr>
-          <tr><td class="name">CollageClick</td><td>add_pip、add_grid</td><td>点击添加到图上图、点击添加到拼图</td></tr>
-          <tr><td class="name">CollageSave</td><td>add_pip、add_grid</td><td>点击添加到图上图保存、点击添加到拼图保存</td></tr>
-          <tr><td class="name">FaceClick</td><td>XX_XX</td><td>修脸模式，点击效果</td></tr>
+          <tr><td class="name">FaceClick</td><td>XX_XX</td><td>修脸模式，点击效果</td><td class="name" rowspan="2">3.1 Face SDK 切换</td></tr>
           <tr><td class="name">FaceSave</td><td>XX_XX</td><td>修脸模式，点击效果并保存</td></tr>
+          <tr><td class="name">CollageClick</td><td>add_pip、add_grid</td><td>点击添加到图上图、点击添加到拼图</td><td class="name" rowspan="2">3.2 拼图增加 Add 功能</td></tr>
+          <tr><td class="name">CollageSave</td><td>add_pip、add_grid</td><td>点击添加到图上图保存、点击添加到拼图保存</td></tr>
+          <tr><td class="name">FilterClick</td><td>XX_XX、adjust</td><td>滤镜 tab 和具体效果名字的点击、adjust 分类点击</td><td class="name" rowspan="2">3.3 增加 Adjust tab<br>3.4 新增相机滤镜</td></tr>
+          <tr><td class="name">FilterSave</td><td>XX_XX、adjust</td><td>滤镜 tab 和具体效果名字，应用后保存；点击过 adjust 分类后保存数</td></tr>
         </tbody>
       </table>
     </div>
