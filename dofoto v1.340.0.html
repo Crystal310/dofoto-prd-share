@@ -301,13 +301,13 @@
     <div class="card" style="margin-top:8px;">
       <div class="card-hd">效果列表（按 Tab 分类）</div>
       <div class="card-body" style="flex-direction:column;">
-        <div class="body-text" style="font-size:28px;color:#757575;margin-bottom:12px;">红字为本次新增或有调整的效果，紫字为参数待补充，其余为现有效果沿用（改用新 SDK 实现，效果表现尽量对齐）。</div>
+        <div class="body-text" style="font-size:28px;color:#757575;margin-bottom:12px;">红字为本次新增或有调整的效果，其余为现有效果沿用（改用新 SDK 实现，效果表现尽量对齐）。</div>
         <table class="metric-table" style="width:100%;">
           <thead>
             <tr><th>Tab</th><th>效果名称</th><th>生效区域</th><th>支持左右</th><th>滑杆效果</th><th>是否付费</th><th>SDK 参数名</th><th>值范围</th></tr>
           </thead>
           <tbody>
-            <tr class="tab-start"><td class="name" rowspan="7">Ratio</td><td>Top</td><td>头顶（颅顶）</td><td>—</td><td>竖向 长→短</td><td>是</td><td class="tbd-mark">待补充</td><td>—</td></tr>
+            <tr class="tab-start"><td class="name" rowspan="7">Ratio</td><td>Top</td><td>头顶（颅顶）</td><td>—</td><td>竖向 长→短</td><td>是</td><td>intensity_crown</td><td>—</td></tr>
             <tr><td>Upper</td><td>额头</td><td>—</td><td>竖向 长→短</td><td>—</td><td>intensity_forehead</td><td>[-1, 1]</td></tr>
             <tr><td>Middle</td><td>中面部（眼下-鼻尖）</td><td>—</td><td>全面 大→小</td><td>—</td><td>intensity_middlecourt</td><td>[-1, 1]</td></tr>
             <tr><td>Lower</td><td>下巴</td><td>—</td><td>竖向 长→短</td><td>—</td><td>intensity_lowercourt</td><td>[-1, 1]</td></tr>
@@ -328,7 +328,7 @@
             <tr class="tab-start"><td class="name" rowspan="7">Eyebrows</td><td>Position</td><td>眉毛整体高低</td><td>是</td><td>整体 高→低</td><td>—</td><td>intensity_brownposition</td><td>[-1, 1]</td></tr>
             <tr><td>Length</td><td>眉毛长度</td><td>是</td><td>横向 宽→窄</td><td>—</td><td>intensity_brownlength</td><td>[-1, 1]</td></tr>
             <tr><td>Thickness</td><td>眉毛宽度</td><td>是</td><td>竖向 宽→窄</td><td>—</td><td>intensity_brownsize</td><td>[-1, 1]</td></tr>
-            <tr><td>Center</td><td>眉头间距</td><td>是</td><td>横向 宽→窄</td><td>是</td><td class="tbd-mark">待补充</td><td>—</td></tr>
+            <tr><td>Center</td><td>眉头间距</td><td>是</td><td>横向 宽→窄</td><td>是</td><td>intensity_browinnerdistance</td><td>—</td></tr>
             <tr><td class="new-mark">Tilt</td><td class="new-mark">眉毛旋转</td><td class="new-mark">是</td><td class="new-mark">整体 顺时针→逆时针</td><td>—</td><td class="new-mark">intensity_browntilt</td><td class="new-mark">[-1, 1]</td></tr>
             <tr><td>Distance</td><td>眉毛整体间距</td><td>是</td><td>横向 宽→窄</td><td>—</td><td>intensity_browndistance</td><td>[-1, 1]</td></tr>
             <tr><td>Peak</td><td>高低（中后段）</td><td>是</td><td>竖向 低→高</td><td>是</td><td>intensity_brownshape</td><td>[-1, 1]</td></tr>
@@ -361,7 +361,7 @@
             <tr><td>Lowerlip</td><td>下唇厚度</td><td>—</td><td>竖向 薄→厚</td><td>—</td><td>down_intensity_mouththickness</td><td>[-1, 1]</td></tr>
             <tr><td>Smile</td><td>微笑（嘴角）</td><td>—</td><td>两侧 内→外</td><td>是</td><td>intensity_mouthsmile</td><td>[-1, 1]</td></tr>
             <tr><td>Cupid's bow</td><td>上唇形</td><td>—</td><td>整体 平整→弯曲</td><td>是</td><td>intensity_mouthmshape</td><td>[-1, 1]</td></tr>
-            <tr><td class="new-mark">Shift<br><span style="font-size:22px;">（UI 线上已经有）</span></td><td class="new-mark">唇整体左右平移</td><td>—</td><td class="new-mark">整体 左→右</td><td>待定</td><td class="tbd-mark">待补充</td><td>—</td></tr>
+            <tr><td class="new-mark">Shift<br><span style="font-size:22px;">（UI 线上已经有）</span></td><td class="new-mark">唇整体左右平移</td><td>—</td><td class="new-mark">整体 左→右</td><td>待定</td><td class="new-mark">intensity_mouthmove</td><td>—</td></tr>
             <tr><td>Tilt</td><td>歪嘴旋转</td><td>—</td><td>整体 左→右</td><td>—</td><td>intensity_mouthslant</td><td>[-1, 1]</td></tr>
           </tbody>
         </table>
