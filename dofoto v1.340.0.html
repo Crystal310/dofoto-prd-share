@@ -311,8 +311,8 @@
             <tr><td>Upper</td><td>额头</td><td>—</td><td>竖向 长→短</td><td>—</td><td>intensity_forehead</td><td>[-1, 1]</td></tr>
             <tr><td>Middle</td><td>中面部（眼下-鼻尖）</td><td>—</td><td>全面 大→小</td><td>—</td><td>intensity_middlecourt</td><td>[-1, 1]</td></tr>
             <tr><td>Lower</td><td>下巴</td><td>—</td><td>竖向 长→短</td><td>—</td><td>intensity_lowercourt</td><td>[-1, 1]</td></tr>
-            <tr><td class="new-mark">Distance</td><td class="new-mark">眼整体距离</td><td class="new-mark">是</td><td class="new-mark">横向 宽→窄</td><td>—</td><td class="new-mark">intensity_eyedistance</td><td class="new-mark">[-1, 1]</td></tr>
-            <tr><td class="new-mark">Position</td><td class="new-mark">高度</td><td class="new-mark">是</td><td class="new-mark">整体 低→高</td><td>—</td><td class="new-mark">intensity_eyeposition</td><td class="new-mark">[-1, 1]</td></tr>
+            <tr><td class="new-mark">Distance<br><span style="font-size:22px;">（复用 eye 中 UI）</span></td><td class="new-mark">眼整体距离</td><td class="new-mark">是</td><td class="new-mark">横向 宽→窄</td><td>—</td><td class="new-mark">intensity_eyedistance</td><td class="new-mark">[-1, 1]</td></tr>
+            <tr><td class="new-mark">Position<br><span style="font-size:22px;">（复用 eye 中 UI）</span></td><td class="new-mark">高度</td><td class="new-mark">是</td><td class="new-mark">整体 低→高</td><td>—</td><td class="new-mark">intensity_eyeposition</td><td class="new-mark">[-1, 1]</td></tr>
             <tr><td>Philtrum</td><td>人中</td><td>—</td><td>竖向 长→短</td><td>—</td><td>intensity_philtrum</td><td>[-1, 1]</td></tr>
 
             <tr class="tab-start"><td class="name" rowspan="9">Face</td><td>Slim</td><td>下半张脸</td><td>—</td><td>全面 大→小</td><td>—</td><td>intensity_facesmall</td><td>[-1, 1]</td></tr>
@@ -352,7 +352,7 @@
             <tr><td>Bridge</td><td>鼻梁宽度</td><td>—</td><td>横向 宽→窄</td><td>—</td><td>intensity_nosebridge</td><td>[-1, 1]</td></tr>
             <tr><td>Root</td><td>鼻根宽度</td><td>—</td><td>横向 宽→窄</td><td>—</td><td>intensity_noseroot</td><td>[-1, 1]</td></tr>
             <tr><td>Tip</td><td>鼻头</td><td>—</td><td>整体 大→小</td><td>—</td><td>intensity_nosetip</td><td>[-1, 1]</td></tr>
-            <tr><td class="new-mark">Philtrum</td><td class="new-mark">鼻子和下半部分距离</td><td>—</td><td class="new-mark">下半张脸 下→上</td><td>—</td><td class="new-mark">intensity_philtrum</td><td class="new-mark">[-1, 1]</td></tr>
+            <tr><td class="new-mark">Philtrum<br><span style="font-size:22px;">（复用 Ratio 中 UI）</span></td><td class="new-mark">鼻子和下半部分距离</td><td>—</td><td class="new-mark">下半张脸 下→上</td><td>—</td><td class="new-mark">intensity_philtrum</td><td class="new-mark">[-1, 1]</td></tr>
 
             <tr class="tab-start"><td class="name" rowspan="9">Lips</td><td>Size</td><td>嘴唇整体</td><td>—</td><td>整体 大→小</td><td>—</td><td>intensity_mouthsize</td><td>[-1, 1]</td></tr>
             <tr><td>Position</td><td>嘴唇整体上下平移</td><td>—</td><td>整体 上→下</td><td>—</td><td>intensity_mouthheight</td><td>[-1, 1]</td></tr>
@@ -361,7 +361,7 @@
             <tr><td>Lowerlip</td><td>下唇厚度</td><td>—</td><td>竖向 薄→厚</td><td>—</td><td>down_intensity_mouththickness</td><td>[-1, 1]</td></tr>
             <tr><td>Smile</td><td>微笑（嘴角）</td><td>—</td><td>两侧 内→外</td><td>是</td><td>intensity_mouthsmile</td><td>[-1, 1]</td></tr>
             <tr><td>Cupid's bow</td><td>上唇形</td><td>—</td><td>整体 平整→弯曲</td><td>是</td><td>intensity_mouthmshape</td><td>[-1, 1]</td></tr>
-            <tr><td class="new-mark">Shift</td><td class="new-mark">唇整体左右平移</td><td>—</td><td class="new-mark">整体 左→右</td><td>待定</td><td class="tbd-mark">待补充</td><td>—</td></tr>
+            <tr><td class="new-mark">Shift<br><span style="font-size:22px;">（UI 线上已经有）</span></td><td class="new-mark">唇整体左右平移</td><td>—</td><td class="new-mark">整体 左→右</td><td>待定</td><td class="tbd-mark">待补充</td><td>—</td></tr>
             <tr><td>Tilt</td><td>歪嘴旋转</td><td>—</td><td>整体 左→右</td><td>—</td><td>intensity_mouthslant</td><td>[-1, 1]</td></tr>
           </tbody>
         </table>
