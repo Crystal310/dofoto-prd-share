@@ -243,10 +243,14 @@
       <span class="cover-meta-pill pill-status">撰写中</span>
     </div>
     <div class="cover-summary">
-      本版本包含 4 项更新：Face 五官调整更换为 AIfoto 成熟 SDK 方案，新增部分调节效果；Collage 编辑页新增 Add 图片功能（图上图 / 添加到拼图两种流程）；取消云端权限申请页面，授权说明并入 Enhance/Hair/Headshot/Upscale/AI Expand/Remove/AI Art 的首次引导弹窗；Filter 新增 Camera 滤镜分类，上线 7 款胶片相机风格滤镜。
+      本版本包含 5 项更新：Face 五官调整更换为 AIfoto 成熟 SDK 方案，新增部分调节效果；Collage 编辑页新增 Add 图片功能（图上图 / 添加到拼图两种流程）；取消云端权限申请页面，授权说明并入 Enhance/Hair/Headshot/Upscale/AI Expand/Remove/AI Art 的首次引导弹窗；Filter · Film 分类更新缩略图来源并新增 LEICA Q2、GR3 两款效果；边框支持云端调整顺序。
     </div>
     <div class="change-log">
       <h3>变更记录</h3>
+      <div class="change-item">
+        <div class="date">2026-09-04 · v1.2</div>
+        <div class="summary">3.4 由「Filter 新增 Camera 滤镜分类」改为「Filter · Film 分类效果更新」：不新增 tab，改为在现有 Film 分类下更新缩略图来源、新增 LEICA Q2/GR3 两款效果</div>
+      </div>
       <div class="change-item">
         <div class="date">2026-08-27 · v1.1</div>
         <div class="summary">3.3 由「Filter 新增 Adjust 分类」改为「取消云端权限申请页面」；埋点表同步移除 Adjust 相关内容</div>
@@ -282,7 +286,7 @@
           <td>2 个副标题</td>
         </tr>
         <tr>
-          <td class="name">Filter 新增 Camera 滤镜分类<br><span style="font-size:24px;color:#757575;">7 款相机风格滤镜</span></td>
+          <td class="name">Filter · Film 分类效果更新<br><span style="font-size:24px;color:#757575;">新增 LEICA Q2/GR3，更新缩略图来源</span></td>
           <td>缩略图</td>
           <td></td>
         </tr>
@@ -506,21 +510,37 @@
       </div>
     </div>
 
-    <!-- ===== 3.4 Filter 新增 Camera 滤镜分类 ===== -->
-    <div class="feature-title" style="margin-top:48px;">3.4 Filter 新增 Camera 滤镜分类</div>
-    <div class="body-text" style="font-size:32px;line-height:1.85;color:#555;margin-top:8px;">Filter 新增「Camera」分类，收录 7 款胶片相机风格滤镜：LUMIX S9、Fujifilm、Fuji_NC、LEICA Q2、GR3、KODAK、CANON AE1。</div>
+    <!-- ===== 3.4 Filter · Film 分类效果更新 ===== -->
+    <div class="feature-title" style="margin-top:48px;">3.4 Filter · Film 分类效果更新</div>
+    <div class="body-text" style="font-size:32px;line-height:1.85;color:#555;margin-top:8px;">不新增分类 tab，在现有「Film」分类下更新缩略图来源并新增 LEICA Q2、GR3 两款胶片相机风格效果。</div>
 
     <div class="card" style="margin-top:8px;">
       <div class="card-hd">业务逻辑</div>
-      <div class="card-body">
-        <div class="card-text">
-<span style="font-weight:500;color:#0D47A1;">分类位置与内容</span>
-· Filter 分类新增「Camera」一级 tab，位于「Film」之后（第 4 位）
-· 收录效果：LUMIX S9、Fujifilm、Fuji_NC、LEICA Q2、GR3、KODAK、CANON AE1，共 7 款
-· 缩略图复用 Uface 现有「相机」分类的相机图标样式
+      <div class="card-body" style="flex-direction:column;">
+        <table class="metric-table" style="width:auto;max-width:900px;">
+          <thead>
+            <tr><th>分类</th><th>效果名称</th><th>缩略图来源</th><th>新旧效果</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="name" rowspan="7">FILM</td><td>LUMIX S9</td><td>新做</td><td>—</td></tr>
+            <tr><td>Fujifilm</td><td>新做</td><td>—</td></tr>
+            <tr><td>X100VI</td><td>新做</td><td>—</td></tr>
+            <tr><td>Olympus</td><td>复用 Uface</td><td>—</td></tr>
+            <tr><td>Canon G12</td><td>复用 Uface</td><td>—</td></tr>
+            <tr><td class="new-mark">LEICA Q2</td><td class="new-mark">复用 Uface</td><td class="new-mark">新增</td></tr>
+            <tr><td class="new-mark">GR3</td><td class="new-mark">复用 Uface</td><td class="new-mark">新增</td></tr>
+          </tbody>
+        </table>
+        <div class="card-text" style="margin-top:24px;">
+<span style="font-weight:500;color:#0D47A1;">缩略图来源说明</span>
+· 「新做」：LUMIX S9、Fujifilm、X100VI 三款效果重新制作缩略图
+· 「复用 Uface」：Olympus、Canon G12、LEICA Q2、GR3 四款效果直接复用 Uface 现有的相机风格缩略图
+
+<span style="font-weight:500;color:#0D47A1;">新增效果</span>
+· LEICA Q2、GR3 为本次新增效果，其余 5 款为 Film 分类现有效果（本次仅更新缩略图来源，效果本身不变）
 
 <span style="font-weight:500;color:#0D47A1;">解锁与预览</span>
-· 保存方式：订阅后才能保存（非会员不可保存 Camera 分类效果结果）
+· 保存方式：订阅后才能保存（非会员不可保存该分类效果结果）
 · 支持点击效果缩略图直接预览，非会员点击预览时弹出订阅卡片</div>
       </div>
     </div>
@@ -546,7 +566,7 @@
           <tr><td class="name">FaceSave</td><td>XX_XX</td><td>修脸模式，点击效果并保存</td></tr>
           <tr><td class="name">CollageClick</td><td>add_pip、add_grid</td><td>点击添加到图上图、点击添加到拼图</td><td class="name" rowspan="2">3.2 拼图增加 Add 功能</td></tr>
           <tr><td class="name">CollageSave</td><td>add_pip、add_grid</td><td>点击添加到图上图保存、点击添加到拼图保存</td></tr>
-          <tr><td class="name">FilterClick</td><td>XX_XX</td><td>滤镜 tab 和具体效果名字的点击</td><td class="name" rowspan="2">3.4 新增相机滤镜</td></tr>
+          <tr><td class="name">FilterClick</td><td>XX_XX</td><td>滤镜 tab 和具体效果名字的点击</td><td class="name" rowspan="2">3.4 Film 分类效果更新</td></tr>
           <tr><td class="name">FilterSave</td><td>XX_XX</td><td>滤镜 tab 和具体效果名字，应用后保存</td></tr>
         </tbody>
       </table>
@@ -591,10 +611,10 @@
             <td>对比取消权限页前基线</td>
           </tr>
           <tr>
-            <td class="name">Camera 滤镜订阅转化率</td>
-            <td>主指标：衡量 Camera 分类对订阅转化的拉动</td>
-            <td>点击 Camera 滤镜后完成订阅的用户数</td>
-            <td>点击 Camera 滤镜的用户数</td>
+            <td class="name">Film 新效果订阅转化率</td>
+            <td>主指标：衡量 LEICA Q2/GR3 新效果对订阅转化的拉动</td>
+            <td>点击 LEICA Q2/GR3 后完成订阅的用户数</td>
+            <td>点击 LEICA Q2/GR3 的用户数</td>
             <td>—</td>
           </tr>
         </tbody>
@@ -637,9 +657,9 @@
             <td>排查弹窗文案 / 按钮设计，评估是否需要恢复独立权限页</td>
           </tr>
           <tr>
-            <td>Camera 滤镜订阅转化率达预期</td>
+            <td>Film 新效果订阅转化率达预期</td>
             <td class="decision-text">✅ 新滤镜对订阅有拉动</td>
-            <td>持续扩充 Camera 分类滤镜数量</td>
+            <td>持续在 Film 分类扩充新效果</td>
           </tr>
         </tbody>
       </table>
